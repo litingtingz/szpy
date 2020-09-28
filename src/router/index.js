@@ -125,6 +125,12 @@ const routes = [
         name: 'RYHXXQ',
         component: () => import(/* webpackChunkName: "AnalysisAndJudgment" */ '../views/AnalysisAndJudgment/IntelligentSearch/RYHXXQ.vue')
       },
+      {
+        // app采集系统管理后台-》采集信息管理-》采集信息列表
+        path: '/znCollectlistIntranet',
+        name: 'znCollectlistIntranet',
+        component: () => import(/* webpackChunkName: "szforeigners" */ '../views/szforeigners/CollectingInformation/znCollectlistIntranet.vue')
+      },
     ]
   },
   {

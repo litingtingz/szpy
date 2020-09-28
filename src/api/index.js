@@ -16,6 +16,9 @@ var aport3 = 'lzsb'
 var aport4 = 'yewu'
 // var aport4 = 'http://192.168.3.131:9426'
 
+// 苏州市公安局.APP采集系统管理后台
+var aport5 = "http://localhost:6004"
+
 // 引用axios
 import axios from 'axios';
 import store from '@/store'
@@ -190,4 +193,5 @@ export default {
   aport2,
   aport3,
   aport4,
+  aport5
 }

@@ -78,6 +78,7 @@ export default new Vuex.Store({
 
     jzd_ssfj:[],
     gzd_ssfj:[],
+    countryCode:[], // APP采集系统管理后台 国家地区
   },
   mutations: {
     getLeftWid(state,data){
@@ -244,6 +245,9 @@ export default new Vuex.Store({
       }else if(data.ptype == 'gzd'){
         state.workplace_police_station = data.data
       }
+    },
+    getCountryCode(state, data) {
+      state.countryCode = data
     }
   },
   actions: {
@@ -444,6 +448,14 @@ export default new Vuex.Store({
           } else if (payload.type == "zrq") {
             context.commit('getzrq', fnc.sortByKey(r, 'dm'))
           }
+          resolve(r)
+        })
+      })
+    },
+    aGetCountryCode(context, payload) {
+      return new Promise((resolve) => {
+        api.post(api.aport5 + '/znCollectlistIntranet/getGJDQ', payload, r => {
+          context.commit('getCountryCode', fnc.sortByKey(r, 'dm'))
           resolve(r)
         })
       })
