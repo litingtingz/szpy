@@ -132,6 +132,7 @@ export default {
         pd: { userType: "0", valid: "1" },
         pageSize: 10,
         pageNum: 1,
+        queryParams: null,
         user: this.$store.state.user
         // order: "",
         // direction: ''
@@ -191,6 +192,7 @@ export default {
     // 获取查询参数
     cxFnc(data) {
       this.cx.pd = data;
+      this.cx.queryParams = data;
       this.cx.pageNum = 1;
       console.log("用户类型", data);
       // this.disPlBtn = data.userType == 0 ? true : false;

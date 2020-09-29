@@ -17,7 +17,8 @@ var aport4 = 'yewu'
 // var aport4 = 'http://192.168.3.131:9426'
 
 // 苏州市公安局.APP采集系统管理后台
-var aport5 = "http://localhost:6004"
+// var aport5 = 'szforeigners'
+var aport5 = "http://192.168.3.174:6004" // 174测试环境
 
 // 引用axios
 import axios from 'axios';
