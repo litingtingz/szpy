@@ -50,11 +50,12 @@
           <p class="chart-title mb-10">迁入量</p>
           <div class="chart-outer ml-10">
             <div class="chart-outer-label">分析维度</div>
-            <el-select class="chart-select" placeholder="请选择" size="medium">
-              <el-option>{{'1'}}</el-option>
+            <el-select class="chart-select" v-model="analyArr.type_1" @change="analyFun(1)" placeholder="请选择" size="medium">
+              <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
             </el-select>
           </div>
-          <div class="chart-box">
+          <Charts :key="new Date().getTime()" :Cheight="'210px'" :optData="optData_1" :id="'1'"></Charts>
+          <!-- <div class="chart-box">
             <div>
               <Charts
                 :key="new Date().getTime()"
@@ -85,18 +86,19 @@
               ></Charts>
               <div class="chart-tip">同期</div>
             </div>
-          </div>
+          </div> -->
         </el-col>
         <!-- 迁出量 -->
         <el-col :xl="6" :lg="12" class="pr-15">
           <p class="chart-title mb-10">迁出量</p>
           <div class="chart-outer ml-10">
             <div class="chart-outer-label">分析维度</div>
-            <el-select class="chart-select" placeholder="请选择" size="medium">
-              <el-option>{{'1'}}</el-option>
+            <el-select class="chart-select" v-model="analyArr.type_2" @change="analyFun(2)" placeholder="请选择" size="medium">
+              <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
             </el-select>
           </div>
-          <div class="chart-box">
+          <Charts :key="new Date().getTime()" :Cheight="'210px'" :optData="optData_2" :id="'2'"></Charts>
+          <!-- <div class="chart-box">
             <div>
               <Charts
                 :key="new Date().getTime()"
@@ -127,14 +129,14 @@
               ></Charts>
               <div class="chart-tip">同期</div>
             </div>
-          </div>
+          </div> -->
         </el-col>
         <!-- 国家地区 -->
         <el-col :xl="6" :lg="12" class="pr-15">
           <p class="chart-title mb-10">国家地区</p>
           <div class="chart-outer ml-10">
             <div class="chart-outer-label">分析维度</div>
-            <el-select class="chart-select" v-model="cx.pd.analysisType" placeholder="请选择" size="medium">
+            <el-select class="chart-select" v-model="analyArr.type_3" @change="analyFun(3)" placeholder="请选择" size="medium">
               <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
             </el-select>
           </div>
@@ -145,8 +147,8 @@
           <p class="chart-title mb-10">TOP</p>
           <div class="chart-outer ml-10">
             <div class="chart-outer-label">分析维度</div>
-            <el-select class="chart-select" placeholder="请选择" size="medium">
-              <el-option>{{'1'}}</el-option>
+            <el-select class="chart-select" v-model="analyArr.type_4" @change="analyFun(4)" placeholder="请选择" size="medium">
+              <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
             </el-select>
           </div>
           <Charts :key="new Date().getTime()" :optData="optData_4" :id="'4'"></Charts>
@@ -156,8 +158,8 @@
           <p class="chart-title mb-10">变化趋势分析图</p>
           <div class="chart-outer ml-10">
             <div class="chart-outer-label">分析维度</div>
-            <el-select class="chart-select" placeholder="请选择" size="medium">
-              <el-option>{{'1'}}</el-option>
+            <el-select class="chart-select" v-model="analyArr.type_5" @change="analyFun(5)" placeholder="请选择" size="medium">
+              <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
             </el-select>
           </div>
           <Charts :key="new Date().getTime()" :optData="optData_5" :id="'5'"></Charts>
@@ -167,8 +169,8 @@
           <p class="chart-title mb-10">变化趋势分析图</p>
           <div class="chart-outer ml-10">
             <div class="chart-outer-label">分析维度</div>
-            <el-select class="chart-select" placeholder="请选择" size="medium">
-              <el-option>{{'1'}}</el-option>
+            <el-select class="chart-select" v-model="analyArr.type_6" @change="analyFun(6)" placeholder="请选择" size="medium">
+              <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
             </el-select>
           </div>
           <Charts :key="new Date().getTime()" :optData="optData_6" :id="'6'"></Charts>
@@ -205,6 +207,8 @@ export default {
         pageSize: 15,
         pageNum: 1,
       },
+      tab: "1",
+      //列表数据
       lbData:this.$cdata.czxx.xxwhgl.lb,
       lbBtn: this.$cdata.czxx.zhfx.lbBtn,
 			plBtn: this.$store.state.plBtn,
@@ -217,7 +221,7 @@ export default {
         pageNum: 1
 			},
       clearSort:0,
-
+      //列表统计
       checkList:[
         {
           dm:'gender',
@@ -293,7 +297,7 @@ export default {
       dialogType: "",
       dialogData: {},
       labelData: [],
-
+      //图表
       analysis_3:[
         {
           dm:'gender',
@@ -324,11 +328,20 @@ export default {
           mc:'年龄段'
         },
       ],
-      tab: "1",
+      analyArr:{
+        type_1:'gender',
+        type_2:'gender',
+        type_3:'gender',
+        type_4:'gender',
+        type_5:'gender',
+        type_6:'gender',
+      },
+      optData_1:{},
       optData_1_1: {},
       optData_1_2: {},
       optData_1_3: {},
 
+      optData_2:{},
       optData_2_1: {},
       optData_2_2: {},
       optData_2_3: {},
@@ -354,7 +367,11 @@ export default {
     cxFnc(data) {
       this.cx.pd = data;
       this.cx.pageNum = 1;
-      this.getTable(true);
+      if(this.tab == '1'){
+        this.getTable(true);
+      }else{
+        this.chartsBegin()
+      }
     },
     tabTopClick(index) {
       this.tab = index;
@@ -468,23 +485,26 @@ export default {
     //表格复选框选择
 		SelectionChange(){},
 		//点击行
-		rowClick(){},
+    rowClick(){},
+    analyFun(val){
+      if(val == 1){this.chartFun_1()}
+      if(val == 2){this.chartFun_2()}
+      if(val == 3){this.chartFun_3()}
+      if(val == 4){this.chartFun_4()}
+      if(val == 5){this.chartFun_5()}
+      if(val == 6){this.chartFun_6()}
+    },
     chartsBegin(){
       /////
-      this.chartShow_1_1();
-      this.chartShow_1_2();
-      this.chartShow_1_3();
+      this.chartFun_1();
       /////
-      this.chartShow_2_1();
-      this.chartShow_2_2();
-      this.chartShow_2_3();
+      this.chartFun_2();
       /////
-      // this.chartShow_3();
       this.chartFun_3()
       /////
-      this.chartShow_4();
+      this.chartFun_4();
       /////
-      this.chartShow_5();
+      this.chartFun_5();
       /////
       this.chartShow_6();
     },
@@ -1102,14 +1122,234 @@ export default {
         ]
       };
     },
-    //
-    chartFun_3(){
-      this.$api.post(this.$api.aport4 + '/comprehensive/pieChart',this.cx,r=>{
-        this.chartShow_3();
-        console.log(r)
+    chartFun_1(){
+      this.cx.pd.analysisType = this.analyArr.type_1;
+      this.cx.pd.qcl = ''
+      this.$api.post(this.$api.aport4 + '/comprehensive/periodComparison',this.cx.pd,r=>{
+        this.chartShow_1(r.xAxis.xAxis,r.series[0].data)
       })
     },
-    chartShow_3() {
+    chartShow_1(xAxis,series){
+      this.optData_1 = {
+        tooltip: {},
+        grid: {
+          x: 0,
+          y: 20
+        },
+        xAxis: [
+          {
+            type: "category",
+            data: xAxis,
+            axisPointer: {
+              type: "none"
+            },
+            axisLine: {
+              //去除x坐标轴
+              lineStyle: {
+                color: "#fff"
+              }
+            },
+            axisLabel: {
+              show: true, //这行代码控制着坐标轴x轴的文字是否显示
+              color: "#919294",
+              fontSize: 12
+            }
+          }
+        ],
+        yAxis: [
+          {
+            type: "value",
+            axisLine: {
+              //去除y坐标轴
+              lineStyle: {
+                color: "#fff"
+              }
+            },
+            axisPointer: {
+              //去除鼠标hover样式
+              type: "none"
+            },
+            axisTick: {
+              //去掉坐标刻度线
+              show: false
+            },
+            splitLine: {
+              //去除网格线
+              show: false
+            }
+          }
+        ],
+        series: [
+          {
+            name: "销量",
+            type: "bar",
+            barWidth: 10,
+            showBackground: true,
+            backgroundStyle: {
+              color: "#AA30DF",
+              opacity: 0.1,
+              barBorderRadius: 30
+            },
+            itemStyle: {
+              normal: {
+                barBorderRadius: 30, //柱状图边角圆弧化
+                label: {
+                  show: true, //开启显示
+                  position: "top", //在上方显示
+                  textStyle: {
+                    //数值样式
+                    color: "#000",
+                    fontSize: 12,
+                    fontWeight:'bold'
+                  }
+                },
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  {
+                    offset: 0,
+                    color: "#AA30DF"
+                  },
+                  {
+                    offset: 1,
+                    color: "#CE4AC0"
+                  }
+                ])
+              },
+              emphasis: {
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  {
+                    offset: 0,
+                    color: "#D5C95D"
+                  },
+                  {
+                    offset: 1,
+                    color: "#C39E69"
+                  }
+                ])
+              }
+            },
+            data: series
+          }
+        ]
+      };
+    },
+    chartFun_2(){
+      this.cx.pd.analysisType = this.analyArr.type_2;
+      this.cx.pd.qcl = '1'
+      this.$api.post(this.$api.aport4 + '/comprehensive/periodComparison',this.cx.pd,r=>{
+        this.chartShow_2(r.xAxis.xAxis,r.series[0].data)
+      })
+    },
+    chartShow_2(xAxis,series){
+      this.optData_2 = {
+        tooltip: {},
+        grid: {
+          x: 0,
+          y: 20
+        },
+        xAxis: [
+          {
+            type: "category",
+            data: xAxis,
+            axisPointer: {
+              type: "none"
+            },
+            axisLine: {
+              //去除x坐标轴
+              lineStyle: {
+                color: "#fff"
+              }
+            },
+            axisLabel: {
+              show: true, //这行代码控制着坐标轴x轴的文字是否显示
+              color: "#919294",
+              fontSize: 12
+            }
+          }
+        ],
+        yAxis: [
+          {
+            type: "value",
+            axisLine: {
+              //去除y坐标轴
+              lineStyle: {
+                color: "#fff"
+              }
+            },
+            axisPointer: {
+              //去除鼠标hover样式
+              type: "none"
+            },
+            axisTick: {
+              //去掉坐标刻度线
+              show: false
+            },
+            splitLine: {
+              //去除网格线
+              show: false
+            }
+          }
+        ],
+        series: [
+          {
+            name: "销量",
+            type: "bar",
+            barWidth: 10,
+            showBackground: true,
+            backgroundStyle: {
+              color: "#30BFDA",
+              opacity: 0.1,
+              barBorderRadius: 30
+            },
+            itemStyle: {
+              normal: {
+                barBorderRadius: 30, //柱状图边角圆弧化
+                label: {
+                  show: true, //开启显示
+                  position: "top", //在上方显示
+                  textStyle: {
+                    //数值样式
+                    color: "#000",
+                    fontSize: 12,
+                    fontWeight:'bold'
+                  }
+                },
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  {
+                    offset: 0,
+                    color: "#30BFDA"
+                  },
+                  {
+                    offset: 1,
+                    color: "#1ACCE8"
+                  }
+                ])
+              },
+              emphasis: {
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  {
+                    offset: 0,
+                    color: "#D5C95D"
+                  },
+                  {
+                    offset: 1,
+                    color: "#C39E69"
+                  }
+                ])
+              }
+            },
+            data: series
+          }
+        ]
+      };
+    },
+    //国家地区
+    chartFun_3(){
+      this.cx.pd.analysisType = this.analyArr.type_3;
+      this.$api.post(this.$api.aport4 + '/comprehensive/pieChart',this.cx.pd,r=>{
+        this.chartShow_3(r.legend.data,r.series[0].data);
+      })
+    },
+    chartShow_3(legend,series) {
       this.optData_3 = {
         tooltip: {
           trigger: "item",
@@ -1125,172 +1365,97 @@ export default {
           textStyle: {
             color: "#919294"
           },
-          data: ["直接访问", "邮件营销", "联盟广告", "视频广告", "搜索引擎"]
+          data: legend
         },
         series: [
           {
-            name: "访问来源",
+            name: "",
             type: "pie",
             radius: ["35%", "50%"],
             center: ["50%", "45%"],
             avoidLabelOverlap: false,
-            // label: {
-            //   show: false,
-            //   position: "center"
-            // },
-            // emphasis: {
-            //   label: {
-            //     show: true,
-            //     fontSize: "30",
-            //     fontWeight: "bold"
-            //   }
-            // },
             labelLine: {
-              show: true
-            },
-            data: [
-              {
-                value: 335,
-                name: "直接访问",
-                label: {
-                  color: "#000",
-                  fontSize: 12,
-                  formatter: "{b}\n{c} ({d}%)"
-                },
-                itemStyle: {
-                  color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    {
-                      offset: 0,
-                      color: "#FCAC62"
-                    },
-                    {
-                      offset: 1,
-                      color: "#FC8C7E"
-                    }
-                  ])
-                },
-                labelLine: {
-                  // length:30,
-                  lineStyle: {
-                    width: 2
-                  }
-                }
-              },
-              {
-                value: 310,
-                name: "邮件营销",
-                label: {
-                  color: "#000",
-                  fontSize: 12,
-                  formatter: "{b}\n{c} ({d}%)"
-                },
-                itemStyle: {
-                  color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    {
-                      offset: 0,
-                      color: "#F86948"
-                    },
-                    {
-                      offset: 1,
-                      color: "#E2453F"
-                    }
-                  ])
-                },
-                labelLine: {
-                  // length:30,
-                  lineStyle: {
-                    width: 2
-                  }
-                }
-              },
-              {
-                value: 234,
-                name: "联盟广告",
-                label: {
-                  color: "#000",
-                  fontSize: 12,
-                  formatter: "{b}\n{c} ({d}%)"
-                },
-                itemStyle: {
-                  color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    {
-                      offset: 0,
-                      color: "#AA30DF"
-                    },
-                    {
-                      offset: 1,
-                      color: "#CE4AC0"
-                    }
-                  ])
-                },
-                labelLine: {
-                  // length:30,
-                  lineStyle: {
-                    width: 2
-                  }
-                }
-              },
-              {
-                value: 135,
-                name: "视频广告",
-                label: {
-                  color: "#000",
-                  fontSize: 12,
-                  formatter: "{b}\n{c} ({d}%)"
-                },
-                itemStyle: {
-                  color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    {
-                      offset: 0,
-                      color: "#30BFDA"
-                    },
-                    {
-                      offset: 1,
-                      color: "#48DAC8"
-                    }
-                  ])
-                },
-                labelLine: {
-                  // length:30,
-                  lineStyle: {
-                    width: 2
-                  }
-                }
-              },
-              {
-                value: 1548,
-                name: "搜索引擎",
-                label: {
-                  color: "#000",
-                  fontSize: 12,
-                  formatter: "{b}\n{c} ({d}%)"
-                },
-                itemStyle: {
-                  color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    {
-                      offset: 0,
-                      color: "#0FACFA"
-                    },
-                    {
-                      offset: 1,
-                      color: "#1ACCE8"
-                    }
-                  ])
-                },
-                labelLine: {
-                  // length:30,
-                  lineStyle: {
-                    width: 2
-                  }
-                }
+              show: true,
+              lineStyle: {
+                width: 2
               }
-            ]
+            },
+            label: {
+              color: "#000",
+              fontSize: 12,
+              formatter: "{b}\n{c} ({d}%)"
+            },
+            itemStyle:{
+              normal:{
+                color:((para)=>{
+                  var colorList = [
+                    {
+                      c1:"#FCAC62",
+                      c2:"#FC8C7E"
+                    },
+                    {
+                      c1:"#F86948",
+                      c2:"#E2453F"
+                    },
+                    {
+                      c1:"#AA30DF",
+                      c2:"#CE4AC0"
+                    },
+                    {
+                      c1:"#30BFDA",
+                      c2:"#1ACCE8"
+                    },
+                    {
+                      c1:"#0FACFA",
+                      c2:"#1ACCE8"
+                    },
+                    {
+                      c1:"#FCAC62",
+                      c2:"#FC8C7E"
+                    },
+                    {
+                      c1:"#F86948",
+                      c2:"#E2453F"
+                    },
+                    {
+                      c1:"#AA30DF",
+                      c2:"#CE4AC0"
+                    },
+                    {
+                      c1:"#30BFDA",
+                      c2:"#1ACCE8"
+                    },
+                    {
+                      c1:"#0FACFA",
+                      c2:"#1ACCE8"
+                    }
+                  ]
+                  return new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                    {
+                      offset: 0,
+                      color: colorList[para.dataIndex].c1
+                    },
+                    {
+                      offset: 1,
+                      color: colorList[para.dataIndex].c2
+                    }
+                  ])
+                })
+              }
+            },
+            data:series
           }
         ]
       };
     },
-    //
-    chartShow_4() {
+    //TOP
+    chartFun_4(){
+      this.cx.pd.analysisType = this.analyArr.type_4;
+      this.$api.post(this.$api.aport4 + '/comprehensive/topCount',this.cx.pd,r=>{
+        this.chartShow_4(r.xAxis.xAxis,r.series[0].data)
+      })
+    },
+    chartShow_4(xAxis,series) {
       this.optData_4 = {
         tooltip: {},
         grid: {
@@ -1300,7 +1465,7 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+            data: xAxis,
             axisPointer: {
               type: "none"
             },
@@ -1388,21 +1553,82 @@ export default {
                 ])
               }
             },
-            data: [5, 20, 36, 10, 10, 20]
+            data: series
           }
         ]
       };
     },
     //
-    chartShow_5() {
+    chartFun_5(){
+      this.cx.pd.analysisType = this.analyArr.type_5
+      this.$api.post(this.$api.aport4 + '/residetrend/trendchart',this.cx.pd,r=>{
+        let series={
+          type: "line",
+            smooth: 0.7,
+            symbolSize: 8,
+            symbol: "emptyCircle", //设定为实心点
+            // itemStyle: {
+            //   normal: {
+            //     // color: "#5486F9",
+            //     borderWidth: 2
+            //   }
+            // },
+            label: {
+              show: true,
+              fontSize: 14,
+              color: "#000",
+              fontWeight:'bold'
+            },
+            // lineStyle: {
+            //   color: "#5486F9",
+            //   width: 2,
+            //   shadowColor: "rgba(85,137,247, 0.5)",
+            //   shadowBlur: 10,
+            //   shadowOffsetX: 10
+            // },
+            // areaStyle: {
+              // color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              //   {
+              //     offset: 0,
+              //     color: "rgba(85,137,247,0.5)"
+              //   },
+              //   {
+              //     offset: 1,
+              //     color: "rgba(85,137,247,0.1)"
+              //   }
+              // ])
+            // },
+        }
+        let dataReal = [];
+        r.series.forEach(item => {
+          let dataItem = Object.assign({},item,series)
+          dataReal.push(dataItem)
+        })
+        this.chartShow_5(r.xAxis.data,dataReal,r.legend.data)
+      })
+    },
+    chartShow_5(xAxis,series,legend) {
       this.optData_5 = {
         grid: {
           x: 50,
           y: 20,
           x2: 40
         },
+        legend: {
+          left: "center",
+          // top: "bottom",
+          // itemWidth: 15, //修改icon图形大小
+          // itemHeight: 15, //修改icon图形大小
+          type: "scroll",
+          padding: [0, 0, 13, 0],
+          textStyle: {
+            color: "#919294"
+          },
+          data: legend
+        },
         xAxis: {
           type: "category",
+          data:xAxis,
           boundaryGap: false,
           axisPointer: {
             type: "none"
@@ -1450,74 +1676,7 @@ export default {
             }
           }
         },
-        // visualMap: {
-        //   type: "piecewise",
-        //   show: false,
-        //   dimension: 0,
-        //   seriesIndex: 0,
-        //   pieces: [
-        //     {
-        //       gt: 1,
-        //       lt: 3,
-        //       color: "rgba(0, 180, 0, 0.5)"
-        //     },
-        //     {
-        //       gt: 5,
-        //       lt: 7,
-        //       color: "rgba(0, 180, 0, 0.5)"
-        //     }
-        //   ]
-        // },
-        series: [
-          {
-            type: "line",
-            smooth: 0.7,
-            symbolSize: 8,
-            symbol: "emptyCircle", //设定为实心点
-            itemStyle: {
-              normal: {
-                color: "#5486F9",
-                borderWidth: 2
-              }
-            },
-            label: {
-              show: true,
-              fontSize: 14,
-              color: "#000",
-              fontWeight:'bold'
-            },
-            lineStyle: {
-              color: "#5486F9",
-              width: 2,
-              shadowColor: "rgba(85,137,247, 0.5)",
-              shadowBlur: 10,
-              shadowOffsetX: 10
-            },
-            areaStyle: {
-              color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                {
-                  offset: 0,
-                  color: "rgba(85,137,247,0.5)"
-                },
-                {
-                  offset: 1,
-                  color: "rgba(85,137,247,0.1)"
-                }
-              ])
-            },
-            data: [
-              ["2019-10-10", 200],
-              ["2019-10-11", 400],
-              ["2019-10-12", 650],
-              ["2019-10-13", 500],
-              ["2019-10-14", 250],
-              ["2019-10-15", 300],
-              ["2019-10-16", 450],
-              ["2019-10-17", 300],
-              ["2019-10-18", 100]
-            ]
-          }
-        ]
+        series: series
       };
     },
     //

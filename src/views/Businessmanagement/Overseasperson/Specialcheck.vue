@@ -246,6 +246,7 @@ export default {
       this.$store.dispatch("aGetGender");
       this.$store.dispatch("aGetPassport");
       this.$store.dispatch("aGetDatatype");
+      this.cx.pd.backstatusdis = true;
       this.getSpInit();
       this.$nextTick(() => {
         console.log('mount',this.jbData)
@@ -314,6 +315,9 @@ export default {
         this.cxQ.pd.cljg =this.page;
         this.getTable(true,this.cxQ)
       }else{
+        if(!this.cx.pd.datatype){
+          this.cx.pd.backstatusdis = true;
+        }
         this.getTable(true)
       }
     },
@@ -391,8 +395,10 @@ export default {
         if (data.data == "") {
           this.$store.state.backstatus = [];
           data.obj.backstatus = "";
+          this.cx.pd.backstatusdis = true;
         } else {
           this.$store.dispatch("aGetBackstatus", data.data).then(() => {});
+          this.cx.pd.backstatusdis = false;
         }
       }
       if (data.key.dm == "suboffice") {

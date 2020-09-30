@@ -365,3 +365,12 @@ input[type="number"]{
 .el-select__tags .el-tag.el-tag--info{
   color: #3c5982!important;
 }
+.chart-select .el-input__inner{
+  color: #028AFF!important;
+  border-radius: 8px!important;
+  border: 1px solid #C8D1D9!important;
+}
+.chart-select.el-select .el-input .el-select__caret{
+  color: #028AFF!important;
+  font-weight: bold;
+}

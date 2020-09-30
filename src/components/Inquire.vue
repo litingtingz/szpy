@@ -63,7 +63,7 @@
                   <el-option
                     v-for="(item,ind) in $cdata.options[cx.dm]"
                     :key="ind"
-                    :label="item.dm+' - '+item.mc"
+                    :label="cx.disdm?item.mc:item.dm+' - '+item.mc"
                     :value="item.dm"
                   ></el-option>
                 </el-select>

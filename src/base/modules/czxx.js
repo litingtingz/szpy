@@ -102,7 +102,8 @@ const xxwhgl = {
       cm: '人员类型',
       type: 'select',
       dm: 'resident_type',
-      optype:true
+      optype:true,
+      disdm:true,
     },
   ],
   cxCheck:[
