@@ -297,8 +297,9 @@ export default {
      
           .then(() => {
               var uus=[];
-              if(data.data.userId){
-                  uus.push(data.data.userId+'');
+            
+              if(data.data.audioId){
+                  uus.push(data.data.audioId+'');
               }
                  let p={
                      'user':this.$store.state.user,
@@ -318,10 +319,10 @@ export default {
                     this.getTable();
                 }else{
                     this.$message({
-                    message: r.msg,
+                    message: r.msg?r.msg:'删除失败',
                     duration: 8000,
                     showClose: true,
-                    type: "success",
+                    type: "error",
                     });
                 }
               }
@@ -366,10 +367,10 @@ export default {
           this.isShowDialog = false;
           }else{
             this.$message({
-                message: r.msg,
+                message: r.msg?r.msg:'修改失败',
                 duration: 8000,
                 showClose: true,
-                type: "success",
+                type: "error",
             });
           }
         }

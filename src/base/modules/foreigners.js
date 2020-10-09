@@ -12,7 +12,7 @@ const znCollectlistIntranet = {
         {
             cm: '照片类型',
             type: 'select',
-            dm: 'collectionItem_status',
+            dm: 'collectionItem',
             optype: true
             // must: true
         },
@@ -37,22 +37,22 @@ const znCollectlistIntranet = {
             dm: 'znAddress_str',
 
         },
-        {
-            cm: '校正状态',
-            type: 'select',
-            dm: 'check_status',
-            optype: true
-        },
-        {
-            cm: '对比状态',
-            type: 'select',
-            dm: 'compare_status',
-            optype: true
-        },
+        // {
+        //     cm: '校正状态',
+        //     type: 'select',
+        //     dm: 'check_status',
+        //     optype: true
+        // },
+        // {
+        //     cm: '对比状态',
+        //     type: 'select',
+        //     dm: 'compare_status',
+        //     optype: true
+        // },
         {
             cm: '是否有效',
             type: 'select',
-            dm: 'isdelete_status',
+            dm: 'isDelete',
             optype: true
         },
         {
@@ -151,18 +151,18 @@ const znCollectlistIntranet = {
             cm: '采集时间',
             dm: 'addtime'
         },
-        {
-            cm: '校正状态',
-            dm: 'checkStatus'
-        },
-        {
-            cm: '对比状态',
-            dm: 'compareStatus'
-        },
-        {
-            cm: '对比结果',
-            dm: 'compareResult'
-        },
+        // {
+        //     cm: '校正状态',
+        //     dm: 'checkStatus'
+        // },
+        // {
+        //     cm: '对比状态',
+        //     dm: 'compareStatus'
+        // },
+        // {
+        //     cm: '对比结果',
+        //     dm: 'compareResult'
+        // },
         {
             cm: '是否有效',
             dm: 'isDelete'

@@ -2,10 +2,16 @@
   <div class="page">
     <Inquire :cxData="cxData" :pd="cx.pd" :cxPara="cx" @cxFnc="cxFnc"></Inquire>
     <div class="t-tab-top">
-      <div class="tab-top-item tabImgActive_1 hand">
+      <!-- <div class="tab-top-item tabImgActive_1 hand">
         <img src="../../../assets/images/main/tab_2_pre.png" alt />
         <span>采集信息列表</span>
-      </div>
+      </div> -->
+      <div class="tab-top-item hand" :class="(cx.pd.compare_status=='0' && cx.pd.check_status=='1')?'tabImgActive_1':'tabImg_1'" @click="tabTopClick('0','1')">全部待接收</div>
+      <div class="tab-top-item hand" :class="(cx.pd.compare_status=='0' && cx.pd.check_status=='2')?'tabImgActive_2':'tabImg_2'" @click="tabTopClick('0','2')">全部待处理</div>
+      <div class="tab-top-item hand" :class="(cx.pd.compare_status=='0' && cx.pd.check_status=='3')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('0','3')">全部已处理</div>
+      <div class="tab-top-item hand" :class="(cx.pd.compare_status=='1' && cx.pd.check_status=='1')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1','1')">本人任务</div>
+      <div class="tab-top-item hand" :class="(cx.pd.compare_status=='1' && cx.pd.check_status=='2')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1','2')">本人待处理</div>
+      <div class="tab-top-item hand" :class="(cx.pd.compare_status=='1' && cx.pd.check_status=='3')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1','3')">本人已处理</div>
     </div>
     <div class="page-box">
       <el-row :gutter="20">
@@ -13,7 +19,7 @@
           <Table
             lbType="yhtb"
             :lbData="lbData"
-            :isSelect="isSelect"
+            :isSelect="true"
             :isEdit="isEdit"
             :lbBtn="lbBtn"
             :plBtn="plBtn"
@@ -31,63 +37,11 @@
             @sortChange="sortChange"
             @transSaveFnc="transSaveFnc"
           ></Table>
+  
         </el-col>
-        <el-col :span="8" v-if="dwtbShow">
-          <Table
-            lbType="dwtb"
-            :lbData="$cdata.qxgl.yhgl.dwtb"
-            :isSelect="false"
-            :isPl="false"
-            :isEdit="false"
-            :isSort="false"
-            :tableData="tableData2"
-            :isPagination="false"
-            @rowClick="rowClick"
-          ></Table>
-        </el-col>
-        <el-col :span="10" v-if="jstbShow">
-          <Table
-            lbType="jstb"
-            :isSelect="true"
-            :lbData="lbData"
-            :isPl="false"
-            :isEdit="false"
-            :isSort="false"
-            refName="jstb"
-            :lbBtn="lbBtn"
-            :tableData="tableData3"
-            :isPagination="false"
-            :selection="selection"
-            @rowClick="rowClick"
-            @SelectionChange="userRole"
-          ></Table>
-        </el-col>
-        <el-col :span="6" v-if="gnlbShow">
-          <TreeCard
-            :isCheckbox="false"
-            treeType="gnlb"
-            :treeData="treeData1"
-            :treeProps="treeProps1"
-            :defaultChecked="defaultChecked1"
-            nodeKey="serial"
-            @getTree="getTree"
-          ></TreeCard>
-        </el-col>
+       
       </el-row>
-      <div class="page-btn-box" v-if="jstbShow">
-        <template v-for="(pb,pbi) in $store.state.plBtn">
-          <el-button
-            class="cx-btn"
-            size="small"
-            :type="pb.py=='bc'?'primary':'info'"
-            round
-            v-if="pb.button_type==3"
-            :key="pbi"
-            @click="btnClick(pb.py)"
-          >{{pb.button_name||pb.menu_name}}</el-button>
-        </template>
-        <!-- <el-button size="mini" type="primary" round @click="saveUserRoleInfo">保存</el-button> -->
-      </div>
+  
     </div>
 
     <!-- 弹窗 -->
@@ -107,22 +61,20 @@
 import Inquire from "@/components/Inquire.vue";
 import Dialog from "@/components/Dialog.vue";
 import Table from "@/components/Table.vue";
-import TreeCard from "@/components/TreeCard.vue";
+
 import Form from "@/components/Form.vue";
 export default {
   components: {
     Inquire,
     Table,
     Dialog,
-    Form,
-    TreeCard
+    Form
   },
-
   data() {
     return {
       tabImgActive_1: require("../../../assets/images/main/tab_2_pre.png"),
       // 【展示数据】
-      isSelect: false,
+      isSelect: true,
       isEdit: true,
       cxData: this.$cdata.foreigners.znCollectlistIntranet.cx,
       lbData: this.$cdata.foreigners.znCollectlistIntranet.lb,
@@ -130,7 +82,7 @@ export default {
       plBtn: this.$store.state.plBtn,
       // 【业务数据】
       cx: {
-        pd: { userType: "0", valid: "1" },
+        pd: { userType: "0", valid: "1",compare_status:'0', check_status:'1'},
         pageSize: 10,
         pageNum: 1,
         queryParams: null,
@@ -163,15 +115,14 @@ export default {
       dialogData: {},
       labelData: [],
       userRoleData: [],
-      dwtbShow: false,
-      jstbShow: false,
-      gnlbShow: false
+     
     };
   },
   mounted() {
+    this.cx.queryParams = this.cx.pd;
     this.getTable();
     // this.begin();
-    console.log('---',this.$route)
+
     // 加载 国家地区 下拉选
     this.$store
       .dispatch("aGetCountryCode", { })
@@ -179,6 +130,14 @@ export default {
   },
 
   methods: {
+    tabTopClick(m,n){
+       this.cx.pd.compare_status = m;
+       this.cx.pd.check_status=n;
+       this.cx.pageNum = 1;
+       
+       
+      this.getTable(true);
+    },
     btnClick(py) {
       if (py == "bc") {
         this.saveUserRoleInfo();
@@ -226,71 +185,14 @@ export default {
                  // pageSize: 10,
                  // pageNum: 1
 
-          this.dwtbShow = false;
-          this.jstbShow = false;
-          this.gnlbShow = false;
-        }
-      );
-    },
-    // 查询用户单位列表
-    queryUserDept(bmbh) {
-      this.$api.post(
-        this.$api.aport1 + "/userController/queryUserDept",
-        { bmbh: bmbh },
-        r => {
-          this.tableData2.list = r.deptList;
-          this.dwtbShow = true;
-          this.jstbShow = false;
-          this.gnlbShow = false;
-        }
-      );
-    },
-    // 获取角色列表
-    getRole(bmbh) {
-      this.$api.post(
-        this.$api.aport1 + "/role/getUserRole",
-        // this.$api.aport1 + "/role/getRole",
-        { bmbh: bmbh, quanJu: "true", userId: this.currentRow.userId },
-        r => {
-          this.tableData3.list = r;
-          this.jstbShow = true;
-          this.gnlbShow = false;
-          let arr = [...r];
-          this.selection = [];
-          arr.forEach(item => {
-            if (item.ischeck) {
-              this.selection.push(item);
-            }
-          });
         }
       );
     },
 
-    //获取角色权限列表树形结构
-    getRolePermissionTree(roleId) {
-      this.$cdata.qxgl.getRolePermissionTree(roleId).then(data => {
-        this.treeData1 = data;
-        this.gnlbShow = true;
-        this.$fnc
-          .arrayIndex(data, "choose", "serial", "childrenMenu")
-          .then(data => {
-            this.defaultChecked1 = data;
-          });
-      });
-    },
-    getTree(data) {
-      console.log(data);
-    },
+   
     // 点击表格行
-    rowClick(data) {
-      if (data.type == "yhtb") {
-        this.queryUserDept(data.data.bmbh);
-        this.currentRow = data.data;
-      } else if (data.type == "dwtb") {
-        this.getRole(data.data.xtyhbmbh);
-      } else if (data.type == "jstb") {
-        this.getRolePermissionTree(data.data.serial);
-      }
+    rowClick() {
+     
     },
     // 批量操作
     plFnc(data) {
