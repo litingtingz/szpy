@@ -193,6 +193,7 @@ export default {
     },
     //新增保存
     xzSave(data){
+  
       this.$api.post(this.$api.aport2 + '/issueTimeControl/addIssueTimeControl',data,r=>{
         this.$message({
           message: r.message,

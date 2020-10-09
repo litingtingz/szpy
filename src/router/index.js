@@ -131,6 +131,18 @@ const routes = [
         name: 'znCollectlistIntranet',
         component: () => import(/* webpackChunkName: "szforeigners" */ '../views/szforeigners/CollectingInformation/znCollectlistIntranet.vue')
       },
+      {
+        // app采集系统管理后台-》采集信息管理-》采集app
+        path: '/CollectionApp',
+        name: 'CollectionApp',
+        component: () => import(/* webpackChunkName: "szforeigners" */ '../views/szforeigners/CollectingInformation/CollectionApp.vue')
+      },
+      {
+        // app采集系统管理后台-》采集信息管理-》采集语音
+        path: '/CollectionVoice',
+        name: 'CollectionVoice',
+        component: () => import(/* webpackChunkName: "szforeigners" */ '../views/szforeigners/CollectingInformation/CollectionVoice.vue')
+      },
     ]
   },
   {

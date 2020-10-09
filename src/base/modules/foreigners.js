@@ -10,7 +10,7 @@ const znCollectlistIntranet = {
     // 查询项
     cx: [
         {
-            cm: '请选择照片类型',
+            cm: '照片类型',
             type: 'select',
             dm: 'collectionItem_status',
             optype: true
@@ -61,12 +61,12 @@ const znCollectlistIntranet = {
             dm: 'addTime'
         },
         {
-            cm: '请选择所属分局',
+            cm: '所属分局',
             type: 'select',
             dm: 'subBureauCode'
         },
         {
-            cm: '请选择所属派出所',
+            cm: '所属派出所',
             type: 'select',
             dm: 'policeStationCode'
         },
@@ -170,15 +170,30 @@ const znCollectlistIntranet = {
     ],
     lbBtn: [
         {
+            "button_name": "详情",
+            "button_type": 'ck',
+           
+        },
+        {
+            "button_name": "编辑",
+            "button_type": 'edit',
+           
+        },
+        {
+            "button_name": "删除",
+            "button_type": 'del',
+            
+        },
+        {
             "button_name": "密码重置",
             "button_type": "mmcz",
-            "icon": "mmcz",
+     
             "serial": "201",
         },
         {
             "button_name": "生成随机密码",
             "button_type": "scsjmm",
-            "icon": "scsjmm",
+          
             "serial": "201",
         }
     ],
@@ -322,6 +337,259 @@ const znCollectlistIntranet = {
     ]
 }
 
+const cjapp={
+    cx:[
+        {
+            cm: '手机号',
+            type: 'input',
+            dm: 'mobile'
+        },
+        {
+            cm: '姓名',
+            type: 'input',
+            dm: 'realname'
+        },
+        {
+            cm: '工作单位',
+            type: 'input',
+            dm: 'job'
+        },
+        {
+            cm: '所属分局',
+            type: 'select',
+            dm: 'subBureauCode'
+        },
+        {
+            cm: '所属派出所',
+            type: 'select',
+            dm: 'policeStationCode'
+        },
+    ],
+    facx:[],
+    lb:[
+        {
+            cm: '手机号',
+            dm: 'mobile'
+        },
+        {
+            cm: '姓名',
+            dm: 'realname'
+        },
+        {
+            cm: '身份证号',
+            dm: 'idcard'
+        }
+        ,
+        {
+            cm: '工作单位',
+            dm: 'job'
+        }
+        ,
+        {
+            cm: '所属分局',
+            dm: 'subBureauName'
+        }
+        ,
+        {
+            cm: '所属派出所',
+            dm: 'policeStationName'
+        }
+        ,
+        {
+            cm: '责任区',
+            dm: 'areaName'
+        }
+        ,
+        {
+            cm: '添加时间',
+            dm: 'addtime'
+        }
+    ],
+    lbTab: [],//分类tab
+    lbBtn: [
+        {
+            "button_name": "启用",
+            "button_type": 'qy',
+            "switch" :true,
+        },
+        {
+            "button_name": "详情",
+            "button_type": 'ck',
+           
+        },
+        {
+            "button_name": "编辑",
+            "button_type": 'edit',
+           
+        },
+        {
+            "button_name": "删除",
+            "button_type": 'del',
+            
+        },
+    ],
+    labelData:[
+        {
+            cm: '手机号',
+            type: 'input',
+            dm: 'mobile',
+            must: true,
+        },
+        {
+            cm: '姓名',
+            type: 'input',
+            dm: 'realname',
+            must: true,
+        },
+        {
+            cm: '身份证号',
+            type: 'input',
+            dm: 'idcard'
+        },
+        {
+            cm: '工作单位',
+            type: 'input',
+            dm: 'job'
+        },
+        {
+            cm: '所属分局',
+            type: 'select',
+            dm: 'subBureauCode',
+            must: true,
+        },
+        {
+            cm: '所属派出所',
+            type: 'select',
+            dm: 'policeStationCode'
+        },
+        {
+            cm: '所属区域',
+            type: 'select',
+            dm: 'areaCode'
+        },
+        
+    ]
+
+}
+const cjyylb={
+    cx:[
+        {
+            cm: '标题',
+            type: 'input',
+            dm: 'audioName'
+        },
+       
+        {
+            cm: '是否有效',
+            type: 'select',
+            dm: 'isDelete',
+            optype:true,
+        }
+       
+    ],
+    facx:[],
+    lb:[
+        {
+            cm: '标题',
+            dm: 'audioName'
+        },
+        {
+            cm: '英文地址',
+            dm: 'englishPath'
+        },
+        {
+            cm: '日文地址',
+            dm: 'japanesePath'
+        }
+        ,
+        {
+            cm: '韩文地址',
+            dm: 'koreanPath'
+        }
+        ,
+        {
+            cm: '前台语音按钮',
+            dm: 'audioType'
+        }
+        
+        ,
+        {
+            cm: '是否有效',
+            dm: 'isDelete'
+        }
+        ,
+        {
+            cm: '添加人姓名',
+            dm: 'addUsername'
+        },
+        {
+            cm: '添加时间',
+            dm: 'addTime'
+        },
+        {
+            cm: '排序',
+            dm: 'audioSort'
+        }
+    ],
+    lbTab: [],//分类tab
+    lbBtn: [
+        {
+            "button_name": "详情",
+            "button_type": 'ck',
+           
+        },
+        {
+            "button_name": "编辑",
+            "button_type": 'edit',
+           
+        },
+        {
+            "button_name": "删除",
+            "button_type": 'del',
+            
+        },
+    ],
+    labelData:[
+        {
+            cm: '标题',
+            type: 'textarea',
+            dm: 'audioName',
+            col: 24,
+            must: true,
+        },
+      
+        {
+            cm: '英文地址',
+            type: 'input',
+            dm: 'englishPath'
+        },
+        {
+            cm: '日文地址',
+            type: 'input',
+            dm: 'japanesePath'
+        }
+        ,
+        {
+            cm: '韩文地址',
+            type: 'input',
+            dm: 'koreanPath'
+        },
+        {
+            cm: '语音按钮',
+            type: 'select',
+            dm: 'audioType',
+            must: true,
+            optype:true,
+        },
+        {
+            cm: '排序',
+            type: 'input',
+            dm: 'audioSort'
+        },
+  
+    ]
+}
+
 // 获取单位列表
 /*function getDeptTreeByBmbh() {
     return new Promise((resolve) => {
@@ -338,5 +606,7 @@ const znCollectlistIntranet = {
 }*/
 
 export default {
-    znCollectlistIntranet
+    znCollectlistIntranet,
+    cjapp,
+    cjyylb
 }

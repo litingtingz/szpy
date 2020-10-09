@@ -186,7 +186,7 @@ const zxhc = {
         {
             cm: '手机号码',
             dm: 'phone',
-        },
+        },   
         {
             cm: '走访状态',
             dm: 'backstatus_desc'

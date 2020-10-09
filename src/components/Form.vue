@@ -23,7 +23,9 @@
               <template v-if="cx.type=='inpColor'">
                 <el-row type="flex" justify="start">
                   <el-col :span="23"><el-input v-model="dialogData[cx.dm]"></el-input></el-col>
-                  <el-col :span="3" class="ml-10"><span style="width:20px;height:20px;display:inline-block;vertical-align: middle;" :style="{backgroundColor:dialogData[cx.dm]}"></span></el-col>
+                  <el-col :span="3" class="ml-10">
+                    <span style="width:20px;height:20px;display:inline-block;vertical-align: middle;" :style="{backgroundColor:dialogData[cx.dm]}"></span>
+                  </el-col>
                 </el-row>
               </template>
               <template v-if="cx.type=='block'">
@@ -54,7 +56,7 @@
                   filterable
                   v-if="cx.optype"
                   clearable
-                  :disabled="cx.dis"
+                  :disabled="cx.dis||dialogData[cx.dm+'dis']"
                   placeholder="请选择"
                   @change="linkChange(cx,dialogData[cx.dm],dialogData)">
                   <el-option
@@ -69,7 +71,7 @@
                   filterable
                   v-else
                   clearable
-                  :disabled="cx.dis"
+                  :disabled="dialogData[cx.dm+'dis']||cx.dis"
                   placeholder="请选择"
                   @change="linkChange(cx,dialogData[cx.dm],dialogData)"
                 >
@@ -341,6 +343,7 @@ export default {
     };
     return {
       // form: {},
+
       rules: this.dialogType=='singSb'?{
         suboffice: [{ required: true, message: "请选择分局", trigger: "blur" }],
         policestation: [{ required: true, message: "请选择派出所", trigger: "blur" }],
@@ -357,6 +360,14 @@ export default {
         visaType:[{required: true, message: "此项必填", trigger: "blur"}],
         visano:[{required: true, message: "此项必填", trigger: "blur"}],
         address:[{required: true, message: "此项必填", trigger: "blur"}],
+      }:(this.rulsName=='cjapps' && this.dialogType!='ck')?{
+          mobile:[{required: true, message: "此项必填", trigger: "blur"}],
+          realname:[{required: true, message: "此项必填", trigger: "blur"}],
+          subBureauCode:[{required: true, message: "此项必填", trigger: "blur"}]
+      }:(this.rulsName=='cjyylbs' && this.dialogType!='ck')?{
+          audioName:[{required: true, message: "此项必填", trigger: "blur"}],
+          audioType:[{required: true, message: "此项必填", trigger: "blur"}],
+         
       }:{
         xtmm: [{ required: true, message: "请输入密码", trigger: "blur" }],
         qrxtmm: [{ validator: validatePass, trigger: "blur" }],
@@ -449,6 +460,7 @@ export default {
     },
   },
   mounted() {
+    console.log(this.dialogData.subBureauCodedis,'+++')
     if(this.ZDYShow){//新增 颜色清空
       this.ColorData={
         data:[

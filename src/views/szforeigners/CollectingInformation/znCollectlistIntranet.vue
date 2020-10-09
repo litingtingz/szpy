@@ -21,6 +21,7 @@
             :tableData="tableData"
             :clearSort="clearSort"
             :expData="cx"
+            :czWidth="'350'"
             :expUrl="$api.aport1+'/userController/exportUserInfo'"
             @pageSizeFnc="pageSizeFnc"
             @pageNumFnc="pageNumFnc"
@@ -48,12 +49,12 @@
           <Table
             lbType="jstb"
             :isSelect="true"
-            :lbData="$cdata.qxgl.jsgl.lb"
+            :lbData="lbData"
             :isPl="false"
             :isEdit="false"
             :isSort="false"
             refName="jstb"
-            :lbBtn="$cdata.qxgl.jsgl.lbBtn"
+            :lbBtn="lbBtn"
             :tableData="tableData3"
             :isPagination="false"
             :selection="selection"
@@ -125,7 +126,7 @@ export default {
       isEdit: true,
       cxData: this.$cdata.foreigners.znCollectlistIntranet.cx,
       lbData: this.$cdata.foreigners.znCollectlistIntranet.lb,
-      lbBtn: this.$cdata.qxgl.yhgl.lbBtn,
+      lbBtn: this.$cdata.foreigners.znCollectlistIntranet.lbBtn,
       plBtn: this.$store.state.plBtn,
       // 【业务数据】
       cx: {

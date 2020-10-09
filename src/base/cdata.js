@@ -321,6 +321,35 @@ const options = {
             dm:'1'
         },
    ],
+   isDelete:[
+        {
+            mc:'无效数据',
+            dm:'0'
+        },
+        {
+            mc:'有效数据',
+            dm:'1'
+        },
+   ],
+   //前台语音控制
+   audioType:[
+    {
+        mc:'本户境外人员数',
+        dm:'1'
+    },
+    {
+        mc:'已办理住宿登记人数',
+        dm:'2'
+    },
+    {
+        mc:'采集项',
+        dm:'3'
+    },
+    {
+        mc:'其它',
+        dm:'4'
+    },
+   ],
    inhabi_police_station:[],//居住地所在派出所
    workplace_police_station:[],//单位所在地派出所
 

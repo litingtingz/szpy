@@ -33,7 +33,9 @@ export default new Vuex.Store({
     grade: [],
     passportType: [],//证件种类
     suboffice: [],//所属分局
+    subBureauCode:[],
     policestation: [],//派出所
+    policeStationCode:[],
     xzqh: [],
     shzt: [],//审核状态
     rylb: [],
@@ -44,6 +46,7 @@ export default new Vuex.Store({
     rjsy: [],//停留事由
     qfjg: [],
     turnoutarea: [],//责任区
+    areaCode:[],
     // 【非大众】
     datatype: [],//下发类别
     backstatus: [],//数据状态
@@ -213,6 +216,7 @@ export default new Vuex.Store({
     },
     getzrq(state, data) {
       state.turnoutarea = data;
+      state.areaCode=data;
     },
     getDatatype(state, data) {
       state.datatype = data;
@@ -234,10 +238,12 @@ export default new Vuex.Store({
       state.suboffice = data
       state.jzd_ssfj = data
       state.gzd_ssfj = data
+      state.subBureauCode = data
     },
     getsspcs(state, data) {
       state.sspcs = data
       state.policestation = data
+      state.policeStationCode=data
     },
     getpcsPro(state, data){
       if(data.ptype == 'jzd'){

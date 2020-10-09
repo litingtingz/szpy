@@ -156,7 +156,11 @@ export default {
     },
     // 查询列表
     getTable(flag) {
-      if(flag){this.clearSort = new Date().getTime();delete this.cx.order;delete this.cx.direction }
+      if(flag){
+        this.clearSort = new Date().getTime();
+        delete this.cx.order;
+        delete this.cx.direction 
+      }
       this.currentRow = {};
       this.$api.post(this.$api.aport1 + "/zrq/getZrq", this.cx, r => {
         // this.tableData = r.resultList;

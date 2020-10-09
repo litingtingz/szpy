@@ -97,6 +97,17 @@
                 :title="lbt.button_name"
                 v-if="lbt.icon"
               />
+              <el-switch
+                v-model="scope.row.ustatusBoolean"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                v-else-if="lbt.switch"
+                active-text="启用"
+                inactive-text="禁止"
+                class="switchStyle"
+               
+                @change="handleClick(scope.row,lbt)">
+              </el-switch>
               <el-button
                 style="margin:0 5px"
                 :style="{'color':lbt.color_type=='1'?'#d78df5':'#7FCEFF'}"
@@ -264,6 +275,7 @@ export default {
       isShowDialog: false,
       dialogTitle: "",
       dialogType:"",
+      kgvalue:false,
       //穿梭框数据
       timer:'',
       transData:this.lbData,//数据来源（全部展示列表项）
@@ -340,6 +352,8 @@ export default {
       if(this.$route.query.page){
         this.page1 = this.$route.query.page
       }
+
+   
     });
   },
   methods: {
@@ -526,5 +540,30 @@ export default {
   margin: 0 5px;
   vertical-align: middle;
   cursor: pointer;
+}
+
+</style>
+<style>
+.switchStyle .el-switch__label {
+  position: absolute;
+  display: none;
+  color: #fff;
+ 
+}
+.switchStyle .el-switch__label--left {
+  z-index: 9;
+  left: 6px;
+}
+.switchStyle .el-switch__label--right {
+  z-index: 9;
+  left: -14px;
+}
+.switchStyle .el-switch__label.is-active {
+  display: block;
+}
+.switchStyle.el-switch .el-switch__core,
+.el-switch .el-switch__label {
+  width: 60px !important;
+
 }
 </style>
