@@ -60,6 +60,23 @@ const zxhc = {
             dm: 'policestation'
         },
 
+        
+        {
+            cm: '下发类别',
+            type: 'select',
+            dm: 'datatype'
+        },
+        {
+            cm: '走访状态',
+            type: 'select',
+            dm: 'backstatus',
+            disdm:true
+        },
+        {
+            cm: '住宿地址',
+            type: 'input',
+            dm: 'address'
+        },
         {
             cm: '反馈时间',
             type: 'double',
@@ -78,17 +95,6 @@ const zxhc = {
             ],
         },
         {
-            cm: '下发类别',
-            type: 'select',
-            dm: 'datatype'
-        },
-        {
-            cm: '走访状态',
-            type: 'select',
-            dm: 'backstatus',
-            disdm:true
-        },
-        {
             cm: '分局下发时间',
             type: 'double',
             dm: 'xfTime',
@@ -105,11 +111,7 @@ const zxhc = {
                 }
             ]
         },
-        {
-            cm: '住宿地址',
-            type: 'input',
-            dm: 'address'
-        },
+        
 
     ],
     facx:[
@@ -1920,15 +1922,15 @@ function lbTabShow(jb) {
             ]
             zxhc.lbTab1 = [
                 {
-                    "mc": '市局已处理',
+                    "mc": '已归档',
                     "dm": '1',
                 },
                 {
-                    "mc": '分局已处理',
+                    "mc": '分局已上报',
                     "dm": '2',
                 },
                 {
-                    "mc": '派出所已处理',
+                    "mc": '派出所已上报',
                     "dm": '3',
                 },
             ]
@@ -1949,11 +1951,11 @@ function lbTabShow(jb) {
             ]
             zxhc.lbTab1 = [
                 {
-                    "mc": '分局已处理',
+                    "mc": '分局已上报',
                     "dm": '2',
                 },
                 {
-                    "mc": '派出所已处理',
+                    "mc": '派出所已上报',
                     "dm": '3',
                 },
             ]
@@ -1966,7 +1968,7 @@ function lbTabShow(jb) {
             ]
             zxhc.lbTab1 = [
                 {
-                    "mc": '派出所已处理',
+                    "mc": '派出所已上报',
                     "dm": '3',
                 },
             ]
