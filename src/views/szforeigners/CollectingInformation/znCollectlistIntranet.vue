@@ -1,17 +1,19 @@
 <template>
   <div class="page">
-    <Inquire :cxData="cxData" :pd="cx.pd" :cxPara="cx" @cxFnc="cxFnc"></Inquire>
+    <Inquire :cxData="cxData"
+      :pd="cx.pd"
+      :cxPara="cx"
+      @cxFnc="cxFnc" 
+      @lcFnc="lcFnc">
+    </Inquire>
     <div class="t-tab-top">
-      <!-- <div class="tab-top-item tabImgActive_1 hand">
-        <img src="../../../assets/images/main/tab_2_pre.png" alt />
-        <span>采集信息列表</span>
-      </div> -->
-      <div class="tab-top-item hand" :class="(cx.pd.compare_status=='0' && cx.pd.check_status=='1')?'tabImgActive_1':'tabImg_1'" @click="tabTopClick('0','1')">全部待接收</div>
-      <div class="tab-top-item hand" :class="(cx.pd.compare_status=='0' && cx.pd.check_status=='2')?'tabImgActive_2':'tabImg_2'" @click="tabTopClick('0','2')">全部待处理</div>
-      <div class="tab-top-item hand" :class="(cx.pd.compare_status=='0' && cx.pd.check_status=='3')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('0','3')">全部已处理</div>
-      <div class="tab-top-item hand" :class="(cx.pd.compare_status=='1' && cx.pd.check_status=='1')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1','1')">本人任务</div>
-      <div class="tab-top-item hand" :class="(cx.pd.compare_status=='1' && cx.pd.check_status=='2')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1','2')">本人待处理</div>
-      <div class="tab-top-item hand" :class="(cx.pd.compare_status=='1' && cx.pd.check_status=='3')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1','3')">本人已处理</div>
+    
+      <div class="tab-top-item hand" :class="(cx.pd.compareStatus=='0' && cx.pd.checkStatus=='1')?'tabImgActive_1':'tabImg_1'" @click="tabTopClick('0','1')">全部待接收</div>
+      <div class="tab-top-item hand" :class="(cx.pd.compareStatus=='0' && cx.pd.checkStatus=='2')?'tabImgActive_2':'tabImg_2'" @click="tabTopClick('0','2')">全部待处理</div>
+      <div class="tab-top-item hand" :class="(cx.pd.compareStatus=='0' && cx.pd.checkStatus=='3')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('0','3')">全部已处理</div>
+      <div class="tab-top-item hand" :class="(cx.pd.compareStatus=='1' && cx.pd.checkStatus=='1')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1','1')">本人任务</div>
+      <div class="tab-top-item hand" :class="(cx.pd.compareStatus=='1' && cx.pd.checkStatus=='2')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1','2')">本人待处理</div>
+      <div class="tab-top-item hand" :class="(cx.pd.compareStatus=='1' && cx.pd.checkStatus=='3')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1','3')">本人已处理</div>
     </div>
     <div class="page-box">
       <el-row :gutter="20">
@@ -27,17 +29,17 @@
             :tableData="tableData"
             :clearSort="clearSort"
             :expData="cx"
-            :czWidth="'350'"
+            :czWidth="'130'"
             :expUrl="$api.aport1+'/userController/exportUserInfo'"
             @pageSizeFnc="pageSizeFnc"
             @pageNumFnc="pageNumFnc"
+            @SelectionChange="SelectionChange"
             @rowClick="rowClick"
             @plFnc="plFnc"
             @blFnc="blFnc"
             @sortChange="sortChange"
             @transSaveFnc="transSaveFnc"
           ></Table>
-  
         </el-col>
        
       </el-row>
@@ -47,28 +49,38 @@
     <!-- 弹窗 -->
     <Dialog :isShowDialog="isShowDialog" :title="dialogTitle" @hideDialog="isShowDialog=false">
       <Form
-        v-if="isShowDialog"
+        v-if="isShowDialog && hct==0"
         :cxData="labelData"
         :dialogType="dialogType"
         :dialogData="dialogData"
         @dialogCancel="isShowDialog=false"
         @dialogSave="dialogSave"
       ></Form>
+       <Edit 
+        v-else
+        :jbxxdiaData="dialogData"
+        :dialogType="dialogType"
+        @dialogSave="dialogSave"
+        @dialogDis="dialogDis"
+        @dialogCancel="isShowDialog=false">
+      </Edit>
     </Dialog>
+  
   </div>
 </template>
 <script>
 import Inquire from "@/components/Inquire.vue";
 import Dialog from "@/components/Dialog.vue";
 import Table from "@/components/Table.vue";
-
+import Edit from "./CollectionEdit.vue";
 import Form from "@/components/Form.vue";
 export default {
   components: {
     Inquire,
     Table,
     Dialog,
-    Form
+    Form,
+    Edit
   },
   data() {
     return {
@@ -80,9 +92,10 @@ export default {
       lbData: this.$cdata.foreigners.znCollectlistIntranet.lb,
       lbBtn: this.$cdata.foreigners.znCollectlistIntranet.lbBtn,
       plBtn: this.$store.state.plBtn,
+      hct:0,
       // 【业务数据】
       cx: {
-        pd: { userType: "0", valid: "1",compare_status:'0', check_status:'1'},
+        pd: { userType: "0", valid: "1",compareStatus:'0', checkStatus:'1'},
         pageSize: 10,
         pageNum: 1,
         queryParams: null,
@@ -113,16 +126,20 @@ export default {
       dialogTitle: "",
       dialogType: "",
       dialogData: {},
+      dialogImgData:{},
       labelData: [],
       userRoleData: [],
-     
+      multipleArr: [],
+      multipleSelection:[],
+
     };
   },
   mounted() {
     this.cx.queryParams = this.cx.pd;
+    this.tabTopClick('0','1');
     this.getTable();
     // this.begin();
-
+this.$store.dispatch("aGetSex");
     // 加载 国家地区 下拉选
     this.$store
       .dispatch("aGetCountryCode", { })
@@ -130,13 +147,37 @@ export default {
   },
 
   methods: {
+     //下拉框联动
+    lcFnc(data) {
+      if (data.key.dm == "subBureauCode") {
+        if (data.data == "") {
+          data.obj.policeStationCode = "";
+        }
+        if (data.obj.policeStationCode) {
+          data.obj.policeStationCode = "";
+        }
+        this.$store.dispatch("aGetssdw", { bmbh: data.data, type: "sspcs" });
+      }
+    },
     tabTopClick(m,n){
-       this.cx.pd.compare_status = m;
-       this.cx.pd.check_status=n;
+       this.cx.pd.compareStatus = m;
+       this.cx.pd.checkStatus=n;
        this.cx.pageNum = 1;
-       
-       
-      this.getTable(true);
+       this.plBtn = this.$store.state.plBtn;
+       if(this.cx.pd.compareStatus=='0' && this.cx.pd.checkStatus=='1') {
+         this.plBtn = this.plBtn.filter(item => ['jc','qxqb','qxxz'].indexOf(item.py) == -1);
+       } else if(this.cx.pd.compareStatus=='0' && this.cx.pd.checkStatus=='2'){
+         this.plBtn = this.plBtn.filter(item => ['lqqb','lqsj','lqxz','jc','qxqb','qxxz'].indexOf(item.py) == -1);
+       }else if(this.cx.pd.compareStatus=='0' && this.cx.pd.checkStatus=='3'){
+         this.plBtn = this.plBtn.filter(item => ['lqqb','lqsj','lqxz','qxqb','qxxz'].indexOf(item.py) == -1);
+       }else if(this.cx.pd.compareStatus=='1' && this.cx.pd.checkStatus=='1'){
+         this.plBtn = this.plBtn.filter(item => ['lqqb','lqsj','lqxz','jc','qxqb','qxxz'].indexOf(item.py) == -1);
+       }else if(this.cx.pd.compareStatus=='1' && this.cx.pd.checkStatus=='2'){
+         this.plBtn = this.plBtn.filter(item => ['lqqb','lqsj','lqxz','jc'].indexOf(item.py) == -1);
+       }else if(this.cx.pd.compareStatus=='1' && this.cx.pd.checkStatus=='3'){
+         this.plBtn = this.plBtn.filter(item => ['lqqb','lqsj','lqxz','qxqb','qxxz'].indexOf(item.py) == -1);
+       }
+       this.getTable(true);
     },
     btnClick(py) {
       if (py == "bc") {
@@ -167,6 +208,19 @@ export default {
       this.cx.pageNum = data;
       this.getTable();
     },
+       //表格复选框选择
+    SelectionChange(data) {
+       
+        this.multipleSelection = data;
+        this.multipleArr = [];
+         for (var i = 0; i < this.multipleSelection.length; i++) {
+           this.multipleArr = this.multipleArr.concat([
+              this.multipleSelection[i].collectId
+            ]);
+         }
+
+        
+    },
     sortChange(data){
       this.cx.order = data.prop;
       this.cx.direction = data.direction
@@ -196,236 +250,193 @@ export default {
     },
     // 批量操作
     plFnc(data) {
-      console.log("批量处理", data);
+  
       this.dialogTitle = data.menu_name;
       this.dialogType = data.py;
-      this.labelData = this.$cdata.qxgl.yhgl[data.py];
-      if (data.py == "xj") {
-        this.dialogData = {};
-        this.isShowDialog = true;
-      } else if (data.py == "xg") {
-        this.dialogData = this.currentRow;
-        console.log(this.dialogData);
-        if (JSON.stringify(this.dialogData) == "{}") {
-          this.$message({
-            message: "请先选择用户",
-            showClose: true,
-            duration:13000,
-            type: "warning"
-          });
-          return false;
-        } else if (this.dialogData.userType == "系统用户") {
-          this.$message({
-            message: "该用户为系统用户，不可修改",
-            showClose: true,
-            duration:13000,
-            type: "warning"
-          });
-          return false;
-        }
-        this.isShowDialog = true;
-        // this.dialogData = data.data;
-      } else if (data.py == "sc") {
-        this.dialogData = this.currentRow;
+      if(data.py=='lqqb'){ //领取全部
+          let p={
+            'user':this.$store.state.user,
+            'params':this.cx.pd,
+            'otherParams':{
+              'number':this.tableData.total
+            }
+          };
+           this.$api.post(
+           this.$api.aport5 + "/znCollectlistIntranet/collectTask",
+            p,
+            r => {
+                this.$message({
+                      message: "领取"+r.data+"条",
+                      duration: 8000,
+                      showClose: true,
+                      type: "success"
+                    });
+                  this.getTable();
+            }
+          );
 
-        if (JSON.stringify(this.dialogData) == "{}") {
+      }else if(data.py=='lqxz'){ //领取选中
+        if (this.multipleArr.length == 0) {
           this.$message({
-            message: "请先选择用户",
+            message: "请先选择数据！",
+            duration: 13000,
             showClose: true,
-            duration:13000,
-            type: "warning"
-          });
-          return false;
-        } else if (this.dialogData.userType == "系统用户") {
-          this.$message({
-            message: "该用户为系统用户，不可修改",
-            showClose: true,
-            duration:13000,
             type: "warning"
           });
           return false;
         }
-        this.delUser(this.dialogData);
-      } else if (data.py == "plmmcz") {
-        this.isShowDialog = true;
-      } else if (data.py == "plscsjmm") {
-        this.batchRandomPassword();
+        let p={
+            'user':this.$store.state.user,
+            'params':this.multipleArr,
+            
+          };
+           this.$api.post(
+           this.$api.aport5 + "/znCollectlistIntranet/collectTaskByIdArr",
+            p,
+            r => {
+               this.$message({
+                      message: "领取"+r.data+"条",
+                      duration: 8000,
+                      showClose: true,
+                      type: "success"
+                    });
+               this.getTable();
+            }
+          );
+
+      }else if(data.py=='lqsj'){ //领取随机
+          if(this.tableData.total==0){
+             this.$message({
+                      message: '没有待接收的数据！',
+                      duration: 8000,
+                      showClose: true,
+                      type: "error"
+            });
+            return;
+          }
+          this.hct=0;
+          this.labelData = this.$cdata.foreigners.znCollectlistIntranet.lqsjnum;
+          this.isShowDialog = true;
+
+
+      }else if(data.py=='jc'){//纠错
+         this.hct=1;
+         this.isShowDialog = true;
+
+      }else if(data.py=='qxqb'){ //取消全部
+        let p={
+            'user':this.$store.state.user,
+            'params':this.cx.pd,
+            'otherParams':{
+              'number':this.tableData.total
+            }
+          };
+           this.$api.post(
+           this.$api.aport5 + "/znCollectlistIntranet/cancelTask",
+            p,
+            r => {
+                this.$message({
+                      message: "取消"+r.data+"条",
+                      duration: 8000,
+                      showClose: true,
+                      type: "success"
+                    });
+                  this.getTable();
+            }
+          );
+
+      }else if(data.py=='qxxz'){//取消选中
+           if (this.multipleArr.length == 0) {
+          this.$message({
+            message: "请先选择数据！",
+            duration: 13000,
+            showClose: true,
+            type: "warning"
+          });
+          return false;
+        }
+        let p={
+            'user':this.$store.state.user,
+            'params':this.multipleArr,
+            
+          };
+           this.$api.post(
+           this.$api.aport5 + "/znCollectlistIntranet/cancelTaskByIdArr",
+            p,
+            r => {
+               this.$message({
+                      message: "取消"+r.data+"条",
+                      duration: 8000,
+                      showClose: true,
+                      type: "success"
+                    });
+               this.getTable();
+            }
+          );
       }
+     
     },
     // 表格内操作
     blFnc(data) {
+      console.log('==========',data.data);
       this.dialogTitle = data.btn.button_name;
       this.dialogType = data.btn.button_type;
-      if (data.btn.button_type == "mmcz") {
+      if (data.btn.button_type == "ck") {
         this.labelData = this.$cdata.qxgl.yhgl.plmmcz;
         this.isShowDialog = true;
         this.dialogData = data.data;
-      } else if (data.btn.button_type == "scsjmm") {
+      } else if (data.btn.button_type == "edit") {
+         this.hct=1;
+         this.isShowDialog = true;
         // this.isShowDialog = true;
-        // this.dialogData = data.data;
-        this.batchRandomPassword(data.data);
+         this.dialogData = data.data;
+
       }
+    },
+    //无效数据 
+    dialogDis(){
+
     },
     dialogSave(data) {
-      console.log(data);
-      if (data.type == "xj") {
-        this.saveUser(data.data);
-      } else if (data.type == "xg") {
-        this.updateOtherUserInfo(data.data);
-      } else if (data.type == "plmmcz") {
-        this.batchUpdateUserPassword(data.data);
-      } else if (data.type == "mmcz") {
-        this.batchUpdateUserPassword(data.data, this.currentRow);
-      }
-    },
-    // 新增用户
-    saveUser(data) {
-      let p = data;
-      p.userType = "1";
-      console.log(data);
-      this.$api.post(this.$api.aport1 + "/userController/saveUser", p, r => {
-        this.$message({
-          message: r.message,
-          showClose: true,
-          duration:8000,
-          type: "success"
-        });
-        this.getTable();
-        this.isShowDialog = false;
-      });
-    },
-    // 修改用户
-    updateOtherUserInfo(data) {
-      this.$api.post(
-        this.$api.aport1 + "/userController/updateOtherUserInfo",
-        data,
-        r => {
-          this.$message({
-            message: r.message,
-            showClose: true,
-            duration:8000,
-            type: "success"
-          });
-          this.getTable();
-          this.isShowDialog = false;
+        if(!data.data.sjnum){
+              this.$message({
+                      message: '请选择随机数量',
+                      duration: 8000,
+                      showClose: true,
+                      type: "error"
+                    });
         }
-      );
+        if (data && data.type == "lqsj") {
+               let p={
+            'user':this.$store.state.user,
+            'params':this.cx.pd,
+            'otherParams':{
+              'number':data.data.sjnum
+            }
+          };
+           this.$api.post(
+           this.$api.aport5 + "/znCollectlistIntranet/collectTask",
+            p,
+            r => {
+               
+                    this.$message({
+                      message: "领取"+r.data+"条",
+                      duration: 8000,
+                      showClose: true,
+                      type: "success"
+                    });
+                   this.isShowDialog = false;
+                   this.getTable();
+              
+            }
+          );
+        } 
     },
-    // 删除用户
-    delUser(data) {
-      this.$confirm("是否确认删除?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-        let p = {
-          userId: data.userId,
-          status: "0"
-        };
-        this.$api.post(
-          this.$api.aport1 + "/userController/updateOtherUserInfo",
-          p,
-          () => {
-            this.$message({
-              message: "删除成功",
-              showClose: true,
-              duration:8000,
-              type: "success"
-            });
-            this.getTable();
-          }
-        );
-      }).catch(()=>{
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      });
-    },
-    // 重置密码
-    batchUpdateUserPassword(data, rowData) {
-      console.log("重置密码", data, rowData);
-      let p = data;
-      p.userType = this.cx.pd.userType;
-      p.list = rowData ? [{ serial: rowData.userId, type: rowData.type }] : [];
-      this.$api.post(
-        this.$api.aport1 + "/userController/batchUpdateUserPassword",
-        p,
-        r => {
-          this.$message({
-            message: r.message,
-            showClose: true,
-            duration:8000,
-            type: "success"
-          });
-          this.getTable();
-          this.isShowDialog = false;
-        }
-      );
-    },
-    // 生成随机密码
-    batchRandomPassword(rowData) {
-      this.$confirm("是否确认生成随机密码?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-        let p = {};
-        p.userType = this.cx.pd.userType;
-        p.list = rowData
-          ? [{ serial: rowData.userId, type: rowData.type }]
-          : [];
-        this.$api.post(
-          this.$api.aport1 + "/userController/batchRandomPassword",
-          p,
-          r => {
-            this.$message({
-              message: r.message,
-              showClose: true,
-              duration:8000,
-              type: "success"
-            });
-            this.getTable();
-            this.isShowDialog = false;
-          }
-        );
-      }).catch(()=>{
-        this.$message({
-          type: 'info',
-          message: '已取消'
-        })
-      });
-    },
-    userRole(data) {
-      this.userRoleData = data;
-    },
-    // 用户关联角色添加取消
-    saveUserRoleInfo() {
-      let p = {
-        list: this.userRoleData,
-        userId: this.currentRow.userId
-      };
-      this.$api.post(
-        this.$api.aport1 + "/userRoleController/saveUserRoleInfo",
-        p,
-        r => {
-          this.$message({
-            message: r.message,
-            showClose: true,
-            duration:8000,
-            type: "success"
-          });
-          this.getTable();
-          // this.isShowDialog = false;
-        }
-      );
-    },
-    begin() {
-      this.getTable();
-      this.tableData2 = { list: [] };
-      this.tableData3 = { list: [] };
-      this.treeData1 = [];
-    }
+   
+   
+   
+  
+  
   }
 };
 </script>

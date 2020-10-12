@@ -78,6 +78,21 @@
         <el-table-column
           align="left"
           show-overflow-tooltip
+          :key="i"
+          v-else-if="lb.img"
+          :prop="lb.dm"
+          :label="lb.cm"
+          :width="lb.width"
+          :sortable="'custom'&&isSort">
+            <template slot-scope="scope">
+             <span> 
+               <img :src="scope.row.imgpath"   width="80" height="80">
+              </span>
+            </template>
+        </el-table-column>
+        <el-table-column
+          align="left"
+          show-overflow-tooltip
           v-else
           :key="i"
           :prop="lb.dm"
@@ -105,7 +120,6 @@
                 active-text="启用"
                 inactive-text="禁止"
                 class="switchStyle"
-               
                 @change="handleClick(scope.row,lbt)">
               </el-switch>
               <el-button
@@ -116,8 +130,9 @@
                 size="small"
                 v-else-if="!lbt.user_ctrl||(lbt.user_ctrl==scope.row.status&&!lbt.status)
                 ||(lbt.user_ctrl==scope.row.whetherUpdateState&&!lbt.control)
-                ||(lbt.control&&page1=='1'&&clzt1==1&&((scope.row.backstatus_desc=='无效地址'||!scope.row.backstatus_desc))
-                &&(scope.row.datatype!='3')&&(scope.row.datatype!='4')&&(scope.row.datatype!='5'))"
+                ||(lbt.control&&page1=='1'&&clzt1==1&&((scope.row.backstatus_desc=='无效地址'||!scope.row.backstatus_desc))&&(scope.row.datatype!='3')&&(scope.row.datatype!='4')&&(scope.row.datatype!='5'))
+                || (lbt.user_ctrl==scope.row.isDelete && lbt.status)
+                || (lbt.user_ctrl==scope.row.compareStatus && scope.row.checkStatus=='2')"
               >{{lbt.button_name}}</el-button>
             </span>
           </template>
@@ -268,10 +283,8 @@ export default {
       currentRow: 0,
       page1: this.lbTab.length > 0 ? this.lbTab[0].dm : this.page,
       clzt1:this.clzt,
-
       lbArr:this.lbData,//获取初始全部列表项
       jbArr:[],//已选择展示项
-
       isShowDialog: false,
       dialogTitle: "",
       dialogType:"",

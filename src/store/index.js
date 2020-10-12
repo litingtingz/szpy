@@ -30,6 +30,7 @@ export default new Vuex.Store({
     breadcrumb: breadData || [],
     nationality: [],
     gender: [],
+    sex: [],
     grade: [],
     passportType: [],//证件种类
     suboffice: [],//所属分局
@@ -141,6 +142,9 @@ export default new Vuex.Store({
     },
     getGender(state, data) {
       state.gender = data;
+    },
+    getSex(state, data) {
+      state.sex = data;
     },
     getGrade(state, data) {
       state.grade = data;
@@ -349,6 +353,14 @@ export default new Vuex.Store({
         })
       })
     },
+    aGetSex(context, payload) {
+      return new Promise((resolve) => {
+        api.post(api.aport1 + '/DmController/getDMInfo', { tableName: 'dm_xbb' }, r => {
+          context.commit('getSex', fnc.ToArray(r.list))
+          resolve(payload)
+        })
+      })
+    },
     aGetGrade(context, payload) {
       console.log("payload", context)
       return new Promise((resolve) => {
@@ -458,11 +470,12 @@ export default new Vuex.Store({
         })
       })
     },
+   
     aGetCountryCode(context, payload) {
       return new Promise((resolve) => {
-        api.post(api.aport5 + '/znCollectlistIntranet/getGJDQ', payload, r => {
-          context.commit('getCountryCode', fnc.sortByKey(r, 'dm'))
-          resolve(r)
+        api.post(api.aport1 + '/DmController/getDMInfo', { tableName: 'dm_gjdqb' }, r => {
+          context.commit('getCountryCode', fnc.ToArray(r.list))
+          resolve(payload)
         })
       })
     },

@@ -70,18 +70,19 @@ const znCollectlistIntranet = {
             type: 'select',
             dm: 'policeStationCode'
         },
-        {
-            cm: '是否本人任务',
-            type: 'select',
-            dm: 'task_status',
-            optype: true
-        },
+        // {
+        //     cm: '是否本人任务',
+        //     type: 'select',
+        //     dm: 'taskStatus',
+        //     optype: true
+        // },
     ],
     // 列表项
     lb: [
         {
             cm: '照片',
-            dm: 'imgpath'
+            dm: 'imgpath',
+            img:true,
         },
         {
             cm: '照片类型',
@@ -177,26 +178,74 @@ const znCollectlistIntranet = {
         {
             "button_name": "编辑",
             "button_type": 'edit',
-           
-        },
-        {
-            "button_name": "删除",
-            "button_type": 'del',
-            
-        },
-        {
-            "button_name": "密码重置",
-            "button_type": "mmcz",
-     
-            "serial": "201",
-        },
-        {
-            "button_name": "生成随机密码",
-            "button_type": "scsjmm",
-          
-            "serial": "201",
-        }
+            "user_ctrl":'1',
+        },       
     ],
+    jbxxEdit:{
+        'a':[
+          {
+              title:'采集信息编辑区',
+              type:'line',
+              col:24
+          },
+          {
+              cm: '照片类型',
+              type: 'select',
+              dm: 'collectionItem',
+              optype: true
+             // weight:true
+          },
+          {
+              cm: '国家地区',
+              type: 'select',
+              dm: 'countryCode',
+              must:true,
+              //weight:true
+          },
+          {
+              cm: '证件号码',
+              type: 'input',
+              must:true,
+              dm: 'passportNumber',
+             // weight:true
+          },
+          {
+              cm: '姓名',
+              type: 'input',
+              dm: 'nameHome'
+          },
+        
+          {
+              cm: '性别',
+              type: 'select',
+              dm: 'sex',
+              
+          },
+          {
+              cm: '出生日期',
+              type: 'datePicker',
+              dm: 'birthday'
+          },
+          {
+            cm: '证件有效期',
+            type: 'datePicker',
+            dm: 'termValidity'
+          },
+        
+          {
+              cm: '出生地点',
+              type: 'input',
+              dm: 'birthAddress'
+          },
+          {
+              cm: '居住地址',
+              type: 'input',
+              dm: 'znAddress',
+              col:24
+          },
+          
+        ],
+      },
     plBtn: [
         {
             "button_name": "新建",
@@ -334,7 +383,18 @@ const znCollectlistIntranet = {
             type: 'password',
             dm: 'qrxtmm'
         },
-    ]
+    ],
+    lqsjnum:[
+        {
+            cm:'随机数量',
+            type:'select',
+            dm:'sjnum',
+            must: true,
+            optype: true,
+          
+        }
+
+    ],
 }
 
 const cjapp={
@@ -541,11 +601,15 @@ const cjyylb={
         {
             "button_name": "编辑",
             "button_type": 'edit',
+            "user_ctrl":'1',
+            "status":true,
            
         },
         {
-            "button_name": "删除",
+            "button_name": "无效数据",
             "button_type": 'del',
+            "user_ctrl":'1',
+            "status":true,
             
         },
     ],

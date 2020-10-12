@@ -358,7 +358,7 @@ const options = {
    workplace_police_station:[],//单位所在地派出所
 
     // 照片类型
-    collectionItem_status:[
+    collectionItem:[
         {dm: "1", mc: "入境证件资料页"}, {dm: "2", mc: "住宿登记单"}, {dm: "0", mc: "未采集材料"}
     ],
     // 校正状态
@@ -369,10 +369,11 @@ const options = {
     compare_status:[
         {dm: "0", mc: "待对比"}, {dm: "1", mc: "已对比"}
     ],
-    // 是否有效
-    isdelete_status:[
-        {dm: "1", mc: "有效数据"}, {dm: "0", mc: "无效数据"}
+    taskStatus:[
+        {dm: "0", mc: "所有"}, {dm: "1", mc: "本人"}
     ],
+   
+    sjnum:[{dm: "10", mc: "10"}, {dm: "20", mc: "20"},{dm: "30", mc: "30"}]
 }
 const tabImg_1 = require("../assets/images/main/tab_2.png");
 const tabImgActive_1 = require("../assets/images/main/tab_2_pre.png");

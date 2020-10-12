@@ -163,7 +163,11 @@
                 <el-input v-model="dialogData[cx.dm]" :disabled="cx.dis"></el-input>
               </template>
               <template v-else-if="cx.type=='textarea'">
-                <el-input type="textarea" v-model="dialogData[cx.dm]" :disabled="cx.dis"></el-input>
+               <el-input type="textarea" 
+                 v-model="dialogData[cx.dm]" 
+                  :rows="2"
+                  placeholder="请输入内容"
+                  :disabled="cx.dis"></el-input>
               </template>
               <template v-else-if="cx.type=='password'">
                 <el-input type="password" v-model="dialogData[cx.dm]"></el-input>

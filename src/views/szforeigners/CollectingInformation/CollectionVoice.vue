@@ -26,7 +26,7 @@
         :refName="'foreigners'"
         :selection="selection"
         :pageSizeArr="pageSizeArr"
-        :czWidth="'130'"
+        :czWidth="'160'"
         :clearSort="clearSort"
         :expData="cx"
         :expUrl="$api.aport2 + '/specialCheck/exportData'"
@@ -289,7 +289,19 @@ export default {
       
       }
       if (this.dialogType == "del") {
-        this.$confirm("是否删除本条数据？", "提示", {
+       
+       if(data.data.isDelete==0){
+           this.$message({
+                    message: "所选的语音信息为无效数据！",
+                    duration: 8000,
+                    showClose: true,
+                    type: "error",
+             });
+             return;
+       }
+
+
+        this.$confirm("是否设置为无效数据？", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning",
@@ -311,7 +323,7 @@ export default {
               (r) => {
                 if(r.data){
                     this.$message({
-                    message: "删除成功",
+                    message: "操作成功",
                     duration: 8000,
                     showClose: true,
                     type: "success",
@@ -319,7 +331,7 @@ export default {
                     this.getTable();
                 }else{
                     this.$message({
-                    message: r.msg?r.msg:'删除失败',
+                    message: r.msg?r.msg:'操作失败',
                     duration: 8000,
                     showClose: true,
                     type: "error",
@@ -332,7 +344,7 @@ export default {
           .catch(() => {
             this.$message({
               type: "info",
-              message: "已取消删除",
+              message: "已取消",
             });
           });
       } else if (this.dialogType == "edit") {
