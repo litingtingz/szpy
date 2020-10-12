@@ -123,7 +123,8 @@
                 :key="index"
                 style="text-align:center"
               >
-                <el-image style="width:100%" :src="'data:image/jpg;base64,'+item.zp"></el-image>
+                <el-image style="width:100%" v-if="item.type=='y1001'"  :src="$api.aport6+item.zp"></el-image>
+                <el-image style="width:100%" v-else  :src="'data:image/jpg;base64,'+item.zp"></el-image>
                 <!-- :preview-src-list="['data:image/jpg;base64,'+item.zp]" -->
               </el-carousel-item>
             </el-carousel>
@@ -137,6 +138,7 @@
             <img
               @click="imgclick(isimgclick)"
               class="dt"
+              style="cursor:pointer"
               :src="require('@/assets/images/main/wmask.png')"
             />
             <div id="big-img-box" v-drag v-if="isimgclick">
@@ -353,13 +355,18 @@ export default {
       isimgclick: false,
       imgList:
         this.dialogImgData.length > 0
-          ? ["data:image/jpg;base64," + this.dialogImgData[0].zp]
+          ?(this.dialogImgData[0].type=='y1001'?[this.$api.aport6+this.dialogImgData[0].zp]: ["data:image/jpg;base64," + this.dialogImgData[0].zp])
           : []
     };
   },
   watch: {
     dialogImgData(val) {
-      this.imgList = ["data:image/jpg;base64," + val[0].zp];
+      if(val[0].type=='y1001'){
+        this.imgList = [this.$api.aport6+ val[0].zp];
+      }else{
+        this.imgList = ["data:image/jpg;base64," + val[0].zp];
+      }
+      
     }
   },
   mounted() {
@@ -458,7 +465,12 @@ export default {
     },
     imgChange(data) {
       // console.log("imgChange", data);
-      this.imgList = ["data:image/jpg;base64," + this.dialogImgData[data].zp];
+      if(this.dialogImgData[data].type=='y1001'){
+        this.imgList = [this.$api.aport6 + this.dialogImgData[data].zp];
+      }else{
+        this.imgList = ["data:image/jpg;base64," + this.dialogImgData[data].zp];
+      }
+      
     },
     linkChange(key, val, dialogData) {
       this.$emit("formLcFnc", { key: key, data: val, obj: dialogData });

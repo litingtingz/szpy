@@ -372,6 +372,9 @@ const options = {
     taskStatus:[
         {dm: "0", mc: "所有"}, {dm: "1", mc: "本人"}
     ],
+    sex:[
+        {dm: "M", mc: "男"}, {dm: "F", mc: "女"}
+    ],
    
     sjnum:[{dm: "10", mc: "10"}, {dm: "20", mc: "20"},{dm: "30", mc: "30"}]
 }

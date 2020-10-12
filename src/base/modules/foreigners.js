@@ -219,6 +219,7 @@ const znCollectlistIntranet = {
               cm: '性别',
               type: 'select',
               dm: 'sex',
+              optype: true
               
           },
           {

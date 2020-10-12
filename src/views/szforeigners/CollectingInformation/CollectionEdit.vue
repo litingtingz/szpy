@@ -30,19 +30,20 @@ export default {
                 type: String,
                 default: ""
               },
-              dialogImgData: {
-                type: Array,
-                default: () => []
-              },
+            
              
        },
         data(){
            return{
-             
+             dialogImgData:[],
            }
         },
         mounted(){
             console.log(this.jbxxdiaData,'--6');
+            var obj={};
+            obj.type='y1001';
+            obj.zp=this.jbxxdiaData.imgpath
+            this.dialogImgData.push(obj);
         },
         methods:{
               dialogSave(data){
@@ -60,7 +61,7 @@ export default {
                 this.$emit("dialogCancel");
                 },
                 setdis() {
-               console.log(this.jbxxdiaData,'=========');
+             
                  this.$emit('dialogDis',{
                         data: this.jbxxdiaData,
                     })

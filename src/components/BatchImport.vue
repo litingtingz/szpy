@@ -29,6 +29,10 @@ export default {
       type: String,
       default: ""
     },
+    datamodel:{
+      type: String,
+      default: ""
+    }
   },
   data(){
     return{
@@ -55,11 +59,60 @@ export default {
         });
         return
       }
+
+    
+       if(this.dataType=='y1001'){
+          var array=this.$refs.upload.uploadFiles[0];
+          if (array.size  > 20 * 1024 * 1024) {
+            this.$message({
+              message: '上传文件不能大于 20MB!',
+              type: 'error',
+              duration: 5000,
+              showClose: true,
+            });
+            return
+          }
+          var arr=array.name.split('.');
+          var type=arr[arr.length-1].toLowerCase();
+          if(type!='mp3'){
+            this.$message({
+              message: '上传格式为mp3',
+              type: 'error',
+              duration: 5000,
+              showClose: true,
+            });
+            return
+          }
+       }
       this.fileData = new FormData();
       this.$refs.upload.submit();
       this.fileData.append('userInfor',JSON.stringify(this.$store.state.user))
+      if(this.dataType!='y1001'){
       this.fileData.append('dataType',this.dataType)
+      }
       this.$api.post(this.url,this.fileData,r=>{
+        if(this.dataType=='y1001')
+        {
+          console.log(r.data);
+          if(r.data.code=='fail'){
+          this.$message({
+              message: r.data.message,
+              type: 'error',
+              duration: 5000,
+              showClose: true,
+            });
+            return
+          }else{
+             this.$emit("dialogUpload", {
+              datamodel: this.datamodel,
+              path: '-------',
+                    
+             });
+          }
+           
+
+        }else{
+
         if(r.errList.length!=0){
           this.$confirm(r.message + '！是否导出错误信息?', '提示', {
             confirmButtonText: '确定',
@@ -83,7 +136,12 @@ export default {
           });
           this.$emit('expFun')
         }
+}
+
+
       })
+
+      
       
     },
     downBase(data){

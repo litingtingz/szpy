@@ -139,7 +139,7 @@ export default {
     this.tabTopClick('0','1');
     this.getTable();
     // this.begin();
-this.$store.dispatch("aGetSex");
+
     // 加载 国家地区 下拉选
     this.$store
       .dispatch("aGetCountryCode", { })
@@ -320,8 +320,28 @@ this.$store.dispatch("aGetSex");
 
 
       }else if(data.py=='jc'){//纠错
-         this.hct=1;
+        if (this.multipleArr.length == 0) {
+          this.$message({
+            message: "请先选择数据！",
+            duration: 13000,
+            showClose: true,
+            type: "warning"
+          });
+          return false;
+        }
+        if(this.multipleArr.length>1){
+           this.$message({
+            message: "只能选择一条数据！",
+            duration: 13000,
+            showClose: true,
+            type: "warning"
+          });
+          return false;
+         }
+
+         this.hct=2;
          this.isShowDialog = true;
+         this.dialogData = this.multipleSelection[0];
 
       }else if(data.py=='qxqb'){ //取消全部
         let p={
@@ -396,14 +416,17 @@ this.$store.dispatch("aGetSex");
     
       var obj=Object.assign({}, data.data);
       obj.isDelete=0;
-    
+       var url='/znCollectlistIntranet/save';
+      if(this.hct==2){
+        url='/znCollectlistIntranet/modifyError';
+      }
        let p={
             'user':this.$store.state.user,
             'params':obj
           
           }
            this.$api.post(
-           this.$api.aport5 + "/znCollectlistIntranet/save",
+           this.$api.aport5 + url,
             p,
             r => {
                
@@ -429,13 +452,17 @@ this.$store.dispatch("aGetSex");
     },
     dialogSave(data) {
      
+     var url='/znCollectlistIntranet/save';
+     if(this.hct==2){
+       url='/znCollectlistIntranet/modifyError';
+     }
         let p={
             'user':this.$store.state.user,
             'params':data.data,
           
           }
            this.$api.post(
-           this.$api.aport5 + "/znCollectlistIntranet/save",
+           this.$api.aport5 + url,
             p,r => {
                  if(r.data){
                     this.$message({

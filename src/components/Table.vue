@@ -86,7 +86,8 @@
           :sortable="'custom'&&isSort">
             <template slot-scope="scope">
              <span style="cursor:pointer"> 
-               <img @click="imgclick(isimgclick,scope.row.imgpath)" :src="getimglist(scope.row.imgpath)"   width="60" height="35">
+               <img @click="imgclick(isimgclick,scope.row.imgpath)" :src="getimglist(scope.row.imgpath)"   width="60" height="30">
+               
               </span>
                <div id="big-img-box" v-drag v-if="isimgclick">
                 <el-image-viewer :on-close="()=>{isimgclick=false}" :url-list="imglist" />
@@ -453,7 +454,9 @@ export default {
       this.isimgclick = true;
     },
     getimglist(data){
+  
         return  this.$api.aport6+data;
+      
     },
     //默认当前行高亮
     cRowHighlight(){

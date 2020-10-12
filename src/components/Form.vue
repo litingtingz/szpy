@@ -50,7 +50,7 @@
                 <el-row type="flex" justify="start">
                   <el-col :span="21"><el-input v-model="dialogData[cx.dm]" :disabled="cx.dis"></el-input></el-col>
                   <el-col :span="3" class="ml-10">
-                      <el-button type="success" size="mini" @click="Upload()">上传文件</el-button>
+                      <el-button type="success" size="mini" @click="Upload(cx.dm)">上传文件</el-button>
                   </el-col>
                 </el-row>
               </template>
@@ -289,10 +289,13 @@
       <BatchIm
       :url="$api.aport5 + '/znAudioIntranet/audioUpload'"
       :urlErr="''"
-      :dataType="'3'"
+      :dataType="'y1001'"
+      :datamodel="datamodel"
       ref="batchIm"
       @expFun="expFun"
-      @dialogCancel="isShowDialog=false"></BatchIm>
+      @dialogCancel="isShowDialog=false"
+      @dialogUpload="dialogUpload"
+      ></BatchIm>
 	</Dialog>
   </div>
 </template>
@@ -432,6 +435,7 @@ export default {
       isShowDialog:false,
       modalappendtobody:false,
       appendtobody:true,
+      datamodel:'',
       dialogTitle:'上传文件',
       ColorData:{
         data:[
@@ -505,9 +509,13 @@ export default {
   },
   methods: {
     expFun(){},
-    Upload(){
-      console.log('=====');
+    Upload(data){
+      this.datamodel=data;
       this.isShowDialog=true;
+    },
+    dialogUpload(data){
+      this.dialogData[data.datamodel]=data.path
+      this.isShowDialog=false;
     },
     save(formName, type) {
       this.$refs[formName].validate(valid => {
