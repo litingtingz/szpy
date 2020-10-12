@@ -378,59 +378,66 @@ this.$store.dispatch("aGetSex");
     },
     // 表格内操作
     blFnc(data) {
-      console.log('==========',data.data);
+     
       this.dialogTitle = data.btn.button_name;
       this.dialogType = data.btn.button_type;
       if (data.btn.button_type == "ck") {
-        this.labelData = this.$cdata.qxgl.yhgl.plmmcz;
+        this.hct=1;
         this.isShowDialog = true;
         this.dialogData = data.data;
       } else if (data.btn.button_type == "edit") {
          this.hct=1;
          this.isShowDialog = true;
-        // this.isShowDialog = true;
          this.dialogData = data.data;
-
       }
     },
     //无效数据 
     dialogDis(){
-
-    },
-    dialogSave(data) {
-        if(!data.data.sjnum){
-              this.$message({
-                      message: '请选择随机数量',
-                      duration: 8000,
-                      showClose: true,
-                      type: "error"
-                    });
-        }
-        if (data && data.type == "lqsj") {
-               let p={
+       let p={
             'user':this.$store.state.user,
-            'params':this.cx.pd,
-            'otherParams':{
-              'number':data.data.sjnum
-            }
-          };
+            'params':{
+              'isDelete':0
+            },
+          
+          }
            this.$api.post(
-           this.$api.aport5 + "/znCollectlistIntranet/collectTask",
+           this.$api.aport5 + "/znCollectlistIntranet/save",
             p,
             r => {
                
+               if(r.data){
                     this.$message({
-                      message: "领取"+r.data+"条",
+                      message: "操作成功!",
                       duration: 8000,
                       showClose: true,
                       type: "success"
                     });
-                   this.isShowDialog = false;
                    this.getTable();
-              
+               }
+             
             }
           );
-        } 
+    },
+    dialogSave(data) {
+        let p={
+            'user':this.$store.state.user,
+            'params':data,
+          
+          }
+           this.$api.post(
+           this.$api.aport5 + "/znCollectlistIntranet/save",
+            p,r => {
+                 if(r.data){
+                    this.$message({
+                      message: "保存成功!",
+                      duration: 8000,
+                      showClose: true,
+                      type: "success"
+                    });
+                   this.getTable();
+                   }
+            }
+          );
     },
    
    

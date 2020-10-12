@@ -86,7 +86,7 @@
           :sortable="'custom'&&isSort">
             <template slot-scope="scope">
              <span> 
-               <img :src="scope.row.imgpath"   width="80" height="80">
+               <img :src="'http://192.168.3.174:6004/static'+scope.row.imgpath"   width="60" height="35">
               </span>
             </template>
         </el-table-column>
