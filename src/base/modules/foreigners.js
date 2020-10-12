@@ -555,16 +555,19 @@ const cjyylb={
         },
         {
             cm: '英文地址',
-            dm: 'englishPath'
+            dm: 'englishPath',
+            
         },
         {
             cm: '日文地址',
-            dm: 'japanesePath'
+            dm: 'japanesePath',
+           
         }
         ,
         {
             cm: '韩文地址',
-            dm: 'koreanPath'
+            dm: 'koreanPath',
+            
         }
         ,
         {
@@ -624,19 +627,22 @@ const cjyylb={
       
         {
             cm: '英文地址',
-            type: 'input',
-            dm: 'englishPath'
+            type: 'inputupload',
+            dm: 'englishPath',
+          
         },
         {
             cm: '日文地址',
-            type: 'input',
-            dm: 'japanesePath'
+            type: 'inputupload',
+            dm: 'japanesePath',
+           
         }
         ,
         {
             cm: '韩文地址',
-            type: 'input',
-            dm: 'koreanPath'
+            type: 'inputupload',
+            dm: 'koreanPath',
+           
         },
         {
             cm: '语音按钮',

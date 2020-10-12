@@ -30,7 +30,7 @@ closed	Dialog 关闭动画结束时的回调	—
   <el-dialog
     :visible.sync="isShowDialog"
     :modal="true"
-    :modal-append-to-body="true"
+    :modal-append-to-body="modalappendtobody"
     :append-to-body="appendtobody"
     :fullscreen="isfullscreen"
     :title="title"
@@ -43,6 +43,7 @@ closed	Dialog 关闭动画结束时的回调	—
     :before-close="handleClose"
     center
     :top="top"
+    
     ref="dialog"
   >
     <slot></slot>
@@ -63,6 +64,10 @@ export default {
     isfullscreen: {
       type: Boolean,
       default: false
+    },
+    modalappendtobody:{
+      type: Boolean,
+      default: true
     },
     appendtobody: {
       type: Boolean,

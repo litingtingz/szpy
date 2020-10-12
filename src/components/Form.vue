@@ -46,6 +46,15 @@
                   <el-col :span="3" class="ml-10"><span>{{cx.unit=='hour'?'小时':'天'}}</span></el-col>
                 </el-row>
               </template>
+               <template v-else-if="cx.type=='inputupload'">
+                <el-row type="flex" justify="start">
+                  <el-col :span="21"><el-input v-model="dialogData[cx.dm]" :disabled="cx.dis"></el-input></el-col>
+                  <el-col :span="3" class="ml-10">
+                      <el-button type="success" size="mini" @click="Upload()">上传文件</el-button>
+                  </el-col>
+                </el-row>
+              </template>
+
               <template v-else-if="cx.type=='password'">
                 <el-input type="password" v-model="dialogData[cx.dm]"></el-input>
               </template>
@@ -276,10 +285,22 @@
         <el-button size="mini" type="info" round @click="cancel">取消</el-button>
       </div>
     </div>
+	<Dialog  width="500px" :isShowDialog="isShowDialog" :title="dialogTitle" @hideDialog="isShowDialog=false" :modalappendtobody='modalappendtobody' :appendtobody="appendtobody">
+      <BatchIm
+      :url="$api.aport5 + '/znAudioIntranet/audioUpload'"
+      :urlErr="''"
+      :dataType="'3'"
+      ref="batchIm"
+      @expFun="expFun"
+      @dialogCancel="isShowDialog=false"></BatchIm>
+	</Dialog>
   </div>
 </template>
 <script>
+import BatchIm from "@/components/BatchImport.vue";
+import Dialog from "@/components/Dialog.vue";
 export default {
+  components: {BatchIm,Dialog},
   props: {
     cxData: {
       type: Array,
@@ -343,7 +364,7 @@ export default {
     };
     return {
       // form: {},
-
+      
       rules: this.dialogType=='singSb'?{
         suboffice: [{ required: true, message: "请选择分局", trigger: "blur" }],
         policestation: [{ required: true, message: "请选择派出所", trigger: "blur" }],
@@ -408,7 +429,10 @@ export default {
       newForm: {},
       isPS:true,
       isJoinFlag:true,
-
+      isShowDialog:false,
+      modalappendtobody:false,
+      appendtobody:true,
+      dialogTitle:'上传文件',
       ColorData:{
         data:[
           {
@@ -446,6 +470,7 @@ export default {
             class:'yssm'
           }
       ],
+    
       colorArr:['#67C23A','#E6A23C','#F56C6C','#409EFF','#909399']
     };
   },
@@ -479,6 +504,11 @@ export default {
     // }
   },
   methods: {
+    expFun(){},
+    Upload(){
+      console.log('=====');
+      this.isShowDialog=true;
+    },
     save(formName, type) {
       this.$refs[formName].validate(valid => {
         if (valid) {
