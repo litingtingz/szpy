@@ -392,12 +392,14 @@ this.$store.dispatch("aGetSex");
       }
     },
     //无效数据 
-    dialogDis(){
+    dialogDis(data){
+    
+      var obj=Object.assign({}, data.data);
+      obj.isDelete=0;
+    
        let p={
             'user':this.$store.state.user,
-            'params':{
-              'isDelete':0
-            },
+            'params':obj
           
           }
            this.$api.post(
@@ -413,15 +415,23 @@ this.$store.dispatch("aGetSex");
                       type: "success"
                     });
                    this.getTable();
+               }else{
+                 this.$message({
+                      message: "操作失败!",
+                      duration: 8000,
+                      showClose: true,
+                      type: "error"
+                    });
                }
              
             }
           );
     },
     dialogSave(data) {
+     
         let p={
             'user':this.$store.state.user,
-            'params':data,
+            'params':data.data,
           
           }
            this.$api.post(
@@ -435,7 +445,14 @@ this.$store.dispatch("aGetSex");
                       type: "success"
                     });
                    this.getTable();
-                   }
+                   }else{
+                 this.$message({
+                      message: "操作失败!",
+                      duration: 8000,
+                      showClose: true,
+                      type: "error"
+                    });
+               }
             }
           );
     },

@@ -60,7 +60,10 @@ export default {
                 this.$emit("dialogCancel");
                 },
                 setdis() {
-                this.$emit("dialogDis");
+               console.log(this.jbxxdiaData,'=========');
+                 this.$emit('dialogDis',{
+                        data: this.jbxxdiaData,
+                    })
                 },
         }
 }

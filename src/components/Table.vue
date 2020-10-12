@@ -85,9 +85,12 @@
           :width="lb.width"
           :sortable="'custom'&&isSort">
             <template slot-scope="scope">
-             <span> 
-               <img :src="'http://192.168.3.174:6004/static'+scope.row.imgpath"   width="60" height="35">
+             <span style="cursor:pointer"> 
+               <img @click="imgclick(isimgclick,scope.row.imgpath)" :src="getimglist(scope.row.imgpath)"   width="60" height="35">
               </span>
+               <div id="big-img-box" v-drag v-if="isimgclick">
+                <el-image-viewer :on-close="()=>{isimgclick=false}" :url-list="imglist" />
+              </div>
             </template>
         </el-table-column>
         <el-table-column
@@ -165,7 +168,11 @@
 import Dialog from "./Dialog.vue";
 import Trans from "./Transfer.vue"
 export default {
-  components: { Dialog, Trans},
+  components: { Dialog, Trans,
+   "el-image-viewer": () =>
+      import("element-ui/packages/image/src/image-viewer")
+    },
+  
   props: {
     lbType: {
       type: String,
@@ -295,6 +302,8 @@ export default {
       pointData:[],//选中项
       confirmFlag:true,
       expD:{},
+      isimgclick: false,
+      imglist:[],
       // colorDes:[
       //     {
       //       "gdyssh": "#9aba60",
@@ -369,7 +378,83 @@ export default {
    
     });
   },
+    directives: {
+    drag: {
+      // 指令的定义
+      bind: el => {
+        let odiv = el; //获取当前元素
+        let left = "";
+        let top = "";
+        el.onmousedown = e => {
+          //算出鼠标相对元素的位置
+          console.log("el===", el, el.getElementsByTagName("img")[0]);
+          let oImg = el.getElementsByTagName("img")[0];
+          console.log("oImg==", oImg);
+          if (e.target.tagName == "IMG") {
+            let leftImg = "";
+            let topImg = "";
+            // oImg.style.position = "relative";
+            console.log("onmousedown", e);
+            //算出鼠标相对元素的位置
+            let disX = e.clientX - oImg.offsetLeft;
+            let disY = e.clientY - oImg.offsetTop;
+            // console.log("img=", document);
+            e.preventDefault();
+            document.onmousemove = e => {
+              console.log("移动", e);
+              //用鼠标的位置减去鼠标相对元素的位置，得到元素的位置
+              console.log("e.clientX", e.clientX);
+              console.log("disX", disX);
+              console.log(
+                "oImg.offsetLeft",
+                oImg.offsetLeft,
+                oImg.offsetParent.offsetLeft
+              );
+              leftImg = e.clientX - disX - 40;
+              topImg = e.clientY - disY - 40;
+              //绑定元素位置到positionX和positionY上面
+              //移动当前元素
+              oImg.style.left = leftImg + "px";
+              oImg.style.top = topImg + "px";
+              oImg.style.right = "auto";
+              oImg.style.bottom = "auto";
+            };
+            document.onmouseup = () => {
+              document.onmousemove = null;
+              document.onmouseup = null;
+            };
+          } else {
+            let disX = e.clientX - odiv.offsetLeft;
+            let disY = e.clientY - odiv.offsetTop;
+            document.onmousemove = e => {
+              //用鼠标的位置减去鼠标相对元素的位置，得到元素的位置
+              left = e.clientX - disX;
+              top = e.clientY - disY;
+              //绑定元素位置到positionX和positionY上面
+              //移动当前元素
+              odiv.style.left = left + "px";
+              odiv.style.top = top + "px";
+              odiv.style.right = "auto";
+              odiv.style.bottom = "auto";
+            };
+            document.onmouseup = () => {
+              document.onmousemove = null;
+              document.onmouseup = null;
+            };
+          }
+        };
+      }
+    }
+  },
   methods: {
+     imgclick(data,path) {
+      console.log(data,'==');
+      this.imglist=[this.$api.aport6+path];
+      this.isimgclick = true;
+    },
+    getimglist(data){
+        return  this.$api.aport6+data;
+    },
     //默认当前行高亮
     cRowHighlight(){
       this.$refs[this.refName].setCurrentRow(this.tableData.list[0],true)
@@ -404,7 +489,6 @@ export default {
             this.$refs[this.refName].toggleRowSelection(row, true);
           });
         })
-        
       } else {
         this.$refs[this.refName].clearSelection();
       }
@@ -413,7 +497,8 @@ export default {
       if (!this.isRowClick) {
         return false;
       }
-      if(column.label=="操作"&&this.refName=='hczf'){
+   
+      if(column && column.label=="操作"&&this.refName=='hczf'){
         return false;
       }
       this.$emit("rowClick", { type: this.lbType, data: row });
