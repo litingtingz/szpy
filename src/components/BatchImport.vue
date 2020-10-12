@@ -74,9 +74,9 @@ export default {
           }
           var arr=array.name.split('.');
           var type=arr[arr.length-1].toLowerCase();
-          if(type!='mp3'){
+          if(type!='mp3' && type!='mp4'){
             this.$message({
-              message: '上传格式为mp3',
+              message: '上传格式为mp3、mp4',
               type: 'error',
               duration: 5000,
               showClose: true,
@@ -87,8 +87,21 @@ export default {
       this.fileData = new FormData();
       this.$refs.upload.submit();
       this.fileData.append('userInfor',JSON.stringify(this.$store.state.user))
-      if(this.dataType!='y1001'){
-      this.fileData.append('dataType',this.dataType)
+      if(this.dataType=='y1001'){
+        var tt='1'
+              if(this.datamodel=='englishPath')
+            {
+              tt=1;
+            }else if(this.datamodel=='japanesePath')
+            {
+              tt=2;
+            }else if(this.datamodel=='koreanPath')
+            {
+             tt=3;
+            }
+        this.fileData.append('type',tt)
+      }else{
+        this.fileData.append('dataType',this.dataType)
       }
       this.$api.post(this.url,this.fileData,r=>{
         if(this.dataType=='y1001')
@@ -102,11 +115,16 @@ export default {
               showClose: true,
             });
             return
-          }else{
+          }else if(r.data.code=='success'){
+            this.$message({
+              message: r.data.message,
+              type: 'success',
+              duration: 5000,
+              showClose: true,
+            });
              this.$emit("dialogUpload", {
               datamodel: this.datamodel,
-              path: '-------',
-                    
+              path: r.data.filePath,
              });
           }
            

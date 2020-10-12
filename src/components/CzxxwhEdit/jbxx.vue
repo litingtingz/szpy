@@ -116,6 +116,7 @@
           </el-col>
         </el-col>
         <el-col :span="8">
+        
           <div class="imgbox">
             <el-carousel height="280px" :autoplay="false" arrow="always" @change="imgChange">
               <el-carousel-item
@@ -292,7 +293,9 @@ export default {
     dialogData: {
       type: Object,
       default: () => {}
-    }
+    },
+  
+  
   },
   data() {
     // var validatesurname = (rule, value, callback) => {
@@ -361,10 +364,12 @@ export default {
   },
   watch: {
     dialogImgData(val) {
-      if(val[0].type=='y1001'){
-        this.imgList = [this.$api.aport6+ val[0].zp];
-      }else{
-        this.imgList = ["data:image/jpg;base64," + val[0].zp];
+      if(val && val.length>0){
+        if(val[0].type=='y1001'){
+          this.imgList = [this.$api.aport6+ val[0].zp];
+        }else{
+          this.imgList = ["data:image/jpg;base64," + val[0].zp];
+        }
       }
       
     }
@@ -443,6 +448,7 @@ export default {
     }
   },
   methods: {
+   
     save(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {

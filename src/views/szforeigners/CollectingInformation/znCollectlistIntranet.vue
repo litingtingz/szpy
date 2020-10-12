@@ -60,6 +60,7 @@
         v-else
         :jbxxdiaData="dialogData"
         :dialogType="dialogType"
+        :seachData="seachData"
         @dialogSave="dialogSave"
         @dialogDis="dialogDis"
         @dialogCancel="isShowDialog=false">
@@ -131,6 +132,7 @@ export default {
       userRoleData: [],
       multipleArr: [],
       multipleSelection:[],
+      seachData:{}
 
     };
   },
@@ -406,6 +408,9 @@ export default {
         this.isShowDialog = true;
         this.dialogData = data.data;
       } else if (data.btn.button_type == "edit") {
+         this.cx.pageSize=data.index
+         this.seachData=this.cx;
+         
          this.hct=1;
          this.isShowDialog = true;
          this.dialogData = data.data;

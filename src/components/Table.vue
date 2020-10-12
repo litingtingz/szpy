@@ -87,7 +87,7 @@
             <template slot-scope="scope">
              <span style="cursor:pointer"> 
                <img @click="imgclick(isimgclick,scope.row.imgpath)" :src="getimglist(scope.row.imgpath)"   width="60" height="30">
-               
+
               </span>
                <div id="big-img-box" v-drag v-if="isimgclick">
                 <el-image-viewer :on-close="()=>{isimgclick=false}" :url-list="imglist" />
@@ -129,7 +129,7 @@
               <el-button
                 style="margin:0 5px"
                 :style="{'color':lbt.color_type=='1'?'#d78df5':'#7FCEFF'}"
-                @click="handleClick(scope.row,lbt)"
+                @click="handleClick(scope.row,lbt,scope.$index)"
                 type="text"
                 size="small"
                 v-else-if="!lbt.user_ctrl||(lbt.user_ctrl==scope.row.status&&!lbt.status)
@@ -509,8 +509,8 @@ export default {
     rowDbClick(row){
       this.$emit("blFnc", { btn:'', data: row ,double:true});
     },
-    handleClick(row, btn) {
-      this.$emit("blFnc", { btn: btn, data: row });
+    handleClick(row, btn,index) {
+      this.$emit("blFnc", { btn: btn, data: row ,index:index});
     },
     lbTabFun(val) {
       this.$emit("tabFnc", val);
