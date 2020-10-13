@@ -286,7 +286,6 @@ export default {
       if (data.double) {
         this.dialogType = "edit";
         this.dialogTitle = "编辑";
-      
       }
       if (this.dialogType == "del") {
        

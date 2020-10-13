@@ -57,7 +57,7 @@ const znCollectlistIntranet = {
         },
         {
             cm: '采集日期',
-            type: 'input',
+            type: 'datePicker',
             dm: 'addTime'
         },
         {
@@ -86,7 +86,7 @@ const znCollectlistIntranet = {
         },
         {
             cm: '照片类型',
-            dm: 'collectionItem'
+            dm: 'collectionItemName'
         },
         {
             cm: '国家地区',
@@ -106,7 +106,7 @@ const znCollectlistIntranet = {
         },
         {
             cm: '性别',
-            dm: 'sex'
+            dm: 'sexName'
         },
         {
             cm: '出生日期',
@@ -166,7 +166,7 @@ const znCollectlistIntranet = {
         // },
         {
             cm: '是否有效',
-            dm: 'isDelete'
+            dm: 'isDeleteName'
         }
     ],
     lbBtn: [
@@ -573,13 +573,13 @@ const cjyylb={
         ,
         {
             cm: '前台语音按钮',
-            dm: 'audioType'
+            dm: 'audioTypeName'
         }
         
         ,
         {
             cm: '是否有效',
-            dm: 'isDelete'
+            dm: 'isDeleteName'
         }
         ,
         {
