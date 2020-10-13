@@ -299,7 +299,6 @@ export default {
              return;
        }
 
-
         this.$confirm("是否设置为无效数据？", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",

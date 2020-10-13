@@ -426,7 +426,7 @@ export default {
                      }
                  };
             this.$api.post(
-              this.$api.aport5 + "/znUserIntranet/save",
+              this.$api.aport5 + "/znUserIntranet/changeUserStatus",// /znUserIntranet/save
               p,
               (r) => {
                 if(r.data){
