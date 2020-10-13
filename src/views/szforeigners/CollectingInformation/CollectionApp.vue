@@ -153,11 +153,14 @@ export default {
             user:this.$store.state.user
         };
         this.$api.post(this.$api.aport5 + "/tjSysUser/getCurrLogonUsersubBureauCode", p, r => {
+          
             this.resopd=r.data;
+            
             if(this.resopd.subBureauCode){
                 if(n==1){
                    this.cx.pd.subBureauCodedis = true;
                 }else if(n==2){
+                    this.dialogData.subBureauCode=this.resopd.subBureauCode;
                     this.dialogData.subBureauCodedis = true ;
                     
                 }    
@@ -166,7 +169,9 @@ export default {
                 if(n==1){
                    this.cx.pd.policeStationCodedis = true;
                 }else if(n==2){
+                    this.dialogData.policeStationCode=this.resopd.policeStationCode;
                     this.dialogData.policeStationCodedis = true ;
+                    this.informLcFncdia(this.dialogData);
                     
                 }    
             }
@@ -174,11 +179,11 @@ export default {
                 if(n==1){
                    this.cx.pd.areaCodedis = true;
                 }else if(n==2){
+                    this.dialogData.areaCode=this.resopd.areaCode;
                     this.dialogData.areaCodedis = true ;
                     
                 }    
             }
-            
             
             if(n==2){
                 this.isShowDialog = true;
@@ -326,9 +331,6 @@ export default {
       if (data.py == "xz") {
         this.labelData = this.$cdata.foreigners.cjapp.labelData;
         this.dialogData = {};
-         
-    
-        // this.isShowDialog = true;
         this.getISValue(2);
         if (this.$refs.appForm) {
           this.$refs.appForm.clearValid();
@@ -349,7 +351,7 @@ export default {
     //列表内按钮&&双击行
     blFnc(data) {
       this.dialogType = data.btn.button_type;
-      console.log('this.dialogType---',this.dialogType);
+ 
       this.dialogTitle = data.btn.button_name;
       if (this.$refs.appForm) {
         this.$refs.appForm.clearValid();
