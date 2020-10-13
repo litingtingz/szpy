@@ -39,6 +39,10 @@ export default {
       fileData:null,
     }
   },
+  mounted(){
+   
+    this.clearFile();
+  },
   methods:{
     clearFile(){
       if (this.$refs.upload) {

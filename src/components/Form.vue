@@ -287,6 +287,7 @@
     </div>
 	<Dialog  width="500px" :isShowDialog="isShowDialog" :title="dialogTitle" @hideDialog="isShowDialog=false" :modalappendtobody='modalappendtobody' :appendtobody="appendtobody">
       <BatchIm
+      v-if='isShowDialog'
       :url="$api.aport5 + '/znAudioIntranet/audioUpload'"
       :urlErr="''"
       :dataType="'y1001'"
