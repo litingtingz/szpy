@@ -412,7 +412,7 @@ export default {
       this.dialogType = data.btn.button_type;
 
       this.cx.pageS=data.index
-      console.log(data,'----是否一样呢');
+    
       if (data.double) {
 
        if(data.data.compareStatus=='1' && data.data.checkStatus=='2')
