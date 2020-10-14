@@ -359,7 +359,7 @@ const options = {
 
     // 照片类型
     collectionItem:[
-        {dm: "1", mc: "入境证件资料页"}, {dm: "2", mc: "住宿登记单"}, {dm: "0", mc: "未采集材料"}
+        {dm: 1, mc: "入境证件资料页"}, {dm: 2, mc: "住宿登记单"}, {dm: 0, mc: "未采集材料"}
     ],
     // 校正状态
     check_status:[

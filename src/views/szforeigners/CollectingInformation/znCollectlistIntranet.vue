@@ -412,6 +412,7 @@ export default {
       this.dialogType = data.btn.button_type;
 
       this.cx.pageS=data.index
+      console.log(data,'----是否一样呢');
       if (data.double) {
 
        if(data.data.compareStatus=='1' && data.data.checkStatus=='2')
@@ -421,7 +422,7 @@ export default {
          this.hct=1;
          this.dialogData = data.data;
          this.dialogType="edit"
-          this.dialogTitle="编辑"
+         this.dialogTitle="编辑"
 
         }else{
            this.hct=1;

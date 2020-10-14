@@ -154,8 +154,6 @@ export default {
                'user':this.seachData.user,
              }
 
-             console.log(this.seachData,'====');
-          
                 this.$api.post(
                   this.$api.aport5 + "/znCollectlistIntranet/listData",
                   p,
