@@ -172,7 +172,8 @@ const znCollectlistIntranet = {
     lzData:[
         {
             cm: '序号',
-            type:'Index'
+            type:'index',
+            typeindex:true,
         },
         {
             cm: '证件号码',
@@ -184,7 +185,7 @@ const znCollectlistIntranet = {
         },
         {
             cm: '性别',
-            dm: 'xbname'
+            dm: 'xbName'
         },
         {
             cm: '出生日期',

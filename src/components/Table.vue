@@ -76,6 +76,15 @@
             </template>
         </el-table-column>
         <el-table-column
+          :key="i"
+          type="index"
+          
+          :label="lb.cm"
+          v-else-if="lb.typeindex"
+          >
+         
+        </el-table-column>
+        <el-table-column
           align="left"
           show-overflow-tooltip
           :key="i"
