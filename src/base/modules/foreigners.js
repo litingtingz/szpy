@@ -90,7 +90,7 @@ const znCollectlistIntranet = {
         },
         {
             cm: '国家地区',
-            dm: 'countryCode'
+            dm: 'countryCodeName'
         },
         {
             cm: '证件类型',
