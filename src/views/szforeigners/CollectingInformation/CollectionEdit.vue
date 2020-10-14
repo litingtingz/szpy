@@ -104,6 +104,8 @@ export default {
             },
             clearSort:0,
             bntshow:true,
+            pages:this.seachData.pageS,
+            pagen:this.seachData.pageNum,
            }
         },
         mounted(){
@@ -112,7 +114,7 @@ export default {
             obj.type='y1001';
             obj.zp=this.jbxxdiaDataN.imgpath
             this.dialogImgData.push(obj);
-            if(this.seachData.pageS){this.bntshow=true;}else{this.bntshow=false;}
+            if(this.pages){this.bntshow=true;}else{this.bntshow=false;}
             this.bengin();
             
         },
@@ -125,24 +127,38 @@ export default {
             }
           },
            getnext(t){
-          
+           
+            
             if(t==0){
                 //上一条
-                this.seachData.pageS=this.seachData.pageS-1
-              
+                this.pages=this.pages-1
               
             }else if(t==1)
             {
                 //下一条
-                this.seachData.pageS= this.seachData.pageS+1
+                this.pages= this.pages+1
                
             }
-             this.seachData.pageSize=this.seachData.pageS
-              
+
+            if(this.pages==0 && this.seachData.pageNum>1)
+            {
+                this.pagen=this.pagen-1;
+                this.pages=this.seachData.pageSize;
+            }
+          
+             let p={
+               'pageNum':this.pagen,
+               'pageSize':this.pages,
+               'pd':this.seachData.pd,
+               'queryParams':this.seachData.queryParams,
+               'user':this.seachData.user,
+             }
+
+             console.log(this.seachData,'====');
           
                 this.$api.post(
                   this.$api.aport5 + "/znCollectlistIntranet/listData",
-                  this.seachData,
+                  p,
                   r => {
                     
                     if(r.records.length==0){

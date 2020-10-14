@@ -113,8 +113,7 @@ export default {
       },
       clearSort:0,
       selection: [],
-      tableData2: { list: [] },
-      tableData3: { list: [] },
+    
       treeData1: [],
       treeProps1: {
         label: "menu_name",
@@ -197,7 +196,7 @@ export default {
       this.cx.pd = data;
       this.cx.queryParams = data;
       this.cx.pageNum = 1;
-      console.log("用户类型", data);
+    
       // this.disPlBtn = data.userType == 0 ? true : false;
       this.getTable(true);
     },
@@ -230,12 +229,16 @@ export default {
     },
     // 查询用户列表
     getTable(flag) {
+      if(this.cx.pageSize!=this.tableData.pageSize){
+        this.cx.pageSize=this.tableData.pageSize
+      }
+      
       if(flag){this.clearSort = new Date().getTime();delete this.cx.order;delete this.cx.direction }
       this.$api.post(
         this.$api.aport5 + "/znCollectlistIntranet/listData",
         this.cx,
         r => {
-          console.log(r);
+       
           this.tableData.list = r.records;
           this.tableData.total = r.total;
                  // pageSize: 10,
@@ -255,7 +258,7 @@ export default {
   
       this.dialogTitle = data.menu_name;
       this.dialogType = data.py;
-      console.log(data.py,'---');
+    
       if(data.py=='lqqb'){ //领取全部
           let p={
             'user':this.$store.state.user,
@@ -480,7 +483,7 @@ export default {
     },
     dialogSave(data) {
     let p={};var url='';
-    console.log(data,'====');
+  
      if(this.hct==0){
       p={
             'user':this.$store.state.user,

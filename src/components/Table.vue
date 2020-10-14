@@ -78,7 +78,6 @@
         <el-table-column
           :key="i"
           type="index"
-          
           :label="lb.cm"
           v-else-if="lb.typeindex"
           >
