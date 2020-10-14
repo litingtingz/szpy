@@ -58,7 +58,7 @@ export default {
         this.$message({
           message: '请先选择文件！',
           type: 'warning',
-          duration: 13000,
+          duration: 8000,
           showClose: true,
         });
         return
@@ -66,6 +66,16 @@ export default {
 
     
        if(this.dataType=='y1001'){
+
+         if (this.$refs.upload.uploadFiles.length>1) {
+            this.$message({
+              message: '只能上传一个文件!',
+              type: 'warning',
+              duration: 8000,
+              showClose: true,
+            });
+            return
+          }
           var array=this.$refs.upload.uploadFiles[0];
           if (array.size  > 20 * 1024 * 1024) {
             this.$message({

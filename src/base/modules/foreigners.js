@@ -169,6 +169,43 @@ const znCollectlistIntranet = {
             dm: 'isDeleteName'
         }
     ],
+    lzData:[
+        {
+            cm: '序号',
+            type:'Index'
+        },
+        {
+            cm: '证件号码',
+            dm: 'zjhm'
+        },
+        {
+            cm: '姓名',
+            dm: 'nameHome'
+        },
+        {
+            cm: '性别',
+            dm: 'xbname'
+        },
+        {
+            cm: '出生日期',
+            dm: 'csrq'
+        },
+        {
+            cm: '证件有效期',
+            dm: 'yxqz'
+        },
+        {
+            cm: '国家地区',
+            dm: 'gjdq'
+        },
+        {
+            cm: '住宿地址',
+            dm: 'lsdwdz'
+        },{
+            cm: '入表时间',
+            dm: 'lrrq'
+        },
+    ],
     lbBtn: [
         {
             "button_name": "详情",

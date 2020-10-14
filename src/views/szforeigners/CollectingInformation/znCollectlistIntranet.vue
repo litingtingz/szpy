@@ -57,7 +57,7 @@
         @dialogSave="dialogSave"
       ></Form>
        <Edit 
-        v-else
+        v-else-if='isShowDialog'
         :jbxxdiaData="dialogData"
         :dialogType="dialogType"
         :seachData="seachData"
@@ -255,6 +255,7 @@ export default {
   
       this.dialogTitle = data.menu_name;
       this.dialogType = data.py;
+      console.log(data.py,'---');
       if(data.py=='lqqb'){ //领取全部
           let p={
             'user':this.$store.state.user,
@@ -307,6 +308,8 @@ export default {
           );
 
       }else if(data.py=='lqsj'){ //领取随机
+
+
           if(this.tableData.total==0){
              this.$message({
                       message: '没有待接收的数据！',
@@ -342,6 +345,7 @@ export default {
          }
 
          this.hct=2;
+
          this.isShowDialog = true;
          this.dialogData = this.multipleSelection[0];
 
@@ -403,18 +407,37 @@ export default {
      
       this.dialogTitle = data.btn.button_name;
       this.dialogType = data.btn.button_type;
+
+      this.cx.pageS=data.index
+      if (data.double) {
+
+       if(data.data.compareStatus=='1' && data.data.checkStatus=='2')
+       {
+         
+         this.seachData=this.cx;
+         this.hct=1;
+         this.dialogData = data.data;
+         this.dialogType="edit"
+          this.dialogTitle="编辑"
+
+        }else{
+           this.hct=1;
+           this.dialogData = data.data;
+           this.dialogType="ck"
+           this.dialogTitle="详情"
+        }
+      
+      }
       if (data.btn.button_type == "ck") {
         this.hct=1;
-        this.isShowDialog = true;
         this.dialogData = data.data;
       } else if (data.btn.button_type == "edit") {
-         this.cx.pageSize=data.index
+        
          this.seachData=this.cx;
-         
          this.hct=1;
-         this.isShowDialog = true;
          this.dialogData = data.data;
       }
+       this.isShowDialog = true;
     },
     //无效数据 
     dialogDis(data){
@@ -456,29 +479,47 @@ export default {
           );
     },
     dialogSave(data) {
-     
-     var url='/znCollectlistIntranet/save';
-     if(this.hct==2){
-       url='/znCollectlistIntranet/modifyError';
-     }
-        let p={
+    let p={};var url='';
+    console.log(data,'====');
+     if(this.hct==0){
+      p={
             'user':this.$store.state.user,
             'params':data.data,
-          
+            'otherParams':{
+              'number':data.data.sjnum
+            }
           }
+       url='/znCollectlistIntranet/collectTask';
+     }else if(this.hct==1){
+        p={
+            'user':this.$store.state.user,
+            'params':data.data,
+          }
+        url='/znCollectlistIntranet/save';
+     }else if(this.hct==2){
+       p={
+            'user':this.$store.state.user,
+            'params':data.data,
+          }
+       url='/znCollectlistIntranet/modifyError';
+     }
+        
            this.$api.post(
            this.$api.aport5 + url,
             p,r => {
                  if(r.data){
                     this.$message({
-                      message: "保存成功!",
+                      message: "操作成功!",
                       duration: 8000,
                       showClose: true,
                       type: "success"
                     });
-                   this.getTable();
+                    this.getTable();
+                    if(this.hct==0){
+                      this.isShowDialog=false;
+                    }
                    }else{
-                 this.$message({
+                  this.$message({
                       message: "操作失败!",
                       duration: 8000,
                       showClose: true,
@@ -489,9 +530,6 @@ export default {
           );
     },
    
-   
-   
-  
   
   }
 };
