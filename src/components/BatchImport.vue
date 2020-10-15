@@ -88,9 +88,9 @@ export default {
           }
           var arr=array.name.split('.');
           var type=arr[arr.length-1].toLowerCase();
-          if(type!='mp3' && type!='mp4'){
+          if(type!='mp3' && type!='mp4' && type!='m4a'&& type!='midi'&& type!='wma'&& type!='amr'){
             this.$message({
-              message: '上传格式为mp3、mp4',
+              message: '上传格式为mp3、mp4、m4a、midi、wma、amr',
               type: 'error',
               duration: 5000,
               showClose: true,
