@@ -84,7 +84,7 @@ export default {
               duration: 5000,
               showClose: true,
             });
-            return
+            return 
           }
           var arr=array.name.split('.');
           var type=arr[arr.length-1].toLowerCase();
