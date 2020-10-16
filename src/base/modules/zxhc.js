@@ -78,7 +78,7 @@ const zxhc = {
             dm: 'address'
         },
         {
-            cm: '反馈时间',
+            cm: '任务处理时间',
             type: 'double',
             dm: 'fkTime',
             children: [
@@ -217,6 +217,10 @@ const zxhc = {
         {
             cm: '停留事由',
             dm: 'stopmatter',
+        },
+        {
+            cm: '备注',
+            dm: 'remarks',
         },
     ],
     inlb:[

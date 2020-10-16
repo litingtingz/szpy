@@ -86,12 +86,16 @@
                   ></el-option>
                 </el-select>
               </template>
+              <!-- format="yyyyMMdd" -->
               <template v-else-if="cx.type=='datePicker'">
                 <el-date-picker
                   v-model="inquire[cx.dm]"
                   type="date"
                   placeholder="选择日期"
+                  :format="dateF"
                   value-format="yyyy-MM-dd"
+                  @blur="dataHand"
+                  @focus="dataFocus"
                 ></el-date-picker>
               </template>
               <template v-else-if="cx.type=='double'">
@@ -212,6 +216,7 @@ export default {
   data() {
     return {
       inquire: this.pd,
+      dateF:'yyyyMMdd',
       tagCheck:'',
       rules: {},
       queryIsShow: this.cxShow,
@@ -264,6 +269,13 @@ export default {
     });  
   },
   methods: {
+    dataHand(data){
+      this.dateF = 'yyyy-MM-dd'
+      console.log('====',data)
+    },
+    dataFocus(){
+      this.dateF = 'yyyyMMdd'
+    },
     btnClick(py,pb) {
       if (py == "cx") {
         this.submitForm("inquire",pb);

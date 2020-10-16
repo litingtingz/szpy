@@ -64,5 +64,6 @@ export default {
 .main {
   overflow: hidden !important;
   min-height: 91vh;
+  padding: 8px 20px 20px;
 }
 </style>>

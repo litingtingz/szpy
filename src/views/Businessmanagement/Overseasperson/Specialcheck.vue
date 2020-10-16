@@ -466,10 +466,12 @@ export default {
     // 获取分页等信息
     pageSizeFnc(data) {
       this.cx.pageSize = data;
+      this.cxQ.pageSize = data;
       this.getTable();
     },
     pageNumFnc(data) {
       this.cx.pageNum = data;
+      this.cxQ.pageNum = data;
       this.getTable();
     },
     //表格复选框选择

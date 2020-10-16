@@ -33,6 +33,7 @@
           :clearSort="clearSort"
           :expData="cx"
           :expUrl="$api.aport2+''"
+          :tableMerge="tableMerge"
           @plFnc="plFnc"
           @pageSizeFnc="pageSizeFnc"
           @pageNumFnc="pageNumFnc"
@@ -46,7 +47,7 @@
       </el-row>
       <el-row v-if="tab=='2'">
         <!-- 迁入量 -->
-        <el-col :xl="6" :lg="12" class="pr-15">
+        <el-col :xl="8" :lg="12" class="pad-15">
           <p class="chart-title mb-10">迁入量</p>
           <div class="chart-outer ml-10">
             <div class="chart-outer-label">分析维度</div>
@@ -54,7 +55,7 @@
               <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
             </el-select>
           </div>
-          <Charts :key="new Date().getTime()" :Cheight="'210px'" :optData="optData_1" :id="'1'"></Charts>
+          <div @click="chartDiaFun(1)"><Charts :timeRange="timeRange_1" :optData="optData_1" :id="'1'" @chartAllClick="chartAllClick"></Charts></div>
           <!-- <div class="chart-box">
             <div>
               <Charts
@@ -89,7 +90,7 @@
           </div> -->
         </el-col>
         <!-- 迁出量 -->
-        <el-col :xl="6" :lg="12" class="pr-15">
+        <el-col :xl="8" :lg="12" class="pad-15">
           <p class="chart-title mb-10">迁出量</p>
           <div class="chart-outer ml-10">
             <div class="chart-outer-label">分析维度</div>
@@ -97,7 +98,7 @@
               <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
             </el-select>
           </div>
-          <Charts :key="new Date().getTime()" :Cheight="'210px'" :optData="optData_2" :id="'2'"></Charts>
+          <div @click="chartDiaFun(2)"><Charts @chartAllClick="chartAllClick" :timeRange="timeRange_2" :optData="optData_2" :id="'2'"></Charts></div>
           <!-- <div class="chart-box">
             <div>
               <Charts
@@ -131,19 +132,8 @@
             </div>
           </div> -->
         </el-col>
-        <!-- 国家地区 -->
-        <el-col :xl="6" :lg="12" class="pr-15">
-          <p class="chart-title mb-10">国家地区</p>
-          <div class="chart-outer ml-10">
-            <div class="chart-outer-label">分析维度</div>
-            <el-select class="chart-select" v-model="analyArr.type_3" @change="analyFun(3)" placeholder="请选择" size="medium">
-              <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
-            </el-select>
-          </div>
-          <Charts :key="new Date().getTime()" :Cheight="'210px'" :optData="optData_3" :id="'3'"></Charts>
-        </el-col>
-        <!-- TOP -->
-        <el-col :xl="6" :lg="12">
+         <!-- TOP -->
+        <el-col :xl="8" :lg="12" class="pad-15">
           <p class="chart-title mb-10">TOP</p>
           <div class="chart-outer ml-10">
             <div class="chart-outer-label">分析维度</div>
@@ -151,10 +141,10 @@
               <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
             </el-select>
           </div>
-          <Charts :key="new Date().getTime()" :optData="optData_4" :id="'4'"></Charts>
+          <div @click="chartDiaFun(4)"><Charts @chartAllClick="chartAllClick" :timeRange="timeRange_4" :optData="optData_4" :id="'4'"></Charts></div>
         </el-col>
         <!-- 变化趋势分析图 -->
-        <el-col :xl="12" :lg="12" >
+        <el-col :xl="16" :lg="12" class="pad-15">
           <p class="chart-title mb-10">变化趋势分析图</p>
           <div class="chart-outer ml-10">
             <div class="chart-outer-label">分析维度</div>
@@ -162,29 +152,45 @@
               <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
             </el-select>
           </div>
-          <Charts :key="new Date().getTime()" :optData="optData_5" :id="'5'"></Charts>
+          <div @click="chartDiaFun(5)"><Charts @chartAllClick="chartAllClick" :timeRange="timeRange_5" :optData="optData_5" :id="'5'"></Charts></div>
         </el-col>
-        <!--  -->
-        <el-col :xl="12" :lg="12">
-          <p class="chart-title mb-10">变化趋势分析图</p>
+        
+        <!-- 国家地区 -->
+        <el-col :xl="8" :lg="12" class="pad-15">
+          <p class="chart-title mb-10">国家地区</p>
           <div class="chart-outer ml-10">
             <div class="chart-outer-label">分析维度</div>
-            <el-select class="chart-select" v-model="analyArr.type_6" @change="analyFun(6)" placeholder="请选择" size="medium">
+            <el-select class="chart-select" v-model="analyArr.type_3" @change="analyFun(3)" placeholder="请选择" size="medium">
               <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
             </el-select>
           </div>
-          <Charts :key="new Date().getTime()" :optData="optData_6" :id="'6'"></Charts>
+          <div @click="chartDiaFun(3)"><Charts @chartAllClick="chartAllClick" :timeRange="timeRange_3" :optData="optData_3" :id="'3'"></Charts></div>
+        </el-col>
+        <!--  -->
+        <el-col :xl="24" :lg="24">
+          <p class="chart-title mb-10">变化趋势分析图</p>
+          <div class="chart-outer ml-10">
+            <div class="chart-outer-label">分析维度</div>
+            <el-select class="chart-select chart-ts" multiple collapse-tags v-model="analyArr.type_6" @change="analyFun(6)" placeholder="请选择" size="medium">
+              <el-option v-for="(item,ind) in sflbArr" :key="ind" :label="item.MC" :value="item.DM"></el-option>
+            </el-select>
+          </div>
+          <div @click="chartDiaFun(6)"><Charts @chartAllClick="chartAllClick" :key="new Date().getTime()" :timeRange="timeRange_6" :Cheight="'400px'" :optData="optData_6" :id="'6'"></Charts></div>
         </el-col>
       </el-row>
     </div>
-    <Dialog :isShowDialog="isShowDialog" :title="dialogTitle" @hideDialog="isShowDialog=false">
+    <Dialog :isShowDialog="isShowDialog" :width="dialogType=='chart'?'90%':'1000px'" :class="dialogType=='chart'?'dia-height':''" :title="dialogTitle" @hideDialog="isShowDialog=false">
       <CzTable
+        v-if="dialogType == 'detail'"
         :key="timer"
         :pd="tablePd"
         :dialogType="dialogType"
         :dialogData="dialogData"
         :pageRef="pageRef"
         @dialogCancel="isShowDialog=false"></CzTable>
+        <div v-else style="height:100%" ref="diacRef">
+          <Charts  :Cheight="DiaHeight" :key="new Date().getTime()" :optData="optData_D"></Charts>
+        </div>
     </Dialog>
   </div>
 </template>
@@ -207,6 +213,12 @@ export default {
         pageSize: 15,
         pageNum: 1,
       },
+      timeRange_1:0,
+      timeRange_2:0,
+      timeRange_3:0,
+      timeRange_4:0,
+      timeRange_5:0,
+      timeRange_6:0,
       tab: "1",
       //列表数据
       lbData:this.$cdata.czxx.xxwhgl.lb,
@@ -220,6 +232,11 @@ export default {
         pageSize: 10,
         pageNum: 1
 			},
+      tableMerge:{},
+      testArr2: [],
+      testPosition1: 0,
+      testPosition2: 0,
+
       clearSort:0,
       //列表统计
       checkList:[
@@ -298,6 +315,7 @@ export default {
       dialogData: {},
       labelData: [],
       //图表
+      DiaHeight:'100%',
       analysis_3:[
         {
           dm:'gender',
@@ -328,14 +346,16 @@ export default {
           mc:'年龄段'
         },
       ],
+      sflbArr:[],
       analyArr:{
         type_1:'gender',
         type_2:'gender',
         type_3:'gender',
         type_4:'gender',
         type_5:'gender',
-        type_6:'gender',
+        type_6:[],
       },
+      optData_D:{},
       optData_1:{},
       optData_1_1: {},
       optData_1_2: {},
@@ -360,16 +380,22 @@ export default {
     this.$store.dispatch("aGetDMPro",'dm_jwrysf');
     this.$store.dispatch("aGetDMPro",'dm_crjbs');
     this.$store.dispatch("aGetDMPro",'dm_rydylbb');
+    this.getSflb();
     this.getTable();
   },
   methods: {
     // 获取查询参数
+    getSflb(){
+      this.$api.post(this.$api.aport4+'/comprehensive/sflb',null,r=>{
+        this.sflbArr = r
+      })
+    },
     cxFnc(data) {
       this.cx.pd = data;
       this.cx.pageNum = 1;
       if(this.tab == '1'){
         this.getTable(true);
-      }else{
+      }else{  
         this.chartsBegin()
       }
     },
@@ -417,15 +443,32 @@ export default {
 			this.cx.order = data.prop;
       this.cx.direction = data.direction
       this.getTable();
-		},
+    },
+    rowspan(spanArr, position, spanName,firstName) {
+        this.tableData.list.forEach((item, index) => {
+          if (index === 0) {
+            spanArr.push(1);
+            position = 0;
+          } else {
+            if (this.tableData.list[index][spanName] === this.tableData.list[index - 1][spanName] && this.tableData.list[index][firstName] === this.tableData.list[index - 1][firstName]) {
+              spanArr[position] += 1;
+              spanArr.push(0);
+            } else {
+              spanArr.push(1);
+              position = index;
+            }
+          }
+        });
+      },
 		// 查询用户列表
     getTable(flag,pdQ) {
       if(flag){this.clearSort = new Date().getTime();delete this.cx.order;delete this.cx.direction }
       if(this.cx.pd.statiType.length==0){
+        this.tableMerge={};
         this.lbData = this.$cdata.czxx.xxwhgl.lb
         this.$api.post(this.$api.aport4 + "/comprehensive/listdata", pdQ||this.cx, r => {
           this.tableData.list = r.list;
-          this.tableData.total = r.total
+          this.tableData.total = r.total;
         });
       }else{
         this.$api.post(this.$api.aport4 + '/comprehensive/getGroupData',pdQ||this.cx, r => {
@@ -444,7 +487,12 @@ export default {
               }
             })
           })
-          this.lbData = this.tableHeadReal
+          this.lbData = this.tableHeadReal;
+          this.lbData.forEach((item)=>{
+            this.tableMerge[item.dm] = [];
+            this.rowspan(this.tableMerge[item.dm], this.testPosition1, item.dm,this.lbData[0].dm);
+          })
+          // console.log('this.tableMerge',this.tableMerge)
         })
       }
     },
@@ -456,7 +504,7 @@ export default {
 		},
 		//列表内按钮&&双击行
 		blFnc(data){
-      console.log(data)
+      // console.log(data)
       this.dialogType = data.btn.button_type;
       this.dialogTitle = data.btn.button_name;
       // this.onlyId = data.data.personnel_id;
@@ -473,11 +521,12 @@ export default {
           window.open(routeData.href, '_blank');
         }else{
           this.pageRef="zhfx"//常住综合分析
+          this.timer = new Date().getTime();
           this.tablePd = {};
           let queryPd = this.cx.pd;
+          console.log('-',data.data,queryPd)
           let basicPd = this.$fnc.objCompare(data.data, queryPd);
           this.tablePd = Object.assign({},basicPd.obj1,basicPd.obj2)
-          this.timer = new Date().getTime();
           this.isShowDialog = true;
         }
       }
@@ -494,6 +543,37 @@ export default {
       if(val == 5){this.chartFun_5()}
       if(val == 6){this.chartFun_6()}
     },
+    chartAllClick(data){
+      this.dialogType="chart"
+      this.dialogTitle="图表"
+      if(data == 1){this.chartFun_1();this.optData_D = this.optData_1;}
+      if(data == 2){this.chartFun_2();this.optData_D = this.optData_2;}
+      if(data == 3){this.chartFun_3();this.optData_D = this.optData_3;}
+      if(data == 4){this.chartFun_4();this.optData_D = this.optData_4;}
+      if(data == 5){this.chartFun_5();this.optData_D = this.optData_5;}
+      if(data == 6){this.chartFun_6();this.optData_D = this.optData_6;}
+      this.isShowDialog = true;
+      this.$nextTick(()=>{
+        // console.log(this.$refs.diacRef.offsetHeight)
+        this.DiaHeight = this.$refs.diacRef.offsetHeight+'px'
+      })
+    },
+    chartDiaFun(val){
+      console.log(val)
+      // this.dialogType="chart"
+      // this.dialogTitle="图表"
+      // if(val == 1){this.chartFun_1();this.optData_D = this.optData_1;}
+      // if(val == 2){this.chartFun_2();this.optData_D = this.optData_2;}
+      // if(val == 3){this.chartFun_3();this.optData_D = this.optData_3;}
+      // if(val == 4){this.chartFun_4();this.optData_D = this.optData_4;}
+      // if(val == 5){this.chartFun_5();this.optData_D = this.optData_5;}
+      // if(val == 6){this.chartFun_6();this.optData_D = this.optData_6;}
+      // this.isShowDialog = true;
+      // this.$nextTick(()=>{
+      //   console.log(this.$refs.diacRef.offsetHeight)
+      //   this.DiaHeight = this.$refs.diacRef.offsetHeight+'px'
+      // })
+    },
     chartsBegin(){
       /////
       this.chartFun_1();
@@ -506,7 +586,7 @@ export default {
       /////
       this.chartFun_5();
       /////
-      this.chartShow_6();
+      this.chartFun_6();
     },
     //
     chartShow_1_1() {
@@ -1127,6 +1207,7 @@ export default {
       this.cx.pd.qcl = ''
       this.$api.post(this.$api.aport4 + '/comprehensive/periodComparison',this.cx.pd,r=>{
         this.chartShow_1(r.xAxis.xAxis,r.series[0].data)
+        this.timeRange_1 = new Date().getTime()
       })
     },
     chartShow_1(xAxis,series){
@@ -1192,7 +1273,7 @@ export default {
             },
             itemStyle: {
               normal: {
-                barBorderRadius: 30, //柱状图边角圆弧化
+                barBorderRadius: 10, //柱状图边角圆弧化
                 label: {
                   show: true, //开启显示
                   position: "top", //在上方显示
@@ -1237,6 +1318,7 @@ export default {
       this.cx.pd.qcl = '1'
       this.$api.post(this.$api.aport4 + '/comprehensive/periodComparison',this.cx.pd,r=>{
         this.chartShow_2(r.xAxis.xAxis,r.series[0].data)
+        this.timeRange_2 = new Date().getTime()
       })
     },
     chartShow_2(xAxis,series){
@@ -1347,6 +1429,7 @@ export default {
       this.cx.pd.analysisType = this.analyArr.type_3;
       this.$api.post(this.$api.aport4 + '/comprehensive/pieChart',this.cx.pd,r=>{
         this.chartShow_3(r.legend.data,r.series[0].data);
+        this.timeRange_3 = new Date().getTime()
       })
     },
     chartShow_3(legend,series) {
@@ -1373,7 +1456,7 @@ export default {
             type: "pie",
             radius: ["35%", "50%"],
             center: ["50%", "45%"],
-            avoidLabelOverlap: false,
+            avoidLabelOverlap: true,
             labelLine: {
               show: true,
               lineStyle: {
@@ -1453,6 +1536,7 @@ export default {
       this.cx.pd.analysisType = this.analyArr.type_4;
       this.$api.post(this.$api.aport4 + '/comprehensive/topCount',this.cx.pd,r=>{
         this.chartShow_4(r.xAxis.xAxis,r.series[0].data)
+        this.timeRange_4 = new Date().getTime()
       })
     },
     chartShow_4(xAxis,series) {
@@ -1574,30 +1658,11 @@ export default {
             //   }
             // },
             label: {
-              show: true,
+              // show: true,
               fontSize: 14,
               color: "#000",
               fontWeight:'bold'
             },
-            // lineStyle: {
-            //   color: "#5486F9",
-            //   width: 2,
-            //   shadowColor: "rgba(85,137,247, 0.5)",
-            //   shadowBlur: 10,
-            //   shadowOffsetX: 10
-            // },
-            // areaStyle: {
-              // color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              //   {
-              //     offset: 0,
-              //     color: "rgba(85,137,247,0.5)"
-              //   },
-              //   {
-              //     offset: 1,
-              //     color: "rgba(85,137,247,0.1)"
-              //   }
-              // ])
-            // },
         }
         let dataReal = [];
         r.series.forEach(item => {
@@ -1605,22 +1670,32 @@ export default {
           dataReal.push(dataItem)
         })
         this.chartShow_5(r.xAxis.data,dataReal,r.legend.data)
+        this.timeRange_5 = new Date().getTime()
       })
     },
     chartShow_5(xAxis,series,legend) {
       this.optData_5 = {
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
         grid: {
-          x: 50,
-          y: 20,
-          x2: 40
+          x: '10%',
+          y: 40,
+          x2: '10%',
+          y2: 30
         },
         legend: {
           left: "center",
+          width:'80%',
           // top: "bottom",
           // itemWidth: 15, //修改icon图形大小
           // itemHeight: 15, //修改icon图形大小
           type: "scroll",
-          padding: [0, 0, 13, 0],
+          padding: [10, 0, 13, 0],
           textStyle: {
             color: "#919294"
           },
@@ -1680,7 +1755,100 @@ export default {
       };
     },
     //
-    chartShow_6() {
+    chartFun_6(){
+      this.cx.pd.sflb = this.analyArr.type_6
+      this.$api.post(this.$api.aport4+'/comprehensive/stackedBarChart',this.cx.pd,r=>{
+        let series = {
+            type: "bar",
+            stack: "总量",
+            barWidth: 10,
+            label: {
+              show: true,
+              color:'#000',
+              position: "insideTop",
+              fontWeight:'bold'
+            },
+            itemStyle:{
+              normal:{
+                barBorderRadius: 10, //柱状图边角圆弧化
+                // color:((para)=>{
+                //   var colorList = [
+                //     {
+                //       c1:"#FCAC62",
+                //       c2:"#FC8C7E"
+                //     },
+                //     {
+                //       c1:"#F86948",
+                //       c2:"#E2453F"
+                //     },
+                //     {
+                //       c1:"#AA30DF",
+                //       c2:"#CE4AC0"
+                //     },
+                //     {
+                //       c1:"#30BFDA",
+                //       c2:"#1ACCE8"
+                //     },
+                //     {
+                //       c1:"#0FACFA",
+                //       c2:"#1ACCE8"
+                //     },
+                //     {
+                //       c1:"#FCAC62",
+                //       c2:"#FC8C7E"
+                //     },
+                //     {
+                //       c1:"#F86948",
+                //       c2:"#E2453F"
+                //     },
+                //     {
+                //       c1:"#AA30DF",
+                //       c2:"#CE4AC0"
+                //     },
+                //     {
+                //       c1:"#30BFDA",
+                //       c2:"#1ACCE8"
+                //     },
+                //     {
+                //       c1:"#0FACFA",
+                //       c2:"#1ACCE8"
+                //     }
+                //   ]
+                //   return new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                //     {
+                //       offset: 0,
+                //       color: colorList[para.dataIndex].c1
+                //     },
+                //     {
+                //       offset: 1,
+                //       color: colorList[para.dataIndex].c2
+                //     }
+                //   ])
+                // })
+              },
+              // emphasis:{
+              //   color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+              //       offset: 0,
+              //       color: '#D5C95D'
+              //     }, {
+              //       offset: 1,
+              //       color: '#C39E69'
+              //     }])
+              // },
+            },
+        }
+        let dataReal = [];
+        r.series.forEach(item => {
+          let dataItem = Object.assign({},item,series)
+          dataReal.push(dataItem)
+        })
+        this.$nextTick(()=>{
+          this.timeRange_6 = new Date().getTime()
+          this.chartShow_6(r.legend.data,r.xAxis.data,dataReal);
+        })
+      })
+    },
+    chartShow_6(legend,xAxis,series) {
       this.optData_6 = {
         tooltip: {
           trigger: "axis",
@@ -1690,16 +1858,23 @@ export default {
           }
         },
         legend: {
-          data: ["直接访问", "邮件营销", "联盟广告"]
+          width:'80%',
+          // top: "bottom",
+          // itemWidth: 15, //修改icon图形大小
+          // itemHeight: 15, //修改icon图形大小
+          type: "scroll",
+          padding: [10, 0, 13, 0],
+          data: legend
         },
         grid: {
-          x: 50,
-          y: 30,
-          x2: 40
+          x: '10%',
+          y: 40,
+          x2: '10%',
+          y2: 30
         },
-        xAxis: {
+        yAxis: {
           type: "category",
-          data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+          data: xAxis,
           axisPointer: {
             type: "none"
           },
@@ -1715,7 +1890,7 @@ export default {
             fontSize: 12
           }
         },
-        yAxis: {
+        xAxis: {
           type: "value",
           axisLine: {
             //去除y坐标轴
@@ -1745,113 +1920,122 @@ export default {
             }
           }
         },
-        series: [
-          {
-            name: "直接访问",
-            type: "bar",
-            stack: "总量",
-            barWidth: 10,
-            label: {
-              show: true,
-              color:'#000',
-              position: "right",
-              fontWeight:'bold'
-            },
-            itemStyle:{
-              normal:{
-                barBorderRadius: 30, //柱状图边角圆弧化
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: '#EC66A5'
-                  }, {
-                    offset: 1,
-                    color: '#9E29E9'
-                  }])
-              },
-              emphasis:{
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: '#D5C95D'
-                  }, {
-                    offset: 1,
-                    color: '#C39E69'
-                  }])
-              },
-            },
-            data: [{
-              value:320,
-              label:{
-                show:false
-              }
-            }, 302, 301, 334, 390, 330, 320]
-          },
-          {
-            name: "邮件营销",
-            type: "bar",
-            stack: "总量",
-            label: {
-              show: true,
-              color:'#000',
-              position: "inside",
-              fontWeight:'bold'
-            },
-            itemStyle:{
-              normal:{
-                barBorderRadius: 30, //柱状图边角圆弧化
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: '#4CE0C6'
-                  }, {
-                    offset: 1,
-                    color: '#1DA8EB'
-                  }])
-              },
-              emphasis:{
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: '#D5C95D'
-                  }, {
-                    offset: 1,
-                    color: '#C39E69'
-                  }])
-              },
-            },
-            data: [120, 132, 101, 134, 90, 230, 210]
-          },
-          {
-            name: "联盟广告",
-            type: "bar",
-            stack: "总量",
-            label: {
-              show: true,
-              color:'#000',
-              position: "inside",
-              fontWeight:'bold'
-            },
-            itemStyle:{
-              normal:{
-                barBorderRadius: 30, //柱状图边角圆弧化
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: '#D9D9D9'
-                  }, {
-                    offset: 1,
-                    color: '#D9D9D9'
-                  }])
-              },
-              emphasis:{
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: '#D5C95D'
-                  }, {
-                    offset: 1,
-                    color: '#C39E69'
-                  }])
-              },
-            },
-            data: [220, 182, 191, 234, 290, 330, 310]
-          },
-        ]
+        series: series
+        // [
+        //   {
+        //     name: "直接访问",
+        //     type: "bar",
+        //     stack: "总量",
+        //     barWidth: 10,
+        //     label: {
+        //       show: true,
+        //       color:'#000',
+        //       position: "right",
+        //       fontWeight:'bold'
+        //     },
+        //     itemStyle:{
+        //       normal:{
+        //         barBorderRadius: 30, //柱状图边角圆弧化
+        //         color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+        //             offset: 0,
+        //             color: '#EC66A5'
+        //           }, {
+        //             offset: 1,
+        //             color: '#9E29E9'
+        //           }])
+        //       },
+        //       emphasis:{
+        //         color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+        //             offset: 0,
+        //             color: '#D5C95D'
+        //           }, {
+        //             offset: 1,
+        //             color: '#C39E69'
+        //           }])
+        //       },
+        //     },
+        //     data: [
+        //       {
+        //         value:320,
+        //         label:{
+        //           show:true
+        //         }
+        //       },
+        //       {
+        //         value:0,
+        //         label:{
+        //           show:false
+        //         }
+        //       },
+        //       302, 301, 334, 390, 330, 320]
+        //   },
+        //   {
+        //     name: "邮件营销",
+        //     type: "bar",
+        //     stack: "总量",
+        //     label: {
+        //       show: true,
+        //       color:'#000',
+        //       position: "inside",
+        //       fontWeight:'bold'
+        //     },
+        //     itemStyle:{
+        //       normal:{
+        //         barBorderRadius: 30, //柱状图边角圆弧化
+        //         color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+        //             offset: 0,
+        //             color: '#4CE0C6'
+        //           }, {
+        //             offset: 1,
+        //             color: '#1DA8EB'
+        //           }])
+        //       },
+        //       emphasis:{
+        //         color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+        //             offset: 0,
+        //             color: '#D5C95D'
+        //           }, {
+        //             offset: 1,
+        //             color: '#C39E69'
+        //           }])
+        //       },
+        //     },
+        //     data: [120, 132, 101, 134, 90, 230, 210]
+        //   },
+        //   {
+        //     name: "联盟广告",
+        //     type: "bar",
+        //     stack: "总量",
+        //     label: {
+        //       show: true,
+        //       color:'#000',
+        //       position: "inside",
+        //       fontWeight:'bold'
+        //     },
+        //     itemStyle:{
+        //       normal:{
+        //         barBorderRadius: 30, //柱状图边角圆弧化
+        //         color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+        //             offset: 0,
+        //             color: '#D9D9D9'
+        //           }, {
+        //             offset: 1,
+        //             color: '#D9D9D9'
+        //           }])
+        //       },
+        //       emphasis:{
+        //         color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+        //             offset: 0,
+        //             color: '#D5C95D'
+        //           }, {
+        //             offset: 1,
+        //             color: '#C39E69'
+        //           }])
+        //       },
+        //     },
+        //     data: [220, 182, 191, 234, 290, 330, 310]
+        //   },
+        // ]
       };
     }
   }

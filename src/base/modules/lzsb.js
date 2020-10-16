@@ -311,9 +311,9 @@ const lzsb = {
                 dis:true,
             },
             {
-                cm: '证件有效期',
+                cm: '证件有效期至',
                 type: 'datePicker',
-                dm: 'zjyxq',
+                dm: 'zjyxqz',
                 dis:true,
             },
             {
@@ -329,7 +329,7 @@ const lzsb = {
                 dis:true,
             },
             {
-                cm: '签证有效期至',
+                cm: '停留有效期至',
                 type: 'datePicker',
                 dm: 'tlyxqz',
                 dis:true,

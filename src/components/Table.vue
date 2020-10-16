@@ -17,12 +17,17 @@
           placement="left"
           trigger="hover"
           popper-class="color-des">
-          <ul v-if="colorDes.length!=0">
-            <li v-for="(color,inds) in colorDes" :key="inds">
-              <span style="width:20px;height:20px;display:inline-block;vertical-align: middle;" class="mr-10" :style="{backgroundColor:color.gdyssh}"></span>
-              <span style="flex:1;">{{color.ysshbz}}</span>
-            </li>
-          </ul>
+          <div v-if="colorDes.length!=0">
+            <div v-for="(color,inds) in colorDes" :key="inds">
+              <p>{{color.xflb}}</p>
+               <ul>
+                <li v-for="(item,ind) in color.colorList" :key="ind">
+                  <span style="width:20px;height:20px;display:inline-block;vertical-align: middle;" class="mr-10" :style="{backgroundColor:item.gdyssh}"></span>
+                  <span style="flex:1;">{{item.ysshbz}}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
           <div v-else>无颜色说明</div>
           <span class="mr-10" slot="reference" v-show="(refName=='hczf'&&clzt1==1)||(refName=='zrqzf'&&clzt1==1)">
             <svg class="icon" aria-hidden="true">
@@ -53,6 +58,7 @@
       :data="tableData.list"
       style="width: 100%"
       :row-style="rowBackground"
+      :span-method="objectSpanMethod"
       @row-click="rowClick"
       @row-dblclick="rowDbClick"
       @selection-change="handleSelectionChange"
@@ -288,6 +294,11 @@ export default {
     colorDes:{
       type:Array,
       default: () => []
+    },
+    //表格行合并
+    tableMerge:{
+      type:Object,
+      default: () => {}
     }
   },
   data() {
@@ -313,24 +324,6 @@ export default {
       expD:{},
       isimgclick: false,
       imglist:[],
-      // colorDes:[
-      //     {
-      //       "gdyssh": "#9aba60",
-      //       "ysshbz": "11"
-      //     },
-      //     {
-      //       "gdyssh": "#e2534d",
-      //       "ysshbz": "22"
-      //     },
-      //     {
-      //       "gdyssh": "#9aba60",
-      //       "ysshbz": "33"
-      //     },
-      //     {
-      //       "gdyssh": "#e2534d",
-      //       "ysshbz": "44"
-      //     }
-      //   ],
     };
   },
   watch: {
@@ -366,7 +359,6 @@ export default {
       this.page1 = val;
     },
     clzt(val){
-      // this.transData = this.lbData;
       this.clzt1 = val;
     },
     //清除排序
@@ -378,13 +370,10 @@ export default {
   },
   mounted() {
     this.$nextTick(function() {
-      // this.transData = this.lbData;
       this.toggleSelection(this.selection);
       if(this.$route.query.page){
         this.page1 = this.$route.query.page
       }
-
-   
     });
   },
     directives: {
@@ -494,6 +483,22 @@ export default {
       return{
         "background-color":row.row.yjssys
       }
+    },
+    objectSpanMethod({column ,rowIndex, columnIndex }){
+        console.log(this.tableMerge)
+        // var arr = Object.keys(this.tableMerge);
+        // if(arr.length == 0)return
+        for(var i in this.tableMerge){
+          if(i == column.property){
+            console.log('columnIndex',column.property,columnIndex,rowIndex)
+            const _row = this.tableMerge[i][rowIndex];//代表合并行的行数
+            const _col = _row > 0 ? 1 : 0;
+            return {
+              rowspan: _row,
+              colspan: _col,
+            };
+          }
+        }
     },
     toggleSelection(rows) {//选中行
       if (rows) {
