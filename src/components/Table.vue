@@ -94,7 +94,7 @@
           :sortable="'custom'&&isSort">
             <template slot-scope="scope">
              <div style="cursor:pointer;position: relative;"> 
-               <img @click="imgclick(isimgclick,scope.row.imgpath)" :src="getimglist(scope.row.imgpath)"   width="60" height="30">
+               <img @click="imgclick(isimgclick,scope.row.imgpath)" :src="getimglist(scope.row.imgpath)" class="yimg">
 
               </div>
                <div id="big-img-box" v-if="isimgclick">
@@ -613,6 +613,7 @@ export default {
 };
 </script>
 <style scoped>
+.yimg{width: 60px!important; height: 35px!important;}
 .table-other {
     position: relative;
     height: 34px;

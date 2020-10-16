@@ -17,8 +17,8 @@ var aport4 = 'yewu'
 
 // 苏州市公安局.APP采集系统管理后台
 // var aport5 = 'szforeigners'
-var aport5 = "http://192.168.3.174:6004" // 174测试环境
-var aport6 = "http://192.168.3.174:6004/static" // 图片服务器
+var aport5 = "http://192.168.3.100:8001" // 174测试环境
+var aport6 = "http://192.168.3.100:8001/static" // 图片服务器
 // 引用axios
 import axios from 'axios';
 import store from '@/store'
