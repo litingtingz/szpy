@@ -769,15 +769,25 @@
     padding: 15px;
     box-sizing: border-box;
 }
-.hone-head-type,.home-head-con{
+.hone-head-type{
     font-size: 12px;
+    color: #fff;
+    padding-bottom: 5px;
+}
+.home-head-con{
+    font-size: 16px;
     color: #fff;
     padding-bottom: 3px;
 }
 .home-head-num{
-    font-size: 25px;
+    font-size: 16px;
     color: #fff;
-    padding: 5px 0px;
+    padding-bottom: 3px;
+}
+.home-head-yw{
+    font-size: 14px;
+    color: #fff;
+    padding-bottom: 3px;
 }
 .home-body{
     width: 100%;
@@ -794,3 +804,201 @@
     margin: 0px 10px;
     border-bottom: 1px solid #eee;
 }
+.home-map{
+    /* background: url('../images/home/map_2.png') no-repeat; */
+    
+    height: 500px;
+    margin-top: 10px;
+    position: relative;
+}
+.map-0{
+    background: url('../images/home/map_0.png') no-repeat;
+    background-size: 100%;
+}
+.map-1{
+    background: url('../images/home/map_1.png') no-repeat;
+    background-size: 100%;
+}
+.map-2{
+    background: url('../images/home/map_2.png') no-repeat;
+    background-size: 100%;
+}
+.yuanqu{
+    position: absolute;
+    width: 38px;
+    height: 42px;
+    
+    bottom: 197px;
+    left: 163px;
+    border-radius: 30px;
+}
+.gaoxin{
+    position: absolute;
+    width: 31px;
+    height: 35px;
+    bottom: 219px;
+    left: 81px;
+    border-radius: 30px;
+}
+.wuzhong{
+    position: absolute;
+    width: 38px;
+    height: 42px;
+    bottom: 148px;
+    left: 98px;
+    border-radius: 30px;
+}
+.xiangc{
+    position: absolute;
+    width: 38px;
+    height: 42px;
+    bottom: 248px;
+    left: 132px;
+    border-radius: 30px;
+}
+.gusu{
+    position: absolute;
+    width: 27px;
+    height: 35px;
+    bottom: 200px;
+    left: 124px;
+    border-radius: 30px;
+}
+.wujiang{
+    position: absolute;
+    width: 38px;
+    height: 42px;
+    bottom: 106px;
+    left: 150px;
+    border-radius: 30px;
+}
+.changs{
+    position: absolute;
+    width: 38px;
+    height: 42px;
+    top: 125px;
+    left: 181px;
+    border-radius: 30px;
+}
+.zjg{
+    position: absolute;
+    width: 38px;
+    height: 42px;
+    top: 40px;
+    left: 132px;
+    border-radius: 30px;
+}
+.huns{
+    position: absolute;
+    width: 38px;
+    height: 50px;
+    bottom: 196px;
+    right: 78px;
+    border-radius: 30px;
+}
+.taic{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    bottom: 290px;
+    right: 33px;
+    border-radius: 30px;
+}
+.dujia{
+    position: absolute;
+    width: 34px;
+    height: 35px;  
+    bottom: 120px;
+    left: 14px;
+    border-radius: 30px;
+}
+.loufeng{
+    position: absolute;
+    bottom: 156px;
+    left: 281px;
+}
+.weiting{
+    position: absolute;
+    top: 151px;
+    left: 380px;
+}
+.shengpu{
+    position: absolute;
+    bottom: 243px;
+    right: 265px;
+}
+.tangpai{
+    position: absolute;
+    bottom: 184px;
+    left: 430px;
+}
+.huxi{
+    position: absolute;
+    bottom: 234px;
+    left: 290px;
+}
+.hudong{
+    position: absolute;
+    bottom: 252px;
+    left: 508px;
+}
+.yongan{
+    position: absolute;
+    bottom: 155px;
+    right: 372px;
+}
+.yongan_1{
+    position: absolute;
+    bottom: 87px;
+    right: 490px;
+}
+.yangch{
+    position: absolute;
+    top: 102px;
+    right: 399px;
+}
+.baoshui{
+    position: absolute;
+    top: 244px;
+    right: 515px;
+}
+.baoshui_1{
+    position: absolute;
+    top: 239px;
+    right: 258px;
+}
+.dongsha{
+    position: absolute;
+    top: 248px;
+    right: 377px; 
+}
+.legend-color{
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+.legend-label{
+    padding-left: 6px;
+    font-size: 12px;
+}
+.home-map-legend{
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+}
+.home-map-legend li{
+    padding:2px 0px;
+}
+.home-map-d{
+   background:url('../images/home/map_d.png') no-repeat; 
+   background-size: 55%;
+   background-position: center;
+   width: 100%;
+   height: 600px;
+   position: relative;
+}
+.home-pop.el-popover{
+    min-width: 70px;
+}
+

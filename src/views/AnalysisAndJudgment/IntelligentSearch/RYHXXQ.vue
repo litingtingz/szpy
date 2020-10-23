@@ -169,7 +169,7 @@ export default {
       jbxx:[
         {
           name:'中文姓名',
-          value:'麦克'
+          value:'测试数据'
         },
         {
           name:'性别',
@@ -181,7 +181,7 @@ export default {
         },
         {
           name:'英文姓名',
-          value:'miake'
+          value:'ceshishuju'
         },
         {
           name:'出生日期',

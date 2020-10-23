@@ -258,6 +258,7 @@ export default {
                 type: "warning"
               }).then(() => {});
             } else {
+              this.$store.dispatch("aGetFirst", true); //是否首次登陆
               this.$router.push({ name: "Frame" }); //page:由第三方介入页面跳转
               this.isLogin = false;
             }

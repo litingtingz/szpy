@@ -5,7 +5,7 @@
         <div class="ak-tab-item hand" :class="{'ak-checked':check==0}" @click="check=0">
           境外人员
         </div>
-        <div class="ak-tab-item hand" :class="{'ak-checked':check==1}" @click="check=1">
+        <div v-show="false" class="ak-tab-item hand" :class="{'ak-checked':check==1}" @click="check=1">
           大陆居民
         </div>
       </div>
@@ -34,8 +34,8 @@
             <el-container>
               <el-aside width="80px"><img :src="require('@/assets/images/main/mrzp.png')" alt=""></el-aside>
               <el-main>
-                <div class="card-data">
-                  <h3>TAN TYGHUIKJH MANO</h3>
+                <div class="card-data" @click="toDetail">
+                  <h3>{{item.name}}</h3>
                   <el-row>
                     <el-col :span="6" class="t-el-content"><div class="t-el-text">性别：</div><div class="t-el-sub">{{item.xb}}</div></el-col>
                     <el-col :span="6" class="t-el-content"><div class="t-el-text">出生日期：</div><div class="t-el-sub">{{item.csrq}}</div></el-col>
@@ -62,27 +62,27 @@ export default {
         {
           url:'lz',
           name:'临住数据',
-          data:'345678',
+          data:'0',
         },
         {
           url:'cz',
           name:'常住数据',
-          data:'345678',
+          data:'0',
         },
         {
           url:'qz',
           name:'签证数据',
-          data:'345678',
+          data:'0',
         },
         {
           url:'aj',
           name:'案件数据',
-          data:'345678',
+          data:'0',
         },
         {
           url:'crj',
           name:'出入境数据',
-          data:'345678',
+          data:'0',
         },
       ],
       cardData:[
@@ -91,32 +91,37 @@ export default {
           csrq:'1993-08-09',
           gjdqmc:'加利福尼亚',
           zjhm:'EG145865826',
-          name:'TAN TYGHUIKJH MANO'
+          name:'测试数据'
         },
-        {
-          xb:'男',
-          csrq:'1993-08-09',
-          gjdqmc:'加利福尼亚',
-          zjhm:'EG145865826',
-          name:'TAN TYGHUIKJH MANO'
-        },
-        {
-          xb:'男',
-          csrq:'1993-08-09',
-          gjdqmc:'加利福尼亚',
-          zjhm:'EG145865826',
-          name:'TAN TYGHUIKJH MANO'
-        },
-        {
-          xb:'男',
-          csrq:'1993-08-09',
-          gjdqmc:'加利福尼亚',
-          zjhm:'EG145865826',
-          name:'TAN TYGHUIKJH MANO'
-        },
+        // {
+        //   xb:'男',
+        //   csrq:'1993-08-09',
+        //   gjdqmc:'加利福尼亚',
+        //   zjhm:'EG145865826',
+        //   name:'TAN TYGHUIKJH MANO'
+        // },
+        // {
+        //   xb:'男',
+        //   csrq:'1993-08-09',
+        //   gjdqmc:'加利福尼亚',
+        //   zjhm:'EG145865826',
+        //   name:'TAN TYGHUIKJH MANO'
+        // },
+        // {
+        //   xb:'男',
+        //   csrq:'1993-08-09',
+        //   gjdqmc:'加利福尼亚',
+        //   zjhm:'EG145865826',
+        //   name:'TAN TYGHUIKJH MANO'
+        // },
       ],
     }
   },
+  methods:{
+    toDetail(){
+      this.$router.push({name:'RYHXXQ'})
+    },
+  }
 }
 </script>
 <style>

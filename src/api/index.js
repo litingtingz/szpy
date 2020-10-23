@@ -1,8 +1,8 @@
 // 配置API接口地址
 
-var root = 'http://192.168.3.131:1101/'//测试
+// var root = 'http://192.168.3.131:1101/'//测试
 // var root = 'http://50.73.70.121:1101/'//公安测试环境
-// var root = 'http://50.73.70.116:1101/'//公安正式环境
+var root = 'http://50.73.70.116:1101/'//公安正式环境
 
 // var root = 'http://10.0.30.43:1101'//石本地
 // var root = 'http://10.0.8.68:1101/'//任本地
@@ -17,7 +17,10 @@ var aport4 = 'yewu'
 
 // 苏州市公安局.APP采集系统管理后台 http://192.168.3.100:8001
 var aport5 = "szforeigners"
-var aport6 = "szforeigners/static"
+// var aport6 = "szforeigners/static"
+var aport6 = "http://50.73.70.116:1101/szforeigners/static"
+// var aport6 = "http://192.168.3.131:1101/szforeigners/static"
+
 // var aport5 = "http://192.168.3.100:8001" // 174测试环境
 // var aport6 = "http://192.168.3.100:8001/static" // 图片服务器
 // 引用axios

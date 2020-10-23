@@ -1400,7 +1400,6 @@ export default {
         ],
         series: [
           {
-            name: "销量",
             type: "bar",
             barWidth: 10,
             showBackground: true,
@@ -1479,7 +1478,7 @@ export default {
         },
         series: [
           {
-            name: "",
+            // name:'',
             type: "pie",
             radius: ["35%", "50%"],
             center: ["50%", "45%"],
@@ -1618,7 +1617,7 @@ export default {
         ],
         series: [
           {
-            name: "销量",
+           
             type: "bar",
             barWidth: 10,
             showBackground: true,

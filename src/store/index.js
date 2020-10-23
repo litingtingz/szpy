@@ -12,7 +12,8 @@ let sfzhTurn = sessionStorage.getItem('sfzhTurn')
 let aurl = sessionStorage.getItem('aurl')
 let itstate = sessionStorage.getItem('itstate')
 let isHome = sessionStorage.getItem('isHome')
-
+let isFirst = sessionStorage.getItem('isFirst')
+let isHttp = sessionStorage.getItem('isHttp')
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -21,6 +22,8 @@ export default new Vuex.Store({
     turnPage:'',
     itstate:itstate||false,
     isHome:isHome||false,
+    isFirst:isFirst||false,
+    isHttp:isHttp||false,
     sfzhTurn:sfzhTurn||'',
     menuTo:{},
     user: user || {},
@@ -87,6 +90,14 @@ export default new Vuex.Store({
     countryCode:[], // APP采集系统管理后台 国家地区
   },
   mutations: {
+    getFirst(state,data){
+      state.isFirst = data;
+      window.sessionStorage.setItem("isFirst", data)
+    },
+    getHttp(state,data){
+      state.isHttp = data;
+      window.sessionStorage.setItem("isHttp", data)
+    },
     getLeftWid(state,data){
       state.leftWid = data
     },
@@ -267,6 +278,18 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    aGetHttp(context, payload){
+      return new Promise((resolve) => {
+        context.commit('getHttp', payload)
+        resolve(payload)
+      })
+    },
+    aGetFirst(context, payload){
+      return new Promise((resolve) => {
+        context.commit('getFirst', payload)
+        resolve(payload)
+      })
+    },
     aGetToken(context, payload) {
       return new Promise((resolve) => {
         context.commit('getToken', payload)

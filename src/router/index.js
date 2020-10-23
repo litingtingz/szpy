@@ -131,6 +131,12 @@ const routes = [
         name: 'RYHXXQ',
         component: () => import(/* webpackChunkName: "AnalysisAndJudgment" */ '../views/AnalysisAndJudgment/IntelligentSearch/RYHXXQ.vue')
       },
+      //预警分析
+      {
+        path: '/YjAnalysis',
+        name: 'YjAnalysis',
+        component: () => import(/* webpackChunkName: "AnalysisAndJudgment" */ '../views/AnalysisAndJudgment/EarlyWarningAnalysis/YjAnalysis.vue')
+      },
       {
         // app采集系统管理后台-》采集信息管理-》采集信息列表
         path: '/znCollectlistIntranet',

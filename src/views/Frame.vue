@@ -4,7 +4,7 @@
       <Header :headData="$store.state.menu" v-show="!$store.state.itstate"></Header>
       <el-container>
         <Left :leftMenu="$store.state.leftMenu" v-show="!$store.state.itstate&&!$store.state.isHome"></Left>
-        <el-main class="main">
+        <el-main class="main bg-kong">
           <Breadcrumb v-show="!$store.state.itstate&&!$store.state.isHome"></Breadcrumb>
           <router-view />
         </el-main>
@@ -37,8 +37,8 @@ export default {
     };
   },
   mounted() {
+    console.log("store", window.location.href,!this.$store.state.itstate,this.$store.state.isHome);
     if(window.location.href.includes('Home')){
-      console.log("store", window.location.href,!this.$store.state.itstate,this.$store.state.isHome);
       this.$store.dispatch("aGetHome", true); //是否隐藏菜单标志
     }else{
       this.$store.dispatch("aGetHome", false); //是否隐藏菜单标志
@@ -62,5 +62,10 @@ export default {
   overflow: hidden !important;
   min-height: 91vh;
   padding: 8px 20px 20px;
+}
+.bg-kong{
+  background: url('../assets/images/main/bg_k.png') no-repeat;
+  background-size: 63%;
+  background-position: center;
 }
 </style>>

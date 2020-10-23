@@ -6,7 +6,8 @@
           <div class="home-head-box">
             <p class="hone-head-type">{{head.type}}</p>
             <p class="home-head-con">{{head.content}}</p>
-            <p class="home-head-num">{{head.num}}</p>
+            <p class="home-head-num" v-if="head.num">{{head.num}}</p>
+            <p class="home-head-yw " v-if="head.numyw">{{head.numyw}}</p>
           </div>
         </li>
       </ul>
@@ -31,7 +32,7 @@
                   </el-col>
                   <el-col :span="12">
                     <div>
-                      <p class="home-chart-title">{{'临住登记变化量'}}</p>
+                      <p class="home-chart-title">{{'住宿登记变化量'}}</p>
                       <div>
                         <Charts 
                         :timeRange="timeRange_2" 
@@ -83,39 +84,141 @@
               v-for="(item,ind) in menu" 
               :key="ind" 
               :label="item.label" 
-              :name="item.name">{{item.label}}</el-tab-pane>
+              :name="item.name">
+              <div class="home-map" :class="'map-'+activeName">
+                <div v-for="(jtem,jts) in ycNum" :key="jts">
+                  <el-popover
+                    placement="top-start"
+                    popper-class="home-pop"
+                    width="50"
+                    trigger="hover">
+                    <span style="font-weight:bold">{{jtem.num}}</span>
+                    <div @click="numDia(jtem)" slot="reference" style="background-color:transparent" :class="jtem.class"></div>
+                  </el-popover>
+                </div>
+                <div class="home-map-legend">
+                    <ul>
+                      <li v-for="(item,ind) in legend" :key="ind">
+                        <span class="legend-color" :style="{'backgroundColor':item.color}"></span>
+                        <span class="legend-label">{{item.label}}</span>
+                      </li>
+                    </ul>
+                  </div>
+              </div>
+              </el-tab-pane>
             </el-tabs>
           </el-aside>
         </el-container>
-        
-        <!-- <el-col :span="6">
-          
-        </el-col> -->
-      
     </div>
+    <Dialog :isShowDialog="isShowDialog"  :title="dialogTitle" @hideDialog="isShowDialog=false">
+        <div class="home-map-d">
+          <span v-for="(item,ind) in numArr" :key="ind" :class="item.class" style="font-weight:bold">{{item.num}}</span>
+        </div>
+    </Dialog>
   </div>
 </template>
 <script>
 import Charts from "@/components/Charts.vue";
+import Dialog from "@/components/Dialog.vue";
 export default {
-  components: { Charts },
+  components: { Charts,Dialog },
   data(){
     return{
+      isShowDialog:false,
+      dialogTitle:'详情',
       menu:[
         {
-          label:'省厅下发常住',
-          name:'first',
-        },
-        {
-          label:'办证常住',
-          name:'second',
-        },
-        {
           label:'实有常住',
-          name:'third',
+          name:'2',
+          num:'300',
+        },
+        {
+          label:'省厅下发常住',
+          name:'0',
+          num:'100',
+        },
+        {
+          label:'非办证常住',
+          name:'1',
+          num:'200',
         },
       ],
-      activeName:'first',
+      legend:[
+        {
+          color:'#75E29F',
+          label:'0 - 1000',
+        },
+        {
+          color:'#DFCA3D',
+          label:'1000 - 5000',
+        },
+        {
+          color:'#EC6941',
+          label:'5000 - 10000',
+        },
+        {
+          color:'#D04E63',
+          label:'10000以上',
+        },
+      ],
+      numArr:[
+        {
+          class:'loufeng',
+          num:this.activeName=='0'?83:this.activeName=='1'?237:320
+        },
+        {
+          class:'weiting',
+          num:this.activeName=='0'?111:this.activeName=='1'?183:294
+        },
+      ],
+      ycNum:[
+        {
+          class:'yuanqu',
+          num:this.activeName=='0'?3511:this.activeName=='1'?7701:11212
+        },
+        {
+          class:'gaoxin',
+          num:this.activeName=='0'?165:this.activeName=='1'?2373:2538
+        },
+        {
+          class:'wuzhong',
+          num:this.activeName=='0'?1072:this.activeName=='1'?589:1661
+        },
+        {
+          class:'xiangc',
+          num:this.activeName=='0'?288:this.activeName=='1'?302:590
+        },
+        {
+          class:'gusu',
+          num:this.activeName=='0'?419:this.activeName=='1'?399:818
+        },
+        {
+          class:'wujiang',
+          num:this.activeName=='0'?819:this.activeName=='1'?0:819
+        },
+        {
+          class:'changs',
+          num:this.activeName=='0'?247:this.activeName=='1'?785:1032
+        },
+        {
+          class:'zjg',
+          num:this.activeName=='0'?259:this.activeName=='1'?1000:1259
+        },
+        {
+          class:'huns',
+          num:this.activeName=='0'?4119:this.activeName=='1'?2313:6432
+        },
+
+        {
+          class:'taic',
+          num:this.activeName=='0'?365:this.activeName=='1'?517:878
+        },
+        {
+          class:'dujia',
+          num:this.activeName=='0'?14:this.activeName=='1'?14:28
+        },
+      ],
+      activeName:'2',
       timeRange_1:0,
       timeRange_2:0,
       timeRange_3:0,
@@ -127,38 +230,203 @@ export default {
       optData_4:{},
       optData_5:{},
       headArr:[
+        // {
+        //   type:'临住数据展示',
+        //   content:'当年：162887 条',
+        //   num:'当月：16254 条',
+        //   numyw:'当天：0',
+        //   color:'#8693F3'
+        // },
         {
-          type:'人员预警',
-          content:'占比已超15%',
-          num:48,
-          color:'#8693F3'
-        },
-        {
-          type:'单位预警',
-          content:'占比已超15%',
-          num:1205,
+          type:'实有人口',
+          content:'办证常住：18898 条',
+          num:'非办证常住：11270 条',
+          numyw:'实有人数：30168 人',
           color:'#BC8CEF'
         },
+        // {
+        //   type:'案事件数据展示',
+        //   content:'当月新增案件：64 条',
+        //   num:'当年按年总和：1017 条',
+        //   color:'#FFA897'
+        // },
         {
-          type:'单位预警',
-          content:'占比已超15%',
-          num:357,
+          type:'预警处理',
+          content:'未完成：0 条',
+          num:'已完成：0 条',
           color:'#FFA897'
         },
         {
-          type:'单位预警',
-          content:'占比已超15%',
-          num:713,
+          type:'协查任务',
+          content:'未完成：12648 条',
+          num:'已完成：40560 条',
           color:'#8AC3F8'
+        },
+        {
+          type:'入市辖区人员',
+          content:'高铁民航：11340 人',
+          num:'客运大巴：9589 人',
+          numyw:'总数：20929 人',
+          color:'#8693F3'
         },
       ]
     }
   },
   mounted(){
+    this.ycNum=[
+        {
+          class:'yuanqu',
+          num:this.activeName=='0'?3511:this.activeName=='1'?7701:11212
+        },
+        {
+          class:'gaoxin',
+          num:this.activeName=='0'?165:this.activeName=='1'?2373:2538
+        },
+        {
+          class:'wuzhong',
+          num:this.activeName=='0'?1072:this.activeName=='1'?589:1661
+        },
+        {
+          class:'xiangc',
+          num:this.activeName=='0'?288:this.activeName=='1'?302:590
+        },
+        {
+          class:'gusu',
+          num:this.activeName=='0'?419:this.activeName=='1'?399:818
+        },
+        {
+          class:'wujiang',
+          num:this.activeName=='0'?819:this.activeName=='1'?0:819
+        },
+        {
+          class:'changs',
+          num:this.activeName=='0'?247:this.activeName=='1'?785:1032
+        },
+        {
+          class:'zjg',
+          num:this.activeName=='0'?259:this.activeName=='1'?1000:1259
+        },
+        {
+          class:'huns',
+          num:this.activeName=='0'?4119:this.activeName=='1'?2313:6432
+        },
+
+        {
+          class:'taic',
+          num:this.activeName=='0'?365:this.activeName=='1'?517:878
+        },
+        {
+          class:'dujia',
+          num:this.activeName=='0'?14:this.activeName=='1'?14:28
+        },
+      ]
     this.begin()
   },
   methods:{
+    numDia(val){
+      if(val.class=="yuanqu"){
+        this.isShowDialog = true
+      }
+      this.numArr=[
+        {
+          class:'loufeng',
+          num:this.activeName=='0'?83:this.activeName=='1'?237:320
+        },
+        {
+          class:'weiting',
+          num:this.activeName=='0'?111:this.activeName=='1'?183:294
+        },
+        {
+          class:'shengpu',
+          num:this.activeName=='0'?3:this.activeName=='1'?32:35
+        },
+        {
+          class:'tangpai',
+          num:this.activeName=='0'?87:this.activeName=='1'?173:260
+        },
+        {
+          class:'huxi',
+          num:this.activeName=='0'?1301:this.activeName=='1'?2505:3806
+        },
+        {
+          class:'hudong',
+          num:this.activeName=='0'?1296:this.activeName=='1'?3308:4604
+        },
+        {
+          class:'yongan',
+          num:this.activeName=='0'?337:this.activeName=='1'?845:1182
+        },
+        {
+          class:'yongan_1',
+          num:this.activeName=='0'?337:this.activeName=='1'?845:1182
+        },
+        {
+          class:'yangch',
+          num:this.activeName=='0'?16:this.activeName=='1'?8:24
+        },
+        {
+          class:'baoshui',
+          num:this.activeName=='0'?13:this.activeName=='1'?11:24
+        },
+        {
+          class:'baoshui_1',
+          num:this.activeName=='0'?13:this.activeName=='1'?11:24
+        },
+        {
+          class:'dongsha',
+          num:this.activeName=='0'?370:this.activeName=='1'?273:643
+        },
+      ]
+    },
     handleClick(tab, event) {
+      console.log(this.activeName)
+      this.ycNum=[
+        {
+          class:'yuanqu',
+          num:this.activeName=='0'?3511:this.activeName=='1'?7701:11212
+        },
+        {
+          class:'gaoxin',
+          num:this.activeName=='0'?165:this.activeName=='1'?2373:2538
+        },
+        {
+          class:'wuzhong',
+          num:this.activeName=='0'?1072:this.activeName=='1'?589:1661
+        },
+        {
+          class:'xiangc',
+          num:this.activeName=='0'?288:this.activeName=='1'?302:590
+        },
+        {
+          class:'gusu',
+          num:this.activeName=='0'?419:this.activeName=='1'?399:818
+        },
+        {
+          class:'wujiang',
+          num:this.activeName=='0'?819:this.activeName=='1'?0:819
+        },
+        {
+          class:'changs',
+          num:this.activeName=='0'?247:this.activeName=='1'?785:1032
+        },
+        {
+          class:'zjg',
+          num:this.activeName=='0'?259:this.activeName=='1'?1000:1259
+        },
+        {
+          class:'huns',
+          num:this.activeName=='0'?4119:this.activeName=='1'?2313:6432
+        },
+
+        {
+          class:'taic',
+          num:this.activeName=='0'?365:this.activeName=='1'?517:878
+        },
+        {
+          class:'dujia',
+          num:this.activeName=='0'?14:this.activeName=='1'?14:28
+        },
+      ]
       console.log(tab, event);
     },
     begin(){
@@ -169,9 +437,9 @@ export default {
       this.chartShow_5()
     },
     chartFun_1(){
-      let xdata = ['1月','2月','3月','4月']
+      let xdata = ['2020/01', '2020/02', '2020/03', '2020/04', '2020/05','2020/06','2020/07','2020/08','2020/09','2020/10']
       let series = [{
-          data: [100, 632, 301, 934],
+          data: [91, 27, 92, 88,128,213,139,108,67,64],
           type: 'line',
           smooth: true
       }]
@@ -186,6 +454,13 @@ export default {
         //   x2: 30
         // },
         // legend: {data: legend},
+         tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
         xAxis: {
           type: "category",
           data: xdata,
@@ -252,7 +527,7 @@ export default {
             }
         },
         legend: {
-            data: ['Forest', 'Steppe', 'Desert']
+            data: ['宾馆', '社会面', '总计']
         },
         xAxis: [
             {
@@ -269,7 +544,7 @@ export default {
                   color: "#919294",
                   fontSize: 12
                 },
-                data: ['2012', '2013', '2014', '2015', '2016']
+                data: ['2020/01', '2020/02', '2020/03', '2020/04', '2020/05','2020/06','2020/07','2020/08','2020/09','2020/10']
             }
         ],
         yAxis: [
@@ -302,23 +577,23 @@ export default {
         ],
         series: [
             {
-                name: 'Forest',
+                name: '宾馆',
                 type: 'bar',
                 barGap: 0, 
                 barWidth: 8,   
-                data: [320, 332, 301, 334, 390]
+                data: [37911, 1320, 3926, 4159, 6924,8074,9884,12896,12252,11965]
             },
             {
-                name: 'Steppe',
+                name: '社会面',
                 type: 'bar', 
                 barWidth: 8,
-                data: [220, 182, 191, 234, 290]
+                data: [6397, 5421, 6606, 4799, 3817,5327,4883,5390,6645,4521]
             },
             {
-                name: 'Desert',
+                name: '总计',
                 type: 'bar',
                 barWidth: 8,
-                data: [150, 232, 201, 154, 190]
+                data: [44308, 6741, 10532, 8958, 10741,13401,14770,18286,18896,16254]
             },
         ]
       }
@@ -335,41 +610,42 @@ export default {
             x:'center',
             y:'center',
             left: 10,
-            data: ['直达', '营销广告', '搜索引擎']
+            data: ['中国台湾', '韩国', '日本','美国','马来西亚','印度','加拿大','新加坡','菲律宾','俄罗斯']
         },
         series: [
-            {
-                name: '人员占比',
-                type: 'pie',
-                selectedMode: 'single',
-                radius: [0, '30%'],
-                label: {
-                     normal: {
-                       position: 'inner',
-                       show : false
-                    }
-                },
-                labelLine: {
-                    show: false
-                },
-                data: [
-                    {value: 335, name: '直达', selected: true},
-                    {value: 679, name: '营销广告'},
-                    {value: 1548, name: '搜索引擎'}
-                ],
-                itemStyle:{
-                  normal:{
-                    color:((para)=>{
-                      var colorList = ['#CB9BFF','#FF9480','#95A2FF']
-                      return colorList[para.dataIndex]
-                    })
-                  }
-                },
-            },
+            // {
+            //     name: '人员占比',
+            //     type: 'pie',
+            //     selectedMode: 'single',
+            //     radius: [0, '30%'],
+            //     label: {
+            //          normal: {
+            //            position: 'inner',
+            //            show : false
+            //         }
+            //     },
+            //     labelLine: {
+            //         show: false
+            //     },
+            //     data: [
+            //         {value: 335, name: '直达', selected: true},
+            //         {value: 679, name: '营销广告'},
+            //         {value: 1548, name: '搜索引擎'}
+            //     ],
+            //     itemStyle:{
+            //       normal:{
+            //         color:((para)=>{
+            //           var colorList = ['#CB9BFF','#FF9480','#95A2FF']
+            //           return colorList[para.dataIndex]
+            //         })
+            //       }
+            //     },
+            // },
             {
                 name: '人员占比',
                 type: 'pie',
                 radius: ['40%', '55%'],
+                center:['50%','40%'],
                 label: {
                      normal: {
                        position: 'inner',
@@ -379,15 +655,22 @@ export default {
                 itemStyle:{
                   normal:{
                     color:((para)=>{
-                      var colorList = ['#CB9BFF','#FF9480','#95A2FF']
+                      var colorList = ['#CB9BFF','#FF9480','#95A2FF','#9EE0FF','#37B6FF','#8593FC','#AF88FF','#0A2E82','#ACBEEE','#B93C61']
                       return colorList[para.dataIndex]
                     })
                   }
                 },
                 data: [
-                    {value: 335, name: '直达'},
-                    {value: 310, name: '邮件营销'},
-                    {value: 234, name: '联盟广告'},
+                    {value: 3056, name: '中国台湾'},
+                    {value: 718, name: '韩国'},
+                    {value: 386, name: '日本'},
+                    {value: 295, name: '美国'},
+                    {value: 164, name: '马来西亚'},
+                    {value: 138, name: '印度'},
+                    {value: 102, name: '加拿大'},
+                    {value: 100, name: '新加坡'},
+                    {value: 98, name: '菲律宾'},
+                    {value: 79, name: '俄罗斯'},
                 ]
             }
         ]
@@ -405,13 +688,14 @@ export default {
             x:'center',
             y:'center',
             left: 10,
-            data: ['直达', '营销广告', '搜索引擎']
+            data: ['停留', '居留', '签证']
         },
         series: [
             {
                 name: '人员占比',
                 type: 'pie',
                 radius: ['40%', '55%'],
+                center:['50%','40%'],
                 label: {
                      normal: {
                        position: 'inner',
@@ -431,9 +715,9 @@ export default {
                   }
                 },
                 data: [
-                    {value: 335, name: '直达'},
-                    {value: 310, name: '营销广告'},
-                    {value: 234, name: '搜索引擎'},
+                    {value: 1569, name: '停留'},
+                    {value: 12004, name: '居留'},
+                    {value: 365, name: '签证'},
                 ]
             }
         ]
@@ -451,13 +735,14 @@ export default {
             x:'center',
             y:'center',
             left: 10,
-            data: ['直达', '营销广告', '搜索引擎']
+            data: ['企业工作人员', '高校留学生', '文教专家','亲属','其它']
         },
         series: [
             {
                 name: '人员占比',
                 type: 'pie',
                 radius: ['40%', '55%'],
+                center:['50%','40%'],
                 label: {
                      normal: {
                        position: 'inner',
@@ -471,15 +756,17 @@ export default {
                 itemStyle:{
                   normal:{
                     color:((para)=>{
-                      var colorList = ['#AF88FF','#37B6FF','#8593FC']
+                      var colorList = ['#AF88FF','#37B6FF','#8593FC','#9EE0FF','#37B6FF']
                       return colorList[para.dataIndex]
                     })
                   }
                 },
                 data: [
-                    {value: 335, name: '直达'},
-                    {value: 310, name: '营销广告'},
-                    {value: 234, name: '搜索引擎'},
+                    {value: 301, name: '企业工作人员'},
+                    {value: 23, name: '高校留学生'},
+                    {value: 120, name: '文教专家'},
+                    {value: 292, name: '亲属'},
+                    {value: 257, name: '其它'},
                 ]
             }
         ]

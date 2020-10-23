@@ -21,10 +21,13 @@
         <img class="user-tx mr-10" src="@/assets/images/main/tx.png" />
         <div class="user-msg">
           <div class="user-name">{{$store.state.user.xm}}</div>
-          <div class="user-dd">
+          <div class="user-dd" :title="$store.state.user.xtyhbmmc">
             {{$store.state.user.xtyhbmmc}}
             <i class="el-icon-location"></i>
           </div>
+        </div>
+        <div class="user-logout" style="border-right:1px solid rgb(130, 124, 124);margin-left:15px" @click="$router.push({name:'Home'});$store.dispatch('aGetHttp',false)">
+          <img src="@/assets/images/main/home.png" />
         </div>
         <div class="user-logout" @click="logout">
           <img src="@/assets/images/main/exit.png" />
@@ -72,11 +75,7 @@ export default {
         }
         if(val.name == 'Home'){
           this.$store.dispatch("aGetHome", true); //是否隐藏菜单标志
-          this.$store.state.menu.forEach((item,index) => {
-            if(item.menu_url == 'sy'){
-              this.active = index
-            }
-          });
+          this.active = "5"
         }else{
           this.$store.dispatch("aGetHome", false); //是否隐藏菜单标志
         }
@@ -103,17 +102,20 @@ export default {
       // if(this.$route.name == 'Frame'){
       //   this.toLeftMenu(this.$store.state.menu[0], 0);
       // }
-      // this.$router.push({ name: "Home" });
-      this.toLeftMenu(this.$store.state.menu[0], 0);
+      if(this.$route.name == 'Home' || this.$store.state.isFirst){
+        this.$router.push({ name: "Home" });
+        this.active = '5'
+        this.$store.dispatch("aGetFirst", false); //是否首次登陆
+      }else{
+        this.toLeftMenu(this.$store.state.menu[0], 0);
+      }
     },
     toLeftMenu(item, index ,active1,active2,query) {
       console.log(1, item,index);
-      if(item.menu_url == 'sy'){
-        this.$router.push({ name: "Home" });
-      }
       this.active = index;
       this.$store.commit("getLeftMenu", item.childrenMenu);
       this.$store.commit("getMenuTo",{active1:active1,active2:active2,query:query})
+      this.$store.dispatch("aGetHome", false); //是否隐藏菜单标志
     },
     logout() {
       let url = this.$store.state.aurl;
@@ -188,14 +190,18 @@ export default {
 .user-dd {
   font-size: 14px;
   color: #9fb8fb;
+  max-width: 230px;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
 }
 .user-logout {
   height: 100%;
-  width: 74px;
+  width: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(10, 22, 49, 0.4);
-  margin-left: 15px;
+  /* margin-left: 15px; */
 }
 </style>

@@ -81,8 +81,11 @@ export default {
     // if(this.$route.name == 'Frame'){
     //   this.toChildren(this.$store.state.leftMenu[0], 0);//首次加载第一个二级菜单
     // }
-    this.toChildren(this.$store.state.leftMenu[0], 0);//首次加载第一个二级菜单
-    
+    if(this.$route.name == 'Home'){
+      console.log('left==',this.$route.name)
+    }else{
+      this.toChildren(this.$store.state.leftMenu[0], 0);//首次加载第一个二级菜单
+    }
   },
   methods: {
     openLeft() {
@@ -112,7 +115,14 @@ export default {
         if(mt){
           this.toPage(this.chilrenNav[this.$store.state.menuTo.active2], this.$store.state.menuTo.active2,query);
         }else{
-          this.toPage(this.chilrenNav[0], 0);//首先跳转到第一个二级菜单下的第一个三级菜单
+          if(this.chilrenNav[0].menu_url.indexOf("http") > -1){
+            this.active2 = '10000'
+            this.$store.dispatch('aGetHttp',true)
+            this.$router.push({name:'Frame'})
+          }else{  
+            this.$store.dispatch('aGetHttp',false)
+            this.toPage(this.chilrenNav[0], 0);//首先跳转到第一个二级菜单下的第一个三级菜单
+          }
         }
       }
     },
