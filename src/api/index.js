@@ -15,10 +15,11 @@ var aport3 = 'lzsb'
 var aport4 = 'yewu'
 // var aport4 = 'http://192.168.3.131:9426'
 
-// 苏州市公安局.APP采集系统管理后台
-// var aport5 = 'szforeigners'
-var aport5 = "http://192.168.3.100:8001" // 174测试环境
-var aport6 = "http://192.168.3.100:8001/static" // 图片服务器
+// 苏州市公安局.APP采集系统管理后台 http://192.168.3.100:8001
+var aport5 = "szforeigners"
+var aport6 = "szforeigners/static"
+// var aport5 = "http://192.168.3.100:8001" // 174测试环境
+// var aport6 = "http://192.168.3.100:8001/static" // 图片服务器
 // 引用axios
 import axios from 'axios';
 import store from '@/store'
