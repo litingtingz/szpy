@@ -49,11 +49,17 @@
         <!-- 迁入量 -->
         <el-col :xl="8" :lg="12" class="pad-15">
           <p class="chart-title mb-10">迁入量</p>
-          <div class="chart-outer ml-10">
-            <div class="chart-outer-label">分析维度</div>
-            <el-select class="chart-select" v-model="analyArr.type_1" @change="analyFun(1)" placeholder="请选择" size="medium">
-              <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
-            </el-select>
+          <div class="chart-outer ml-10" style="justify-content:flex-end">
+            <div v-show="false">
+              <div class="chart-outer-label">分析维度</div>
+              <el-select class="chart-select" v-model="analyArr.type_1" @change="analyFun(1)" placeholder="请选择" size="medium">
+                <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
+              </el-select>
+            </div>
+            <div style="margin-right: 70px;">
+              <div class="chart-compare">同比：<span>{{InObj.y2y}}</span><i :class="InObj.y2y.includes('-')?'el-icon-bottom compare-icon icon-red':'el-icon-top compare-icon icon-green'"></i></div>
+              <div class="chart-compare">环比：<span>{{InObj.m2m}}</span><i :class="InObj.m2m.includes('-')?'el-icon-bottom compare-icon icon-red':'el-icon-top compare-icon icon-green'"></i></div>
+            </div>
           </div>
           <div @click="chartDiaFun(1)"><Charts :timeRange="timeRange_1" :optData="optData_1" :id="'1'" @chartAllClick="chartAllClick"></Charts></div>
           <!-- <div class="chart-box">
@@ -92,11 +98,17 @@
         <!-- 迁出量 -->
         <el-col :xl="8" :lg="12" class="pad-15">
           <p class="chart-title mb-10">迁出量</p>
-          <div class="chart-outer ml-10">
-            <div class="chart-outer-label">分析维度</div>
-            <el-select class="chart-select" v-model="analyArr.type_2" @change="analyFun(2)" placeholder="请选择" size="medium">
-              <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
-            </el-select>
+          <div class="chart-outer ml-10" style="justify-content:flex-end">
+            <div v-show="false">
+              <div class="chart-outer-label">分析维度</div>
+              <el-select class="chart-select" v-model="analyArr.type_2" @change="analyFun(2)" placeholder="请选择" size="medium">
+                <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
+              </el-select>
+            </div>
+            <div style="margin-right: 70px;">
+              <div class="chart-compare">同比：<span>{{OutObj.y2y}}</span><i :class="OutObj.y2y.includes('-')?'el-icon-bottom compare-icon icon-red':'el-icon-top compare-icon icon-green'"></i></div>
+              <div class="chart-compare">环比：<span>{{OutObj.m2m}}</span><i :class="OutObj.m2m.includes('-')?'el-icon-bottom compare-icon icon-red':'el-icon-top compare-icon icon-green'"></i></div>
+            </div>
           </div>
           <div @click="chartDiaFun(2)"><Charts @chartAllClick="chartAllClick" :timeRange="timeRange_2" :optData="optData_2" :id="'2'"></Charts></div>
           <!-- <div class="chart-box">
@@ -152,7 +164,7 @@
               <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
             </el-select>
           </div>
-          <div @click="chartDiaFun(5)"><Charts @chartAllClick="chartAllClick" :timeRange="timeRange_5" :optData="optData_5" :id="'5'"></Charts></div>
+          <div @click="chartDiaFun(5)"><Charts @chartAllClick="chartAllClick" :key="timeRange_5" :optData="optData_5" :id="'5'"></Charts></div>
         </el-col>
         
         <!-- 国家地区 -->
@@ -175,7 +187,7 @@
               <el-option v-for="(item,ind) in sflbArr" :key="ind" :label="item.MC" :value="item.DM"></el-option>
             </el-select>
           </div>
-          <div @click="chartDiaFun(6)"><Charts @chartAllClick="chartAllClick" :key="new Date().getTime()" :timeRange="timeRange_6" :Cheight="'400px'" :optData="optData_6" :id="'6'"></Charts></div>
+          <div @click="chartDiaFun(6)"><Charts @chartAllClick="chartAllClick" :key="timeRange_6" :Cheight="'400px'" :optData="optData_6" :id="'6'"></Charts></div>
         </el-col>
       </el-row>
     </div>
@@ -212,6 +224,14 @@ export default {
         },
         pageSize: 15,
         pageNum: 1,
+      },
+      InObj:{
+        y2y:"",
+        m2m:"",
+      },
+      OutObj:{
+        y2y:"",
+        m2m:"",
       },
       timeRange_1:0,
       timeRange_2:0,
@@ -450,7 +470,7 @@ export default {
             spanArr.push(1);
             position = 0;
           } else {
-            if (this.tableData.list[index][spanName] === this.tableData.list[index - 1][spanName] && this.tableData.list[index][firstName] === this.tableData.list[index - 1][firstName]) {
+            if (this.tableData.list[index][spanName] === this.tableData.list[index - 1][spanName] && this.tableData.list[index][firstName] === this.tableData.list[index - 1][firstName] && this.tableData.list[index][firstName]) {
               spanArr[position] += 1;
               spanArr.push(0);
             } else {
@@ -469,11 +489,15 @@ export default {
         this.$api.post(this.$api.aport4 + "/comprehensive/listdata", pdQ||this.cx, r => {
           this.tableData.list = r.list;
           this.tableData.total = r.total;
+          this.tableData.pageSize = r.pageSize;
+          this.tableData.pageNum = r.pageNum
         });
       }else{
         this.$api.post(this.$api.aport4 + '/comprehensive/getGroupData',pdQ||this.cx, r => {
           this.tableData.list = r.list;
           this.tableData.total = r.total;
+          this.tableData.pageSize = r.pageSize;
+          this.tableData.pageNum = r.pageNum
           this.tableHeadReal = [
             {
               dm:'count',
@@ -526,7 +550,7 @@ export default {
           let queryPd = this.cx.pd;
           console.log('-',data.data,queryPd)
           let basicPd = this.$fnc.objCompare(data.data, queryPd);
-          this.tablePd = Object.assign({},basicPd.obj1,basicPd.obj2)
+          this.tablePd = Object.assign({},basicPd.obj2,basicPd.obj1)
           this.isShowDialog = true;
         }
       }
@@ -1206,6 +1230,8 @@ export default {
       this.cx.pd.analysisType = this.analyArr.type_1;
       this.cx.pd.qcl = ''
       this.$api.post(this.$api.aport4 + '/comprehensive/periodComparison',this.cx.pd,r=>{
+        this.InObj.y2y = r.y2y;
+        this.InObj.m2m = r.m2m;
         this.chartShow_1(r.xAxis.xAxis,r.series[0].data)
         this.timeRange_1 = new Date().getTime()
       })
@@ -1262,7 +1288,6 @@ export default {
         ],
         series: [
           {
-            name: "销量",
             type: "bar",
             barWidth: 10,
             showBackground: true,
@@ -1316,7 +1341,9 @@ export default {
     chartFun_2(){
       this.cx.pd.analysisType = this.analyArr.type_2;
       this.cx.pd.qcl = '1'
-      this.$api.post(this.$api.aport4 + '/comprehensive/periodComparison',this.cx.pd,r=>{
+      this.$api.post(this.$api.aport4 + '/comprehensive/periodComparison2',this.cx.pd,r=>{
+        this.OutObj.y2y = r.y2y;
+        this.OutObj.m2m = r.m2m;
         this.chartShow_2(r.xAxis.xAxis,r.series[0].data)
         this.timeRange_2 = new Date().getTime()
       })
@@ -1843,8 +1870,8 @@ export default {
           dataReal.push(dataItem)
         })
         this.$nextTick(()=>{
-          this.timeRange_6 = new Date().getTime()
           this.chartShow_6(r.legend.data,r.xAxis.data,dataReal);
+          this.timeRange_6 = new Date().getTime()
         })
       })
     },

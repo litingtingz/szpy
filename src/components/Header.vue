@@ -9,10 +9,11 @@
         :key="nind"
         @click="toLeftMenu(nn,nind)"
       >
-        <img v-if="active==nind" :src="require('@/assets/images/menu/'+nn.menu_url+'_1_1.png')" />
-        <img v-else :src="require('@/assets/images/menu/'+nn.menu_url+'_1.png')" />
-        <!-- <img v-if="active==nind" :src="require('@/assets/images/menu/fxyp_1_1.png')" />
-        <img v-else :src="require('@/assets/images/menu/fxyp_1.png')" />-->
+        <img v-if="active==nind" :src="nn.menu_url?require('@/assets/images/menu/'+nn.menu_url+'_1_1.png'):require('@/assets/images/menu/ywgl_1_1.png')" />
+        <img v-else :src="nn.menu_url?require('@/assets/images/menu/'+nn.menu_url+'_1.png'):require('@/assets/images/menu/ywgl_1.png')" />
+        
+        <!-- <img v-if="active==nind" :src="require('@/assets/images/menu/'+nn.menu_url+'_1_1.png')" />
+        <img v-else :src="require('@/assets/images/menu/'+nn.menu_url+'_1.png')" /> -->
 
         <div class="ml-10">{{nn.menu_name}}</div>
       </div>
@@ -55,13 +56,12 @@ export default {
   watch:{
     $route:{
       handler(val){
+        console.log('route==',val)
         if(val.query.turn){
           for(var k=0;k<this.$store.state.menu.length;k++){
             for(var i=0;i<this.$store.state.menu[k].childrenMenu.length;i++){
               for(var j=0;j<this.$store.state.menu[k].childrenMenu[i].childrenMenu.length;j++){
                 if(this.$store.state.menu[k].childrenMenu[i].childrenMenu[j].menu_url == val.query.turn){
-                  // this.active2 = j;
-                  // this.active1 = i;
                   this.active = k;
                   this.toLeftMenu(this.$store.state.menu[k],k,i,j,val.query);
                   // console.log('header',this.$store.state.menu[k],k,i,j)
@@ -70,6 +70,29 @@ export default {
             }
           }
         }
+        if(val.name == 'Home'){
+          this.$store.dispatch("aGetHome", true); //是否隐藏菜单标志
+          this.$store.state.menu.forEach((item,index) => {
+            if(item.menu_url == 'sy'){
+              this.active = index
+            }
+          });
+        }else{
+          this.$store.dispatch("aGetHome", false); //是否隐藏菜单标志
+        }
+        // else{
+        //   this.$store.state.menu.forEach((ktem,k) => {
+        //     ktem.childrenMenu.forEach((item,i) => {
+        //       item.childrenMenu.forEach((jtem,j) => {
+        //         if(jtem.menu_url == val.name){
+        //           // console.log('val.name=',jtem.menu_url,val.name)
+        //           this.active = k
+        //           this.toLeftMenu(ktem,k,i,j,val.query);
+        //         }
+        //       })
+        //     })
+        //   });
+        // }
       },
       deep:true,
       immediate: true
@@ -77,11 +100,17 @@ export default {
   },
   methods: {
     getNav() {
-      console.log(this.$store.state.menu, this.$store.state.menu[0], 0);
+      // if(this.$route.name == 'Frame'){
+      //   this.toLeftMenu(this.$store.state.menu[0], 0);
+      // }
+      // this.$router.push({ name: "Home" });
       this.toLeftMenu(this.$store.state.menu[0], 0);
     },
     toLeftMenu(item, index ,active1,active2,query) {
-      console.log(1, item);
+      console.log(1, item,index);
+      if(item.menu_url == 'sy'){
+        this.$router.push({ name: "Home" });
+      }
       this.active = index;
       this.$store.commit("getLeftMenu", item.childrenMenu);
       this.$store.commit("getMenuTo",{active1:active1,active2:active2,query:query})

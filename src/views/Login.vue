@@ -238,14 +238,18 @@ export default {
             console.log("获取菜单成功", data2);
             let menuC = [];
             data2.forEach(item => {
-              item.childrenMenu.forEach(jtem => {
-                // console.log(jtem.childrenMenu)
-                jtem.childrenMenu.forEach(ktem => {
-                  menuC.push(ktem)
-                  // console.log('menuC',menuC)
-                  this.$store.dispatch("aGetMenuC",menuC)
+              if(item.childrenMenu){
+                item.childrenMenu.forEach(jtem => {
+                  // console.log(jtem.childrenMenu)
+                  if(jtem.childrenMenu){
+                    jtem.childrenMenu.forEach(ktem => {
+                      menuC.push(ktem)
+                      // console.log('menuC',menuC)
+                      this.$store.dispatch("aGetMenuC",menuC)
+                    })
+                  }
                 })
-              })
+              }
             });
             if (data2.length == 0) {
               this.$confirm(" 没有功能权限，请联系管理员", "提示", {

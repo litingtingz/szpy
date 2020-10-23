@@ -714,6 +714,8 @@ export default {
         r => {
           this.tableData.list = r.list;
           this.tableData.total = r.total;
+          this.tableData.pageSize = r.pageSize;
+          this.tableData.pageNum = r.pageNum
           if(r.list.length==0&&this.cx.pageNum!=1){
             this.cx.pageNum = 1;
             this.getTable()

@@ -105,10 +105,10 @@ export default {
       type: String,
       default: ""
     },
-    dialogImgData: {
-      type: Array,
-      default: () => []
-    },
+    // dialogImgData: {
+    //   type: Array,
+    //   default: () => []
+    // },
     timer:{
       type: Number,
       default: 0
@@ -169,6 +169,7 @@ export default {
       jzddiaData:{},
       gzddiaData:{},
       jbxxdiaData:{},
+      dialogImgData: [],
     }
   },
   mounted(){
@@ -189,6 +190,16 @@ export default {
         this.cx3.direction = data.direction;
         this.getTable3();
       }
+    },
+    // 获取图片
+    getDetailLzsbTp(val) {
+      this.$api.post(
+        this.$api.aport4 + "/czry/getPicture",
+        { gjdq: val.nationality,zjhm:val.paperno },
+        r => {
+          this.dialogImgData = r;
+        }
+      );
     },
     DiaTabFun(data){
       this.editPage = data
@@ -238,7 +249,8 @@ export default {
               }
             }
             this.jbxxdiaData = this.jbxxtableData.list[0]
-            console.log('===',this.jbxxdiaData)
+            this.getDetailLzsbTp({paperno:this.jbxxdiaData.paperno,nationality:this.jbxxdiaData.nationality})
+            // console.log('===',this.jbxxdiaData)
           }
           this.$refs.jbxxTable.cRowHighlight();
         });

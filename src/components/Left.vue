@@ -8,8 +8,8 @@
         :key="lind"
         @click="toChildren(ln,lind)"
       >
-        <img v-if="active1==lind" :src="require('@/assets/images/menu/yhgngl_1.png')" />
-        <img v-else :src="require('@/assets/images/menu/yhgngl_0.png')" />
+        <img v-if="active1==lind" :src="require('@/assets/images/menu/'+ ln.menu_url +'_1.png')?require('@/assets/images/menu/'+ ln.menu_url +'_1.png'):require('@/assets/images/menu/yhgngl_1.png')" />
+        <img v-else :src="require('@/assets/images/menu/'+ ln.menu_url +'_1.png')?require('@/assets/images/menu/'+ln.menu_url+'_0.png'):require('@/assets/images/menu/yhgngl_0.png')" />
         <!-- <img v-if="active1==lind" :src="require('@/assets/images/menu/'+ln.menu_icon+'_1.png')" />
         <img v-else :src="require('@/assets/images/menu/'+ln.menu_icon+'_0.png')" />-->
         <div
@@ -56,31 +56,33 @@ export default {
   },
   watch: {
     leftMenu() {
-      // console.log('leftwatch==',this.$store.state.leftMenu)
       if(JSON.stringify(this.$store.state.menuTo) == "{}"){
         this.toChildren(this.$store.state.leftMenu[0], 0);//二级菜单
       }else{
-        // console.log('000000',this.$store.state.leftMenu[this.$store.state.menuTo.active1],this.$store.state.menuTo.active1)
         this.toChildren(this.$store.state.leftMenu[this.$store.state.menuTo.active1], this.$store.state.menuTo.active1,true,this.$store.state.menuTo.query);//二级菜单
       }
     },
     $route:{
       handler(val){
-        if(val.query.turn){
-          // console.log('this.$store.state.menuTo',JSON.stringify(this.$store.state.menuTo) != "{}")
+        // console.log('left==',val)
+        if(val.query.turn){//右侧栏点击进入
           if(JSON.stringify(this.$store.state.menuTo) != "{}"){
-            // console.log('111111',this.$store.state.leftMenu[this.$store.state.menuTo.active1],this.$store.state.menuTo.active1)
             this.toChildren(this.$store.state.leftMenu[this.$store.state.menuTo.active1], this.$store.state.menuTo.active1,true,val.query);//二级菜单
           }
         }
+        // else{ //非首次进入
+        //   this.toChildren(this.$store.state.leftMenu[this.$store.state.menuTo.active1], this.$store.state.menuTo.active1,true,this.$store.state.menuTo.query);//二级菜单
+        // }
       },
-      // deep:true,
-      // immediate: true
+     
     }
   },
   mounted() {
-    console.log('left===',this.$store.state.leftMenu)
+    // if(this.$route.name == 'Frame'){
+    //   this.toChildren(this.$store.state.leftMenu[0], 0);//首次加载第一个二级菜单
+    // }
     this.toChildren(this.$store.state.leftMenu[0], 0);//首次加载第一个二级菜单
+    
   },
   methods: {
     openLeft() {
@@ -121,12 +123,13 @@ export default {
         console.log(3, item);
         this.active2 = index;
         this.bread[1] = item;//面包屑 第二项记录三级菜单
-        console.log("this.bread", this.bread);
+        // console.log("this.bread", this.bread);
         this.$store.dispatch("aGetBread", this.bread);
-        console.log("this.childrenMenu", item.childrenMenu);
+        // console.log("this.childrenMenu", item.childrenMenu);
         if (item.childrenMenu) {//菜单第四级 按钮权限 1-系统按钮，2-表格按钮，3-操作按钮
           this.$store.dispatch("aGetPlBtn", item.childrenMenu).then(() => {
             this.$router.push({ name: item.menu_url, query:query});
+            console.log('plBtn==',item.childrenMenu)
           });
         } else {
           this.$store.dispatch("aGetPlBtn", []).then(() => {

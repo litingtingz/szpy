@@ -7,6 +7,7 @@
                 <h4 v-if="ic.XTYHBMMC">所属单位：{{ic.XTYHBMMC}}</h4>
                 <p v-if="ic.CZZT">操作状态：{{ic.CZZT}}</p>
                 <p v-if="ic.CZSJ">操作时间：{{ic.CZSJ}}</p>
+                <p v-if="ic.BZ">备注：{{ic.BZ}}</p>
             </el-card>
             </el-timeline-item>
             <el-timeline-item style="top:-9px"></el-timeline-item>

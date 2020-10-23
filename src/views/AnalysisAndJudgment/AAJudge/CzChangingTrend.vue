@@ -3,6 +3,7 @@
     <Inquire 
     :cxData="$cdata.czxx.bhqs.cx"
     :cxCheck="$cdata.czxx.bhqs.cxCheck" 
+    :cxButton="$cdata.czxx.bhqs.cxButton"
     :pd="cx" 
     :cxPara="cx" 
     @cxFnc="cxFnc" 
@@ -45,7 +46,9 @@ export default {
   components: { Inquire,Charts,Dialog,CzTable },
   data() {
     return {
-      cx: {},
+      cx: {
+        resident_type:'',
+      },
       analysisType:[
         {
           mc:'性别',

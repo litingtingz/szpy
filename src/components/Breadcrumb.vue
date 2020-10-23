@@ -20,11 +20,11 @@ export default {
   },
   watch: {
     $route:{
-      handler(val){
-        console.log("$route", val, this.$store.state.breadcrumb);
+      handler(){
+        // console.log("$route", val, this.$store.state.breadcrumb);
         this.bread = this.$store.state.breadcrumb;
         this.bread = JSON.parse(JSON.stringify(this.bread));
-        console.log(this.bread);
+        // console.log(this.bread);
       },
       deep:true,
       immediate: true

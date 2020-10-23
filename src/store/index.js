@@ -11,6 +11,7 @@ let token = sessionStorage.getItem('token')
 let sfzhTurn = sessionStorage.getItem('sfzhTurn')
 let aurl = sessionStorage.getItem('aurl')
 let itstate = sessionStorage.getItem('itstate')
+let isHome = sessionStorage.getItem('isHome')
 
 Vue.use(Vuex)
 
@@ -19,6 +20,7 @@ export default new Vuex.Store({
     token: token || '',
     turnPage:'',
     itstate:itstate||false,
+    isHome:isHome||false,
     sfzhTurn:sfzhTurn||'',
     menuTo:{},
     user: user || {},
@@ -132,6 +134,10 @@ export default new Vuex.Store({
     getItS(state,data){
       state.itstate = data;
       window.sessionStorage.setItem("itstate", data)
+    },
+    getHome(state,data){
+      state.isHome = data;
+      window.sessionStorage.setItem("isHome", data)
     },
     getPage(state,data){
       state.turnPage = data;
@@ -283,6 +289,12 @@ export default new Vuex.Store({
     aGetItS(context, payload){
       return new Promise((resolve) => {
         context.commit('getItS', payload)
+        resolve(payload)
+      })
+    },
+    aGetHome(context, payload){
+      return new Promise((resolve) => {
+        context.commit('getHome', payload)
         resolve(payload)
       })
     },

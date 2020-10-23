@@ -215,7 +215,9 @@ export default {
       this.cx.pd.issuedate_status = this.page
       this.$api.post(this.$api.aport2 + "/specialCheck/getIssueDataPage", pdQ||this.cx, r => {
 				this.tableData.list = r.list;
-				this.tableData.total = r.total
+        this.tableData.total = r.total;
+        this.tableData.pageSize = r.pageSize;
+        this.tableData.pageNum = r.pageNum
       });
     },
 		//批量按钮

@@ -134,6 +134,7 @@ export default {
 		}
   },
   mounted(){
+    console.log('zxhc',this.plBtn)
     this.$store.dispatch("aGetDM", "qzzl");
     this.$store.dispatch("aGetDatatype");
     this.$cdata.qxgl.getSjBm(this.$store.state.user.bmbh).then(() => {//所属分局
@@ -215,7 +216,9 @@ export default {
       this.cx.pd.issuedate_status = this.page
       this.$api.post(this.$api.aport2 + "/specialCheck/getIssueDataPage", pdQ||this.cx, r => {
 				this.tableData.list = r.list;
-				this.tableData.total = r.total
+        this.tableData.total = r.total;
+        this.tableData.pageSize = r.pageSize;
+        this.tableData.pageNum = r.pageNum
       });
     },
 		//批量按钮

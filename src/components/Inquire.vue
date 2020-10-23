@@ -88,32 +88,40 @@
               </template>
               <!-- format="yyyyMMdd" -->
               <template v-else-if="cx.type=='datePicker'">
-                <el-date-picker
+                <div @keydown="dateKeyDown(cx.dm)">
+                  <el-date-picker
                   v-model="inquire[cx.dm]"
                   type="date"
                   placeholder="选择日期"
-                  :format="dateF"
+                  :format="dateObj[cx.dm]"
                   value-format="yyyy-MM-dd"
-                  @blur="dataHand"
+                  @blur="dataHand(cx.dm)"
                   @focus="dataFocus"
                 ></el-date-picker>
+                </div>
               </template>
               <template v-else-if="cx.type=='double'">
                 <div class="double-box">
-                  <div class="double">
+                  <div class="double" @keydown="dateKeyDown(cx.children[0].dm)">
                     <el-date-picker
                       v-model="inquire[cx.children[0].dm]"
                       :type="cx.children[0].type"
                       placeholder="选择开始时间"
+                      :format="dateObj[cx.children[0].dm]"
+                      @blur="dataHand(cx.children[0].dm)"
+                      @focus="dataFocus"
                       :value-format="cx.children[0].type=='date'?'yyyy-MM-dd':'yyyy-MM-dd HH:mm:ss'"
                     ></el-date-picker>
                   </div>
                   <div>-</div>
-                  <div class="double">
+                  <div class="double" @keydown="dateKeyDown(cx.children[1].dm)">
                     <el-date-picker
                       v-model="inquire[cx.children[1].dm]"
                       :type="cx.children[1].type"
                       placeholder="选择结束时间"
+                      :format="dateObj[cx.children[1].dm]"
+                      @blur="dataHand(cx.children[1].dm)"
+                      @focus="dataFocus"
                       :value-format="cx.children[0].type=='date'?'yyyy-MM-dd':'yyyy-MM-dd HH:mm:ss'"
                     ></el-date-picker>
                   </div>
@@ -134,16 +142,24 @@
                 </div>
               </template>
               <template v-else-if="cx.type=='button'">
-                <el-button 
-                :type="item.dm==btnChecked?'success':'primary'" 
-                size="mini"
-                v-for="(item,inds) in $cdata.options[cx.dm]"
-                :key="inds"
-                @click="quickView(item.dm)">{{item.mc}}</el-button>
+                
               </template>
             </el-form-item>
           </el-col>
-          <el-checkbox v-for="(cc,ind) in cxCheck" :key="ind+'che'" class="quire-check" v-model="inquire[cc.dm]" :true-label="cc.trueLabel" :false-label="cc.falseLabel" :checked="cc.check">{{cc.mc}}</el-checkbox>
+          <el-col v-for="(cc,ind) in cxCheck" :key="ind+'che'" :span="6">
+            <el-checkbox  class="quire-check" v-model="inquire[cc.dm]" :true-label="cc.trueLabel" :false-label="cc.falseLabel" :checked="cc.check">{{cc.mc}}</el-checkbox>
+          </el-col>
+          
+          <div class="cx-btn" v-for="(item,inds) in cxButton" :key="inds+'0'">
+            <span class="cx-btn-label">{{item.cm}}</span>
+            <el-button 
+            v-for="(jt,jts) in $cdata.options[item.dm]"
+            :key="jts"
+            :type="jt.dm==btnChecked?'success':'primary'" 
+            size="mini"
+            @click="quickView(jt.dm)">{{jt.mc}}</el-button>
+          </div>
+          
         </el-col>
         <el-col :span="4" align="center">
           <template v-for="(pb,pbi) in $store.state.plBtn">
@@ -196,6 +212,10 @@ export default {
       type: Array,
       default: () => []
     },
+    cxButton: {
+      type: Array,
+      default: () => []
+    },
     facxData:{
       type:Array,
       default: () => []
@@ -217,6 +237,10 @@ export default {
     return {
       inquire: this.pd,
       dateF:'yyyyMMdd',
+      dateRangS:'yyyyMMdd',
+      dateRangE:'yyyyMMdd',
+
+      dateObj:{},
       tagCheck:'',
       rules: {},
       queryIsShow: this.cxShow,
@@ -269,12 +293,12 @@ export default {
     });  
   },
   methods: {
-    dataHand(data){
-      this.dateF = 'yyyy-MM-dd'
-      console.log('====',data)
+    dataHand(val){
+      this.$set(this.dateObj,val,'yyyy-MM-dd')
     },
-    dataFocus(){
-      this.dateF = 'yyyyMMdd'
+    dataFocus(){},
+    dateKeyDown(val){
+      this.$set(this.dateObj,val,'yyyyMMdd')
     },
     btnClick(py,pb) {
       if (py == "cx") {
@@ -378,7 +402,6 @@ export default {
     queryShow() {
       this.queryIsShow = !this.queryIsShow;
       // this.checkArr={0:this.facxData.length==0?[]:this.$store.state[this.facxData[0].dm],1:[],2:[],3:[],},
-
       this.$emit("queryShowFnc", this.queryIsShow);
     },
     linkChange(key, val, inquire) {

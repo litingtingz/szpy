@@ -401,25 +401,25 @@ export default {
         let top = "";
         el.onmousedown = e => {
           //算出鼠标相对元素的位置
-          console.log("el===", el, el.getElementsByTagName("img")[0]);
+          // console.log("el===", el, el.getElementsByTagName("img")[0]);
           let oImg = el.getElementsByTagName("img")[0];
-          console.log("oImg==", oImg);
+          // console.log("oImg==", oImg);
           if (e.target.tagName == "IMG") {
             let leftImg = "";
             let topImg = "";
             // oImg.style.position = "relative";
-            console.log("onmousedown", e);
+            // console.log("onmousedown", e);
             //算出鼠标相对元素的位置
             let disX = e.clientX - oImg.offsetLeft;
             let disY = e.clientY - oImg.offsetTop;
             // console.log("img=", document);
             e.preventDefault();
             document.onmousemove = e => {
-              console.log("移动", e);
+              // console.log("移动", e);
               //用鼠标的位置减去鼠标相对元素的位置，得到元素的位置
-              console.log("e.clientX", e.clientX);
-              console.log("disX", disX);
-              console.log("oImg.offsetLeft", oImg.offsetLeft,oImg.offsetParent.offsetLeft);
+              // console.log("e.clientX", e.clientX);
+              // console.log("disX", disX);
+              // console.log("oImg.offsetLeft", oImg.offsetLeft,oImg.offsetParent.offsetLeft);
               leftImg = e.clientX - disX - 40;
               topImg = e.clientY - disY - 40;
               //绑定元素位置到positionX和positionY上面

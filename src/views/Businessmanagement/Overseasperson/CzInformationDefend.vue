@@ -173,7 +173,9 @@ export default {
 			if(flag){this.clearSort = new Date().getTime();delete this.cx.order;delete this.cx.direction }
       this.$api.post(this.$api.aport4 + "/czry/getCzRyxx", pdQ||this.cx, r => {
 				this.tableData.list = r.list;
-				this.tableData.total = r.total
+        this.tableData.total = r.total;
+        this.tableData.pageSize = r.pageSize;
+        this.tableData.pageNum = r.pageNum
       });
     },
 		//批量按钮

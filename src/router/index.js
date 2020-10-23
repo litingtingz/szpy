@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import store from '@/store'
 import Frame from '../views/Frame.vue'
 import Login from '../views/Login.vue'
+import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 // 解决两次访问相同路由地址报错
@@ -21,6 +22,11 @@ const routes = [
     name: 'Frame',
     component: Frame,
     children: [
+      {
+        path: '/Home',
+        name: 'Home',
+        component: Home
+      },
       /**
        * 运维支撑
        */
@@ -197,7 +203,6 @@ router.beforeEach((to, from, next) => {
         next({ name: 'Login', query: to.query })
       }
     }else{
-      // console.log('menu',store.state.menu)
       next()
     }
   } else {

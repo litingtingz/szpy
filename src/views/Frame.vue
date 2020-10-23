@@ -1,20 +1,11 @@
 <template>
   <div>
-    <!-- <div id="frame" v-if="$store.state.itstate">
-      <Header :headData="$store.state.menu" v-show="false"></Header>
-      <el-container>
-        <Left :leftMenu="$store.state.leftMenu" v-show="false"></Left>
-        <el-main class="main">
-          <router-view />
-        </el-main>
-      </el-container>
-    </div>   -->
     <div :class="$store.state.itstate?'frameT':'frame'">
       <Header :headData="$store.state.menu" v-show="!$store.state.itstate"></Header>
       <el-container>
-        <Left :leftMenu="$store.state.leftMenu" v-show="!$store.state.itstate"></Left>
+        <Left :leftMenu="$store.state.leftMenu" v-show="!$store.state.itstate&&!$store.state.isHome"></Left>
         <el-main class="main">
-          <Breadcrumb v-show="!$store.state.itstate"></Breadcrumb>
+          <Breadcrumb v-show="!$store.state.itstate&&!$store.state.isHome"></Breadcrumb>
           <router-view />
         </el-main>
         <Right v-show="!$store.state.itstate"></Right>
@@ -42,10 +33,16 @@ export default {
     return {
       headData: [],
       turnPage:'',
+      leftShow:true,
     };
   },
   mounted() {
-    console.log("store", this.$store.state,this.turnPage);
+    if(window.location.href.includes('Home')){
+      console.log("store", window.location.href,!this.$store.state.itstate,this.$store.state.isHome);
+      this.$store.dispatch("aGetHome", true); //是否隐藏菜单标志
+    }else{
+      this.$store.dispatch("aGetHome", false); //是否隐藏菜单标志
+    }
   },
   methods: {}
 };

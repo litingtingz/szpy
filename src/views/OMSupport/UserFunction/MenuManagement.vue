@@ -176,7 +176,8 @@ export default {
       this.formData.parent_id = this.formData.serial;
       this.formData.menu_name = "";
       this.formData.menu_order = "";
-      this.formData.menu_url = "";
+      // this.formData.menu_url = "";
+      this.$set(this.formData,'menu_url','')
       this.formData.serial = "";
       //console.log(this.oldformData, this.formData);
     },

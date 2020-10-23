@@ -377,3 +377,14 @@ input[type="number"]{
 .el-date-editor .el-icon-circle-close{
   color: #C0C4CC;
 }
+.home-right-menu .el-tabs__item{
+  padding-left:10%!important;
+  font-weight: bold;
+  font-size: 15px;
+}
+.home-right-menu .el-tabs__active-bar{
+  height:3px;
+}
+.home-body .el-aside{
+  margin-top: 17px;
+}

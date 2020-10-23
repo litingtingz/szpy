@@ -328,9 +328,9 @@ export default {
   },
   watch: {
     refName(val){
-      console.log('进入',val)
+      // console.log('进入',val)
       if(val=='jbxxTable'){
-        console.log('进入来了',val)
+        // console.log('进入来了',val)
         
       }
     },
@@ -355,7 +355,7 @@ export default {
     //   deep: true
     // },
     page(val) {
-      console.log('page1',val)
+      // console.log('page1',val)
       this.page1 = val;
     },
     clzt(val){
@@ -448,14 +448,11 @@ export default {
   },
   methods: {
      imgclick(data,path) {
-     
       this.imglist=[this.$api.aport6+path];
       this.isimgclick = true;
     },
     getimglist(data){
-  
-        return  this.$api.aport6+data;
-      
+      return  this.$api.aport6+data;
     },
     //默认当前行高亮
     cRowHighlight(){
@@ -484,13 +481,13 @@ export default {
         "background-color":row.row.yjssys
       }
     },
-    objectSpanMethod({column ,rowIndex, columnIndex }){
-        console.log(this.tableMerge)
+    objectSpanMethod({column ,rowIndex }){
+        // console.log(this.tableMerge)
         // var arr = Object.keys(this.tableMerge);
         // if(arr.length == 0)return
         for(var i in this.tableMerge){
           if(i == column.property){
-            console.log('columnIndex',column.property,columnIndex,rowIndex)
+            // console.log('columnIndex',column.property,columnIndex,rowIndex)
             const _row = this.tableMerge[i][rowIndex];//代表合并行的行数
             const _col = _row > 0 ? 1 : 0;
             return {
@@ -515,7 +512,6 @@ export default {
       if (!this.isRowClick) {
         return false;
       }
-   
       if(column && column.label=="操作"&&this.refName=='hczf'){
         return false;
       }
@@ -551,7 +547,7 @@ export default {
       }
       if(val.py == 'dc'){//导出
         let expName = this.$store.state.breadcrumb[this.$store.state.breadcrumb.length-1].menu_name;
-        console.log('expName',expName)
+        // console.log('expName',expName)
         this.expD = Object.assign({},this.expData)
         this.expD.menu_name = this.$store.state.breadcrumb[this.$store.state.breadcrumb.length-1].menu_name;
         this.expD.btn_name = val.menu_name;

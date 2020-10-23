@@ -40,12 +40,12 @@ const xxwhgl = {
         {
           cm: '开始时间',
           type: 'date',
-          dm: 'birthday_begin'
+          dm: 'birthday_begin',
         },
         {
           cm: '结束时间',
           type: 'date',
-          dm: 'birthday_end'
+          dm: 'birthday_end',
         },
       ],
     },
@@ -750,11 +750,12 @@ const bhqs = {
       type: 'select',
       dm: 'workplace_police_station',
     },
-    {
-      cm: '快速预览',
-      type: 'button',
-      dm: 'timeUnit',
-    },
+    // {
+    //   cm: '快速预览',
+    //   type: 'button',
+    //   dm: 'timeUnit',
+    //   col:12,
+    // },
   ],
   cxCheck:[
     {
@@ -764,6 +765,14 @@ const bhqs = {
       trueLabel:'or',
       falseLabel:'and',
       check:true,
+    },
+  ],
+  cxButton:[
+    {
+      cm: '时间粒度',
+      type: 'button',
+      dm: 'timeUnit',
+      col:12,
     },
   ],
   lbBtn: [

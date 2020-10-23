@@ -41,7 +41,7 @@
         :pageSizeArr="pageSizeArr"
         :czWidth="'100'"
         :clearSort="clearSort"
-        :expData="cx"
+        :expData="cxShow?cx:cxQ"
         :key="timer"
         :expUrl="$api.aport2+'/issueData/exportIssueData'"
         @plFnc="plFnc"
@@ -211,6 +211,7 @@ export default {
             this.lbTab = data.lbTab;
             this.page = val.query.page
             this.cx.pageNum = 1;
+            this.cxQ.pageNum = 1;
             this.selection = [];
             this.queryShowFnc(this.cxShow);
             this.getColorDes()
@@ -242,6 +243,7 @@ export default {
     }
   },
   mounted() {
+       console.log('zxhc',this.plBtn)
       this.$store.dispatch("aGetNation");
       this.$store.dispatch("aGetGender");
       this.$store.dispatch("aGetPassport");
@@ -249,7 +251,7 @@ export default {
       this.cx.pd.backstatusdis = true;
       this.getSpInit();
       this.$nextTick(() => {
-        console.log('mount',this.jbData)
+        // console.log('mount',this.jbData)
         this.plBtn=this.$store.state.plBtn;
         this.plBtn = this.plBtn.filter(item => ['sb'].indexOf(item.py) == -1);
         this.$cdata.zxhc.lbTabShow(this.$store.state.user.jb).then(data => {
@@ -349,6 +351,7 @@ export default {
     tabTopClick1() {
       this.clzt = 1;
       this.cx.pageNum = 1;
+      this.cxQ.pageNum = 1;
       this.$cdata.zxhc.lbTabShow(this.$store.state.user.jb).then(data => {
         this.lbTab = data.lbTab;
         this.page = this.lbTab[0].dm;
@@ -361,6 +364,7 @@ export default {
     tabTopClick2() {
       this.clzt = 2;
       this.cx.pageNum = 1;
+      this.cxQ.pageNum = 1;
       this.$cdata.zxhc.lbTabShow(this.$store.state.user.jb).then(data => {
         this.lbTab = data.lbTab1;
         this.page = this.lbTab[0].dm;
@@ -379,6 +383,7 @@ export default {
         this.lbData = this.jbData.length==0?this.$cdata.zxhc.zxhc.lb:this.jbData;
       }
       this.cx.pageNum = 1;
+      this.cxQ.pageNum = 1;
       this.selection = [];
       this.queryShowFnc(this.cxShow);
       this.getColorDes();
@@ -467,12 +472,14 @@ export default {
     pageSizeFnc(data) {
       this.cx.pageSize = data;
       this.cxQ.pageSize = data;
-      this.getTable();
+      this.queryShowFnc(this.cxShow);
+      // this.getTable();
     },
     pageNumFnc(data) {
       this.cx.pageNum = data;
       this.cxQ.pageNum = data;
-      this.getTable();
+      this.queryShowFnc(this.cxShow);
+      // this.getTable();
     },
     //表格复选框选择
     SelectionChange(data) {
@@ -533,8 +540,9 @@ export default {
         this.$api.aport2 + "/issueData/getIssueDataPage",
         pdQ||this.cx,
         r => {
-          this.tableData.list = r.list;
-          this.tableData.total = r.total;
+          this.tableData = r;
+          // this.tableData.list = r.list;
+          // this.tableData.total = r.total;
         }
       );
     },

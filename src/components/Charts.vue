@@ -57,9 +57,10 @@ export default {
       //     console.log('click',params)
       // })
       // 监听浏览器尺寸
-      window.addEventListener("resize", function() {
-       this.MyChart.resize();
-      });
+      window.addEventListener("resize", (()=>{
+        this.MyChart.resize();
+      })
+      );
     }
   }
 };
