@@ -532,7 +532,8 @@ export default {
       this.isEdit = true;
       this.plBtn = this.$store.state.plBtn
       this.cx.pageNum = 1;
-      this.getTable(true)
+      this.getTable(true);
+
     },
     tabTopClick2(){
       this.clzt=2;
@@ -543,9 +544,9 @@ export default {
       this.getTable(true)
     },
     rowClick(data){
-      console.log(data)
-      // this.selection=[];
-      // this.selection.push(data.data)
+      // console.log(data)
+      this.selection=[];
+      this.selection.push(data.data)
     },
     //下拉框联动
     lcFnc(data) {
@@ -833,6 +834,7 @@ export default {
         }
         this.dialogData = Object.assign({}, data.data);
         this.$store.dispatch("aGetBackstatus", data.data.datatype);
+        this.$store.dispatch("aGetssdw", { bmbh: data.data.suboffice, type: "sspcs" });
         this.isShowDialog = true;
       }
     },

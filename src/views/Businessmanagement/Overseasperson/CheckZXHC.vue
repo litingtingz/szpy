@@ -176,6 +176,7 @@ export default {
       }else{
         this.plBtn = this.$store.state.plBtn;
       }
+      this.selection = [];
       this.getTable(true)
     },
     //导入--导出错误信息
@@ -325,6 +326,7 @@ export default {
               type: "success"
             });
             this.getTable();
+            this.selection = [];
           })
         }).catch(()=>{
           this.$message({
@@ -346,6 +348,7 @@ export default {
             type: "success"
           });
           this.getTable();
+          this.selection = [];
         })
       }
     },
@@ -364,6 +367,7 @@ export default {
         });
         this.getTable();
         this.isShowDialog = false;
+        this.selection = [];
       })
     },
     xfSave(data){
@@ -385,6 +389,7 @@ export default {
         });
         this.getTable();
         this.isShowDialog = false;
+        this.selection = [];
       })
     },
     xzSave(data){
@@ -400,6 +405,7 @@ export default {
         });
         this.getTable();
         this.isShowDialog = false;
+        this.selection = [];
       })
     },
     dialogSave(data){
@@ -412,8 +418,9 @@ export default {
       }
     },
 		//点击行
-		rowClick(){
-
+		rowClick(data){
+      this.selection = [];
+      this.selection.push(data.data);
 		},
 	}
 };

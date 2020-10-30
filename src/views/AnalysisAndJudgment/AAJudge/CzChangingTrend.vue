@@ -71,8 +71,12 @@ export default {
           dm:'degree_code'
         },
         {
-          mc:'境外人员类别',
+          mc:'人员地域类别',
           dm:'personnel_area_type'
+        },
+        {
+          mc:'居留事由',
+          dm:'reside_reason'
         },
         {
           mc:'年龄段',
@@ -98,6 +102,7 @@ export default {
     this.$store.dispatch("aGetNation");
     this.$store.dispatch("aGetDM",'qzzl');
     this.$store.dispatch("aGetDMPro",'dm_jwrysf');
+    this.$store.dispatch('aGetDM', "wgr_sqsy");//停留事由&&入境事由
     // this.$store.dispatch("aGetDMPro",'dm_pcswlb');
     this.$store.dispatch("aGetDMPro",'dm_rydylbb');
     this.$cdata.jzdZrq()

@@ -78,7 +78,9 @@ export default {
 			selection: [],
 			//业务数据
 			cx: {
-        pd: {},
+        pd: {
+          resident_type:'',
+        },
         pageSize: 15,
         pageNum: 1,
       },
@@ -217,6 +219,7 @@ export default {
             type: "success"
           });
           this.getTable();
+          this.selection = [];
       })
     },
     dialogSave(data){
@@ -229,8 +232,9 @@ export default {
 		//表格复选框选择
 		SelectionChange(){},
 		//点击行
-		rowClick(){
-
+		rowClick(data){
+      this.selection = [];
+      this.selection.push(data.data);
 		},
 	}
 };

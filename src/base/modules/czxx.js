@@ -99,7 +99,7 @@ const xxwhgl = {
       dm: 'turnoutarea',
     },
     {
-      cm: '人员类型',
+      cm: '常住类别',
       type: 'select',
       dm: 'resident_type',
       optype:true,
@@ -660,12 +660,6 @@ const xxwhgl = {
 const bhqs = {
   cx:[
     {
-      cm: '性别',
-      type: 'select',
-      dm: 'gender',
-      mult:true,
-    },
-    {
       cm: '国家地区',
       type: 'select',
       dm: 'nationality',
@@ -678,9 +672,50 @@ const bhqs = {
       mult:true,
     },
     {
+      cm: '性别',
+      type: 'select',
+      dm: 'gender',
+      mult:true,
+    },
+    {
+      cm: '年龄段',
+      type: 'ageDouble',
+      dm: 'age',
+      children: [
+          {
+              cm: '开始年龄',
+              type: 'number',
+              dm: 'ageBegin'
+          },
+          {
+              cm: '结束年龄',
+              type: 'number',
+              dm: 'ageEnd'
+          },
+      ],
+  },
+    {
       cm: '签证种类',
       type: 'select',
       dm: 'visa_type',
+      mult:true,
+    },
+    {
+      cm: '身份',
+      type: 'select',
+      dm: 'degree_code',
+      mult:true,
+    },
+    {
+      cm: '居留事由',
+      type: 'select',
+      dm: 'reside_reason',
+      mult:true,
+    }, 
+    {
+      cm: '人员地域类别',
+      type: 'select',
+      dm: 'personnel_area_type',
       mult:true,
     },
     {
@@ -701,19 +736,24 @@ const bhqs = {
       ],
     },
     {
-      cm: '身份',
-      type: 'select',
-      dm: 'degree_code',
-      mult:true,
+      cm: '签证有效期',
+      type: 'double',
+      dm: 'clTime',
+      children: [
+        {
+          cm: '开始时间',
+          type: 'date',
+          dm: 'reside_permit_expired_day_begin'
+        },
+        {
+          cm: '结束时间',
+          type: 'date',
+          dm: 'reside_permit_expired_day_end'
+        },
+      ],
     },
     {
-      cm: '境外人员类别',
-      type: 'select',
-      dm: 'personnel_area_type',
-      mult:true,
-    },
-    {
-      cm: '存量时间',
+      cm: '统计时间段',
       type: 'double',
       dm: 'clTime',
       children: [
@@ -728,6 +768,20 @@ const bhqs = {
           dm: 'history_time_end'
         },
       ],
+    },
+    {
+      cm: '常住类别',
+      type: 'select',
+      dm: 'resident_type',
+      optype:true,
+      disdm:true,
+    },
+    {
+      cm: '自定义国家',
+      type: 'select',
+      dm: 'customCountry',
+      optype:true,
+      disdm:true,
     },
     {
       cm: '居住地分局',
@@ -749,13 +803,7 @@ const bhqs = {
       cm: '工作地派出所',
       type: 'select',
       dm: 'workplace_police_station',
-    },
-    // {
-    //   cm: '快速预览',
-    //   type: 'button',
-    //   dm: 'timeUnit',
-    //   col:12,
-    // },
+    }, 
   ],
   cxCheck:[
     {
@@ -766,6 +814,14 @@ const bhqs = {
       falseLabel:'and',
       check:true,
     },
+    // {
+    //   mc: '包含下属辖区',
+    //   type: 'checkbox',
+    //   dm: 'include_sub',
+    //   trueLabel:'true',
+    //   falseLabel:'false',
+    //   check:true,
+    // },
   ],
   cxButton:[
     {
@@ -787,15 +843,21 @@ const bhqs = {
 const zhfx = {
   cx:[
     {
-      cm: '性别',
-      type: 'select',
-      dm: 'gender',
-      mult:true,
-    },
-    {
       cm: '国家地区',
       type: 'select',
       dm: 'nationality',
+      mult:true,
+    },
+    {
+      cm: '证件种类',
+      type: 'select',
+      dm: 'paper_type',
+      mult:true,
+    },
+    {
+      cm: '性别',
+      type: 'select',
+      dm: 'gender',
       mult:true,
     },
     {
@@ -816,15 +878,27 @@ const zhfx = {
         ],
     },
     {
-      cm: '证件种类',
-      type: 'select',
-      dm: 'paper_type',
-      mult:true,
-    },
-    {
       cm: '签证种类',
       type: 'select',
       dm: 'visa_type',
+      mult:true,
+    },
+    {
+      cm: '身份',
+      type: 'select',
+      dm: 'degree_code',
+      mult:true,
+    },
+    {
+      cm: '居留事由',
+      type: 'select',
+      dm: 'reside_reason',
+      mult:true,
+    }, 
+    {
+      cm: '人员地域类别',
+      type: 'select',
+      dm: 'personnel_area_type',
       mult:true,
     },
     {
@@ -845,21 +919,40 @@ const zhfx = {
       ],
     },
     {
-      cm: '身份',
-      type: 'select',
-      dm: 'degree_code',
-      mult:true,
+      cm: '签证有效期',
+      type: 'double',
+      dm: 'clTime',
+      children: [
+        {
+          cm: '开始时间',
+          type: 'date',
+          dm: 'reside_permit_expired_day_begin'
+        },
+        {
+          cm: '结束时间',
+          type: 'date',
+          dm: 'reside_permit_expired_day_end'
+        },
+      ],
     },
     {
-      cm: '境外人员类别',
-      type: 'select',
-      dm: 'personnel_area_type',
-      mult:true,
-    },
-    {
-      cm: '存量时间',
+      cm: '统计时间点',
       type: 'datePicker',
       dm: 'history_time',
+    },
+    {
+      cm: '常住类别',
+      type: 'select',
+      dm: 'resident_type',
+      optype:true,
+      disdm:true,
+    },
+    {
+      cm: '自定义国家',
+      type: 'select',
+      dm: 'customCountry',
+      optype:true,
+      disdm:true,
     },
     {
       cm: '出入境状态',
@@ -887,6 +980,7 @@ const zhfx = {
       type: 'select',
       dm: 'workplace_police_station',
     },
+    
   ],
   cxCheck:[
     {
@@ -897,6 +991,14 @@ const zhfx = {
       falseLabel:'and',
       check:true,
     },
+    // {
+    //   mc: '包含下属辖区',
+    //   type: 'checkbox',
+    //   dm: 'include_sub',
+    //   trueLabel:'true',
+    //   falseLabel:'false',
+    //   check:true,
+    // },
   ],
   lbBtn: [
     {

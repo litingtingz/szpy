@@ -324,6 +324,7 @@ export default {
       expD:{},
       isimgclick: false,
       imglist:[],
+      timeClick:null,
     };
   },
   watch: {
@@ -482,12 +483,8 @@ export default {
       }
     },
     objectSpanMethod({column ,rowIndex }){
-        // console.log(this.tableMerge)
-        // var arr = Object.keys(this.tableMerge);
-        // if(arr.length == 0)return
         for(var i in this.tableMerge){
           if(i == column.property){
-            // console.log('columnIndex',column.property,columnIndex,rowIndex)
             const _row = this.tableMerge[i][rowIndex];//代表合并行的行数
             const _col = _row > 0 ? 1 : 0;
             return {
@@ -509,15 +506,20 @@ export default {
       }
     },
     rowClick(row,column) {//点击行
-      if (!this.isRowClick) {
-        return false;
-      }
-      if(column && column.label=="操作"&&this.refName=='hczf'){
-        return false;
-      }
-      this.$emit("rowClick", { type: this.lbType, data: row });
+      clearTimeout(this.timeClick);  
+      this.timeClick = setTimeout(()=>{
+        if (!this.isRowClick) {
+          return false;
+        }
+        if(column && column.label=="操作"&&this.refName=='hczf'){
+          return false;
+        }
+        // console.log('danji-',event)
+        this.$emit("rowClick", { type: this.lbType, data: row });
+      },300)
     },
     rowDbClick(row, column, cell, event){
+      clearTimeout(this.timeClick);
       console.log(row, column, cell, event,'---');
       this.$emit("blFnc", { btn:'', data: row ,double:true});
     },
@@ -531,6 +533,7 @@ export default {
       if(val.py == 'jb'){//简表
         this.dialogTitle = val.menu_name;
         this.dialogType = val.py;
+        this.transData = this.lbData;
         this.timer = new Date().getTime();
         if(this.refName=="hczf"){
           if(this.page1!='1'){

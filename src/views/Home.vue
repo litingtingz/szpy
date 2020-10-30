@@ -164,11 +164,51 @@ export default {
       numArr:[
         {
           class:'loufeng',
-          num:this.activeName=='0'?83:this.activeName=='1'?237:320
+          num:this.activeName=='1'?83:this.activeName=='0'?237:320
         },
         {
           class:'weiting',
-          num:this.activeName=='0'?111:this.activeName=='1'?183:294
+          num:this.activeName=='1'?111:this.activeName=='0'?183:294
+        },
+        {
+          class:'shengpu',
+          num:this.activeName=='1'?3:this.activeName=='0'?32:35
+        },
+        {
+          class:'tangpai',
+          num:this.activeName=='1'?87:this.activeName=='0'?173:260
+        },
+        {
+          class:'huxi',
+          num:this.activeName=='1'?1301:this.activeName=='0'?2505:3806
+        },
+        {
+          class:'hudong',
+          num:this.activeName=='1'?1296:this.activeName=='0'?3308:4604
+        },
+        {
+          class:'yongan',
+          num:this.activeName=='1'?337:this.activeName=='0'?845:1182
+        },
+        {
+          class:'yongan_1',
+          num:this.activeName=='1'?337:this.activeName=='0'?845:1182
+        },
+        {
+          class:'yangch',
+          num:this.activeName=='1'?16:this.activeName=='0'?8:24
+        },
+        {
+          class:'baoshui',
+          num:this.activeName=='1'?13:this.activeName=='0'?11:24
+        },
+        {
+          class:'baoshui_1',
+          num:this.activeName=='1'?13:this.activeName=='0'?11:24
+        },
+        {
+          class:'dongsha',
+          num:this.activeName=='1'?370:this.activeName=='0'?273:643
         },
       ],
       ycNum:[
@@ -276,48 +316,48 @@ export default {
     this.ycNum=[
         {
           class:'yuanqu',
-          num:this.activeName=='0'?3511:this.activeName=='1'?7701:11212
+          num:this.activeName=='1'?3511:this.activeName=='0'?7701:11212
         },
         {
           class:'gaoxin',
-          num:this.activeName=='0'?165:this.activeName=='1'?2373:2538
+          num:this.activeName=='1'?165:this.activeName=='0'?2373:2538
         },
         {
           class:'wuzhong',
-          num:this.activeName=='0'?1072:this.activeName=='1'?589:1661
+          num:this.activeName=='1'?1072:this.activeName=='0'?589:1661
         },
         {
           class:'xiangc',
-          num:this.activeName=='0'?288:this.activeName=='1'?302:590
+          num:this.activeName=='1'?288:this.activeName=='0'?302:590
         },
         {
           class:'gusu',
-          num:this.activeName=='0'?419:this.activeName=='1'?399:818
+          num:this.activeName=='1'?419:this.activeName=='0'?399:818
         },
         {
           class:'wujiang',
-          num:this.activeName=='0'?819:this.activeName=='1'?0:819
+          num:this.activeName=='1'?819:this.activeName=='0'?0:819
         },
         {
           class:'changs',
-          num:this.activeName=='0'?247:this.activeName=='1'?785:1032
+          num:this.activeName=='1'?247:this.activeName=='0'?785:1032
         },
         {
           class:'zjg',
-          num:this.activeName=='0'?259:this.activeName=='1'?1000:1259
+          num:this.activeName=='1'?259:this.activeName=='0'?1000:1259
         },
         {
           class:'huns',
-          num:this.activeName=='0'?4119:this.activeName=='1'?2313:6432
+          num:this.activeName=='1'?4119:this.activeName=='0'?2313:6432
         },
 
         {
           class:'taic',
-          num:this.activeName=='0'?365:this.activeName=='1'?517:878
+          num:this.activeName=='1'?365:this.activeName=='0'?517:878
         },
         {
           class:'dujia',
-          num:this.activeName=='0'?14:this.activeName=='1'?14:28
+          num:this.activeName=='1'?14:this.activeName=='0'?14:28
         },
       ]
     this.begin()
@@ -330,51 +370,51 @@ export default {
       this.numArr=[
         {
           class:'loufeng',
-          num:this.activeName=='0'?83:this.activeName=='1'?237:320
+          num:this.activeName=='1'?83:this.activeName=='0'?237:320
         },
         {
           class:'weiting',
-          num:this.activeName=='0'?111:this.activeName=='1'?183:294
+          num:this.activeName=='1'?111:this.activeName=='0'?183:294
         },
         {
           class:'shengpu',
-          num:this.activeName=='0'?3:this.activeName=='1'?32:35
+          num:this.activeName=='1'?3:this.activeName=='0'?32:35
         },
         {
           class:'tangpai',
-          num:this.activeName=='0'?87:this.activeName=='1'?173:260
+          num:this.activeName=='1'?87:this.activeName=='0'?173:260
         },
         {
           class:'huxi',
-          num:this.activeName=='0'?1301:this.activeName=='1'?2505:3806
+          num:this.activeName=='1'?1301:this.activeName=='0'?2505:3806
         },
         {
           class:'hudong',
-          num:this.activeName=='0'?1296:this.activeName=='1'?3308:4604
+          num:this.activeName=='1'?1296:this.activeName=='0'?3308:4604
         },
         {
           class:'yongan',
-          num:this.activeName=='0'?337:this.activeName=='1'?845:1182
+          num:this.activeName=='1'?337:this.activeName=='0'?845:1182
         },
         {
           class:'yongan_1',
-          num:this.activeName=='0'?337:this.activeName=='1'?845:1182
+          num:this.activeName=='1'?337:this.activeName=='0'?845:1182
         },
         {
           class:'yangch',
-          num:this.activeName=='0'?16:this.activeName=='1'?8:24
+          num:this.activeName=='1'?16:this.activeName=='0'?8:24
         },
         {
           class:'baoshui',
-          num:this.activeName=='0'?13:this.activeName=='1'?11:24
+          num:this.activeName=='1'?13:this.activeName=='0'?11:24
         },
         {
           class:'baoshui_1',
-          num:this.activeName=='0'?13:this.activeName=='1'?11:24
+          num:this.activeName=='1'?13:this.activeName=='0'?11:24
         },
         {
           class:'dongsha',
-          num:this.activeName=='0'?370:this.activeName=='1'?273:643
+          num:this.activeName=='1'?370:this.activeName=='0'?273:643
         },
       ]
     },
@@ -383,48 +423,48 @@ export default {
       this.ycNum=[
         {
           class:'yuanqu',
-          num:this.activeName=='0'?3511:this.activeName=='1'?7701:11212
+          num:this.activeName=='1'?3511:this.activeName=='0'?7701:11212
         },
         {
           class:'gaoxin',
-          num:this.activeName=='0'?165:this.activeName=='1'?2373:2538
+          num:this.activeName=='1'?165:this.activeName=='0'?2373:2538
         },
         {
           class:'wuzhong',
-          num:this.activeName=='0'?1072:this.activeName=='1'?589:1661
+          num:this.activeName=='1'?1072:this.activeName=='0'?589:1661
         },
         {
           class:'xiangc',
-          num:this.activeName=='0'?288:this.activeName=='1'?302:590
+          num:this.activeName=='1'?288:this.activeName=='0'?302:590
         },
         {
           class:'gusu',
-          num:this.activeName=='0'?419:this.activeName=='1'?399:818
+          num:this.activeName=='1'?419:this.activeName=='0'?399:818
         },
         {
           class:'wujiang',
-          num:this.activeName=='0'?819:this.activeName=='1'?0:819
+          num:this.activeName=='1'?819:this.activeName=='0'?0:819
         },
         {
           class:'changs',
-          num:this.activeName=='0'?247:this.activeName=='1'?785:1032
+          num:this.activeName=='1'?247:this.activeName=='0'?785:1032
         },
         {
           class:'zjg',
-          num:this.activeName=='0'?259:this.activeName=='1'?1000:1259
+          num:this.activeName=='1'?259:this.activeName=='0'?1000:1259
         },
         {
           class:'huns',
-          num:this.activeName=='0'?4119:this.activeName=='1'?2313:6432
+          num:this.activeName=='1'?4119:this.activeName=='0'?2313:6432
         },
 
         {
           class:'taic',
-          num:this.activeName=='0'?365:this.activeName=='1'?517:878
+          num:this.activeName=='1'?365:this.activeName=='0'?517:878
         },
         {
           class:'dujia',
-          num:this.activeName=='0'?14:this.activeName=='1'?14:28
+          num:this.activeName=='1'?14:this.activeName=='0'?14:28
         },
       ]
       console.log(tab, event);

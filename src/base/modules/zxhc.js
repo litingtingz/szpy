@@ -1902,6 +1902,102 @@ const jzzdhc = {
         },     
     ]  
 }
+//核查走访进度统计表
+//(分县局)
+const jdtj = {
+    cx:[
+        {
+            cm: '任务下发时间段',
+            type: 'double',
+            dm: 'rwTime',
+            children: [
+                {
+                    cm: '开始时间',
+                    type: 'date',
+                    dm: 'issueDateStart'
+                },
+                {
+                    cm: '结束时间',
+                    type: 'date',
+                    dm: 'issueDateEnd'
+                }
+            ]
+        },
+    ],
+    facx:[],
+    lbFxj:[
+        {
+            cm: '序号',            
+            dm: 'xh', 
+        },
+        {
+            cm: '分、县局',            
+            dm: 'ssfj', 
+        },
+        {
+            cm: '走访类别',            
+            dm: 'zflb', 
+        },
+        {
+            cm: '分局待下发',            
+            dm: 'fjdxfCount',
+        },
+        {
+            cm: '分局待上报',            
+            dm: 'fjdsbCount', 
+        },
+        {
+            cm: '分局已上报',            
+            dm: 'fjysbCount', 
+        },
+        {
+            cm: '派出所未处理',            
+            dm: 'pcswclCount',
+        },
+        {
+            cm: '派出所已上报',            
+            dm: 'pcsysbCount', 
+        },
+        {
+            cm: '走访中总量',            
+            dm: 'zfzCount', 
+        },
+        {
+            cm: '走访完成量',            
+            dm: 'zfwcCount',
+        },
+        {
+            cm: '走访核查任务总量',            
+            dm: 'zfhcrwCount', 
+        },
+        {
+            cm: '走访完成率',            
+            dm: 'zfwcl', 
+        },
+    ],
+    lbPcs:[
+        {
+            cm: '序号',            
+            dm: 'xh', 
+        },
+        {
+            cm: '分、县局',            
+            dm: 'ssfj', 
+        },
+        {
+            cm: '派出所',            
+            dm: 'sspcs', 
+        },
+        {
+            cm: '派出所未处理',            
+            dm: 'pcswclCount',
+        },
+        {
+            cm: '派出所已上报',            
+            dm: 'pcsysbCount',
+        },
+    ],
+}
 // 核查走访
 function lbTabShow(jb) {
     return new Promise((resolve) => {
@@ -3117,6 +3213,7 @@ export default {
     zxhcgl,
     offgl,
     jzzdhc,
+    jdtj,
     lbTabShow,
     editShow,
     handShow,

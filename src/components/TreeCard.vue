@@ -102,10 +102,11 @@ export default {
   },
   methods: {
     nodeClick(a) {
+      // console.log('a==',a)
       this.$emit("getTree", { type: this.treeType, data: a });
     },
     handleCheckChange(a) {
-      console.log(this.dwlbBmmh1, a);
+      // console.log('a++', a);
       // if (this.dwlbBmmh1 == "pcs") {
       //   // setTimeout(() => {
       //   this.$refs.tree.store.nodesMap[a.bmbh].expanded = true;
@@ -113,11 +114,14 @@ export default {
       //   // }, 400);
       // }
       this.getTree();
+      this.$emit("getTree", { type: this.treeType, data: a });
     },
     getTree() {
       let data = this.$refs.tree.getCheckedKeys(false);
+      // console.log('getCheckedKeys==',data)
       this.$emit("getCheckedKeys", { type: this.treeType, data: data });
       let data2 = this.$refs.tree.getCheckedNodes(false, true);
+      // console.log('getCheckedNodes==',data2)
       this.$emit("getCheckedNodes", { type: this.treeType, data: data2 });
     },
     dwlbBmmhChange(data) {

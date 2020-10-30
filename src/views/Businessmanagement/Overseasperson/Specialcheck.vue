@@ -390,9 +390,9 @@ export default {
       // this.getTable(true);
     },
     rowClick(data) {
-      console.log(data)
-      // this.selection = [];
-      // this.selection.push(data.data);
+      // console.log('单击==',data)
+      this.selection = [];
+      this.selection.push(data.data);
     },
     //下拉框联动
     lcFnc(data) {

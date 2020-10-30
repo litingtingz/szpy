@@ -111,6 +111,12 @@ const routes = [
         name: 'CheckReporter',
         component: () => import(/* webpackChunkName: "Businessmanagement" */ '../views/Businessmanagement/Overseasperson/CheckReporter.vue')
       },
+      
+      {
+        path: '/ProgressStatisticsHCZF',
+        name: 'ProgressStatisticsHCZF',
+        component: () => import(/* webpackChunkName: "Businessmanagement" */ '../views/Businessmanagement/SupervisionAndCheck/ProgressStatisticsHCZF.vue')
+      },
       /**
        * 分析研判CzChangingTrend
        */

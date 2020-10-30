@@ -47,10 +47,10 @@
       </el-row>
       <el-row v-if="tab=='2'">
         <!-- 迁入量 -->
-        <el-col :xl="8" :lg="12" class="pad-15">
+        <el-col :xl="12" :lg="12" class="pad-15">
           <p class="chart-title mb-10">迁入量</p>
-          <div class="chart-outer ml-10" style="justify-content:flex-end">
-            <div v-show="false">
+          <div class="chart-outer ml-10">
+            <div>
               <div class="chart-outer-label">分析维度</div>
               <el-select class="chart-select" v-model="analyArr.type_1" @change="analyFun(1)" placeholder="请选择" size="medium">
                 <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
@@ -96,10 +96,10 @@
           </div> -->
         </el-col>
         <!-- 迁出量 -->
-        <el-col :xl="8" :lg="12" class="pad-15">
+        <el-col :xl="12" :lg="12" class="pad-15">
           <p class="chart-title mb-10">迁出量</p>
-          <div class="chart-outer ml-10" style="justify-content:flex-end">
-            <div v-show="false">
+          <div class="chart-outer ml-10">
+            <div>
               <div class="chart-outer-label">分析维度</div>
               <el-select class="chart-select" v-model="analyArr.type_2" @change="analyFun(2)" placeholder="请选择" size="medium">
                 <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
@@ -145,7 +145,7 @@
           </div> -->
         </el-col>
          <!-- TOP -->
-        <el-col :xl="8" :lg="12" class="pad-15">
+        <el-col :xl="12" :lg="12" class="pad-15">
           <p class="chart-title mb-10">TOP</p>
           <div class="chart-outer ml-10">
             <div class="chart-outer-label">分析维度</div>
@@ -156,7 +156,7 @@
           <div @click="chartDiaFun(4)"><Charts @chartAllClick="chartAllClick" :timeRange="timeRange_4" :optData="optData_4" :id="'4'"></Charts></div>
         </el-col>
         <!-- 变化趋势分析图 -->
-        <el-col :xl="16" :lg="12" class="pad-15">
+        <!-- <el-col :xl="16" :lg="12" class="pad-15">
           <p class="chart-title mb-10">变化趋势分析图</p>
           <div class="chart-outer ml-10">
             <div class="chart-outer-label">分析维度</div>
@@ -165,10 +165,10 @@
             </el-select>
           </div>
           <div @click="chartDiaFun(5)"><Charts @chartAllClick="chartAllClick" :key="timeRange_5" :optData="optData_5" :id="'5'"></Charts></div>
-        </el-col>
+        </el-col> -->
         
         <!-- 国家地区 -->
-        <el-col :xl="8" :lg="12" class="pad-15">
+        <el-col :xl="12" :lg="12" class="pad-15">
           <p class="chart-title mb-10">国家地区</p>
           <div class="chart-outer ml-10">
             <div class="chart-outer-label">分析维度</div>
@@ -220,7 +220,8 @@ export default {
       cx: {
         pd: {
           statiType:[],
-          analysisType:''
+          analysisType:'',
+          resident_type:'',
         },
         pageSize: 15,
         pageNum: 1,
@@ -282,12 +283,37 @@ export default {
         },
         {
           dm:'personnel_area_type',
-          mc:'境外人员类别'
+          mc:'人员地域类别'
         },
         {
           dm:'age',
           mc:'年龄段'
         },
+        {
+          dm:'exit_entry_status',
+          mc:'出入境状态'
+        },
+        {
+          dm:'reside_reason',
+          mc:'居留事由'
+        },
+
+        // {
+        //   dm:'jzd_ssfj',
+        //   mc:'居住地分局'
+        // },
+        // {
+        //   dm:'inhabi_police_station',
+        //   mc:'居住地派出所'
+        // },
+        // {
+        //   dm:'gzd_ssfj',
+        //   mc:'工作地分局'
+        // },
+        // {
+        //   dm:'workplace_police_station',
+        //   mc:'工作地派出所'
+        // },
       ],
       tableHead:[
         {
@@ -312,12 +338,36 @@ export default {
         },
         {
           dm:'personnel_area_type_desc',
-          cm:'境外人员类别'
+          cm:'人员地域类别'
         },
         {
           dm:'age',
           cm:'年龄段'
         },
+        {
+          dm:'exit_entry_status_desc',
+          cm:'出入境状态'
+        },
+        {
+          dm:'reside_reason_desc',
+          cm:'居留事由'
+        },
+        // {
+        //   dm:'jzd_ssfj_desc',
+        //   cm:'居住地分局'
+        // },
+        // {
+        //   dm:'inhabi_police_station_desc',
+        //   cm:'居住地派出所'
+        // },
+        // {
+        //   dm:'gzd_ssfj_desc',
+        //   cm:'工作地分局'
+        // },
+        // {
+        //   dm:'workplace_police_station_desc',
+        //   cm:'工作地派出所'
+        // },
       ],
       tableHeadReal:[
         {
@@ -365,6 +415,14 @@ export default {
           dm:'age',
           mc:'年龄段'
         },
+        {
+          dm:'exit_entry_status',
+          mc:'出入境状态'
+        },
+        {
+          dm:'reside_reason',
+          mc:'居留事由'
+        },
       ],
       sflbArr:[],
       analyArr:{
@@ -397,9 +455,11 @@ export default {
     this.$store.dispatch("aGetPassport");
     this.$store.dispatch("aGetNation");
     this.$store.dispatch("aGetDM",'qzzl');
+    this.$store.dispatch('aGetDM', "wgr_sqsy");//停留事由&&入境事由
     this.$store.dispatch("aGetDMPro",'dm_jwrysf');
     this.$store.dispatch("aGetDMPro",'dm_crjbs');
     this.$store.dispatch("aGetDMPro",'dm_rydylbb');
+
     this.getSflb();
     this.getTable();
   },
@@ -558,7 +618,10 @@ export default {
     //表格复选框选择
 		SelectionChange(){},
 		//点击行
-    rowClick(){},
+    rowClick(data){
+      this.selection = [];
+      this.selection.push(data.data);
+    },
     analyFun(val){
       if(val == 1){this.chartFun_1()}
       if(val == 2){this.chartFun_2()}

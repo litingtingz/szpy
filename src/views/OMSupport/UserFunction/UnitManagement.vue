@@ -143,6 +143,7 @@ export default {
     },
     getTree(data) {
       if (data.type == "dwlb") {
+        // console.log('====',data)
         this.getPermissionTree(data.data.bmbh);
         this.getTemplate(data.data.bmbh);
       } else if (data.type == "mblb") {

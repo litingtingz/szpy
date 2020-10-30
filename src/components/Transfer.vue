@@ -41,7 +41,7 @@ export default {
         }
     },
     mounted(){
-        // console.log('transData',this.pointData)
+        console.log('transData',this.transData)
         this.$nextTick(() =>{
             let arrObj = this.pointData
             let arr = [];
