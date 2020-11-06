@@ -87,6 +87,7 @@
                   <el-option
                     v-for="(item,index) in $store.state[cx.dm]"
                     :key="index"
+                    v-show="item.sfyx == 1||item.sfyx==undefined"
                     :label="item.dm+' - '+item.mc"
                     :value="item.dm"
                   ></el-option>
@@ -131,6 +132,19 @@
                     <el-date-picker v-model="form[c.dm]" :type="c.type" placeholder="选择日期"></el-date-picker>
                   </div>-->
                 </div>
+              </template>
+              <template v-else-if="cx.type == 'custom'">
+                <div class="transfer">
+                  <el-transfer
+                  filterable
+                  :filter-method="filterMethod"
+                  v-model="dialogData[cx.dm]"
+                  :render-content="renderFunc"
+                  :props="propsData"
+                  :data="transData"
+                  :titles="['可选择列', '已选择列']"
+                  ></el-transfer>
+              </div>
               </template>
               <template v-else-if="cx.type=='radio'">
                 <el-radio-group v-model="dialogData[cx.dm]" @change="radioChange" class="form-radio" :disabled="cx.dis">
@@ -354,7 +368,20 @@ export default {
     rulsName:{
       type:String,
       default:''
-    }
+    },
+    transData:{
+        type:Array,
+        default: () => []
+    },
+    propsData:{
+        type:Object,
+        default: () => {
+            return{
+                key:'dm',
+                label:'cm'
+            } 
+        }
+    },
   },
   data() {
     var validatePass = (rule, value, callback) => {
@@ -392,7 +419,8 @@ export default {
       }:(this.rulsName=='cjyylbs' && this.dialogType!='ck')?{
           audioName:[{required: true, message: "此项必填", trigger: "blur"}],
           audioType:[{required: true, message: "此项必填", trigger: "blur"}],
-         
+      }:(this.rulsName=='zdygj')?{
+        mc:[{required: true, message: "此项必填", trigger: "blur"}],
       }:{
         xtmm: [{ required: true, message: "请输入密码", trigger: "blur" }],
         qrxtmm: [{ validator: validatePass, trigger: "blur" }],
@@ -430,6 +458,9 @@ export default {
         zrqMc: [{ required: true, message: "此项必填", trigger: "blur" }],
       },
       isXJ: false,
+      renderFunc(h, option) {
+          return <span>{ option.dm } - { option.mc }</span>;
+      },
       newForm: {},
       isPS:true,
       isJoinFlag:true,
@@ -509,6 +540,10 @@ export default {
     // }
   },
   methods: {
+    //穿梭框的自定义搜索
+    filterMethod(query, item){
+      return (item.dm).toLowerCase().indexOf(query) > -1 || (item.dm).toUpperCase().indexOf(query) > -1 || item.mc.indexOf(query) > -1;
+    },
     expFun(){},
     Upload(data){
       this.datamodel=data;
@@ -610,5 +645,11 @@ export default {
 .color-part{
   border-top: 1px solid #eee;
   padding: 10px 15px 5px 15px!important;
+}
+.transfer{
+    display: flex;
+    justify-content: center;
+    width: 563px;
+    /* text-align: center; */
 }
 </style>

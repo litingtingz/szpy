@@ -366,8 +366,6 @@ const lzsb = {
             },
         ],
         "b": [
-
-            
             // {
             //     cm: '职业',
             //     type: 'select',
@@ -414,7 +412,16 @@ const lzsb = {
                 type: 'select',
                 dm: 'suboffice',
                 poupDm:'subofficeMc',
-                poup:true,
+                col:16,
+                poup:true,//冒泡
+                dis:true,//禁止编辑
+                disdm:true,//下拉选只显示名称，隐藏代码项
+            },
+            
+            {
+                cm: '本人联系电话',
+                type: 'input',
+                dm: 'sjhm',
                 dis:true,
             },
             {
@@ -422,13 +429,16 @@ const lzsb = {
                 type: 'select',
                 dm: 'policestation',
                 poupDm:'policestationMc',
+                col:16,
                 poup:true,
                 dis:true,
+                disdm:true,
             },
+
             {
-                cm: '本人联系电话',
+                cm: '紧急联系人',
                 type: 'input',
-                dm: 'sjhm',
+                dm: 'jjlxr',
                 dis:true,
             },
             {
@@ -438,11 +448,11 @@ const lzsb = {
                 dm: 'zsdz',
                 dis:true,
             },
-
+            
             {
-                cm: '紧急联系人',
+                cm: '紧急联系人电话',
                 type: 'input',
-                dm: 'jjlxr',
+                dm: 'jjlxrdh',
                 dis:true,
             },
             {
@@ -453,9 +463,9 @@ const lzsb = {
                 dis:true,
             },
             {
-                cm: '紧急联系人电话',
-                type: 'input',
-                dm: 'jjlxrdh',
+                cm: '上报时间',
+                type: 'datetimePicker',
+                dm: 'sbsj',
                 dis:true,
             },
             {
@@ -470,11 +480,10 @@ const lzsb = {
                 dm: 'zfzl',
                 dis:true,
             },
-
             {
-                cm: '上报时间',
-                type: 'datetimePicker',
-                dm: 'sbsj',
+                cm: '出入境状态',
+                type: 'select',
+                dm: 'crjzt',
                 dis:true,
             },
             {
@@ -484,25 +493,7 @@ const lzsb = {
                 dm: 'yq_hcjg',
                 dis:true,
             },
-
-            {
-                cm: '出入境状态',
-                type: 'select',
-                dm: 'crjzt',
-                dis:true,
-            },
-            {
-                cm: '证件有效期至',
-                type: 'datePicker',
-                dm: 'zjyxqz',
-                dis:true,
-            },
-            {
-                cm: '职业',
-                type: 'select',
-                dm: 'zy',
-                dis:true,
-            },
+            
             {
                 cm: '房主姓名',
                 type: 'input',
@@ -522,12 +513,23 @@ const lzsb = {
                 dis:true,
             },
             {
+                cm: '证件有效期至',
+                type: 'datePicker',
+                dm: 'zjyxqz',
+                dis:true,
+            },
+            {
+                cm: '职业',
+                type: 'select',
+                dm: 'zy',
+                dis:true,
+            },
+            {
                 cm: '与境外人员关系',
                 type: 'select',
                 dm: 'jwrygx',
                 dis:true,
             },
-
             {
                 cm: '备注',
                 type: 'textarea',

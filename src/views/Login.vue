@@ -26,7 +26,7 @@
       </div>
       <div class="login_main">
         <img src="../assets/images/login/pro_tip.png" alt />
-        <img class="mt-30" src="../assets/images/login/login_tip_1.png" @click="loginPassword" alt />
+        <img class="mt-30" src="../assets/images/login/login_tip_2.png" @click="loginPassword" alt />
         <img
           class="mt-50"
           src="../assets/images/login/login_btn.png"

@@ -53,10 +53,9 @@ function objCompare(obj1,obj2){
   for(var i in obj2){
     for(var j in obj1){
       if(j==i){
-        if(Array.isArray(obj2[i])){//如果obj2是数组
+        if(Array.isArray(obj2[i])&&!Array.isArray(obj1[j])){//如果obj2是数组
           obj1[j] = [obj1[j]]
         }
-        // delete obj2[i]
       }
     }
   }

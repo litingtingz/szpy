@@ -121,13 +121,14 @@ th {
   height: 38px;
 }
 .el-input.is-disabled .el-input__inner {
-  color: #656262!important;
+  /* color: #656262!important; */
+  color: #000!important;
 }
 .el-radio__input.is-disabled+span.el-radio__label{
-  color: #656262!important;
+  color: #000!important;
 }
 .el-checkbox__input.is-disabled+span.el-checkbox__label{
-  color: #656262!important;
+  color: #000!important;
 }
 .el-form-item--mini .el-form-item__content, .el-form-item--mini .el-form-item__label {
   line-height: 26px!important;
@@ -387,4 +388,9 @@ input[type="number"]{
 }
 .home-body .el-aside{
   margin-top: 17px;
+}
+.statistics-type .el-checkbox{
+  margin-right: 20px;
+  margin-bottom: 10px;
+  width: 10%;
 }

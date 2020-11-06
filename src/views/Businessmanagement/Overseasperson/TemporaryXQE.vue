@@ -61,7 +61,8 @@
                   <el-option
                     v-for="(item,index) in $store.state[cx.dm]"
                     :key="index"
-                    :label="item.dm+' - '+item.mc"
+                    v-show="item.sfyx == 1 || item.sfyx == undefined"
+                    :label="cx.disdm?item.mc:item.dm+' - '+item.mc"
                     :value="item.dm"
                   ></el-option>
                 </el-select>
@@ -199,7 +200,8 @@
                   <el-option
                     v-for="(item,index) in $store.state[cx.dm]"
                     :key="index"
-                    :label="item.dm+' - '+item.mc"
+                    v-show="item.sfyx == 1 || item.sfyx == undefined"
+                    :label="cx.disdm?item.mc:item.dm+' - '+item.mc"
                     :value="item.dm"
                   ></el-option>
                 </el-select>

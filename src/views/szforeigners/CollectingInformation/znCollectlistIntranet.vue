@@ -196,7 +196,6 @@ export default {
       this.cx.pd = data;
       this.cx.queryParams = data;
       this.cx.pageNum = 1;
-    
       // this.disPlBtn = data.userType == 0 ? true : false;
       this.getTable(true);
     },

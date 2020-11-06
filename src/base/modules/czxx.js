@@ -999,6 +999,14 @@ const zhfx = {
     //   falseLabel:'false',
     //   check:true,
     // },
+    {
+      mc: '有效常住人员',
+      type: 'checkbox',
+      dm: 'valid_state',
+      trueLabel:'1',
+      falseLabel:'0',
+      check:true,
+    },
   ],
   lbBtn: [
     {

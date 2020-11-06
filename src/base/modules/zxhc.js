@@ -474,6 +474,10 @@ const zrqzf = {
             dm: 'phone',
         },
         {
+            cm: '下发时间',
+            dm: 'suboffice_issuedate'
+        },
+        {
             cm: '接收时间',
             dm: 'turnoutarea_receivedate'
         },

@@ -67,6 +67,11 @@ const routes = [
         name: 'TimeControl',
         component: () => import(/* webpackChunkName: "OMSupport" */ '../views/OMSupport/disPoseFunction/TimeControl.vue')
       },
+      {
+        path: '/CountryDustom',
+        name: 'CountryDustom',
+        component: () => import(/* webpackChunkName: "OMSupport" */ '../views/OMSupport/disPoseFunction/CountryDustom.vue')
+      },
       /**
        * 业务管理
        */

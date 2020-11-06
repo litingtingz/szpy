@@ -85,9 +85,7 @@
           :key="i"
           type="index"
           :label="lb.cm"
-          v-else-if="lb.typeindex"
-          >
-         
+          v-else-if="lb.typeindex">
         </el-table-column>
         <el-table-column
           align="left"
@@ -101,7 +99,6 @@
             <template slot-scope="scope">
              <div style="cursor:pointer;position: relative;"> 
                <img @click="imgclick(isimgclick,scope.row.imgpath)" :src="getimglist(scope.row.imgpath)" class="yimg">
-
               </div>
                <div id="big-img-box" v-if="isimgclick">
                 <el-image-viewer :on-close="()=>{isimgclick=false}" :url-list="imglist" />
@@ -146,7 +143,7 @@
                 @click="handleClick(scope.row,lbt,scope.$index)"
                 type="text"
                 size="small"
-                v-else-if="!lbt.user_ctrl||(lbt.user_ctrl==scope.row.status&&!lbt.status)
+                v-else-if="!lbt.user_ctrl||(lbt.user_ctrl==scope.row.status&&!lbt.status)||(lbt.user_ctrl==scope.row.sfyx&&!lbt.status)
                 ||(lbt.user_ctrl==scope.row.whetherUpdateState&&!lbt.control)
                 ||(lbt.control&&page1=='1'&&clzt1==1&&((scope.row.backstatus_desc=='无效地址'||!scope.row.backstatus_desc))&&(scope.row.datatype!='3')&&(scope.row.datatype!='4')&&(scope.row.datatype!='5'))
                 || (lbt.user_ctrl==scope.row.isDelete && lbt.status)
@@ -187,7 +184,6 @@ export default {
    "el-image-viewer": () =>
       import("element-ui/packages/image/src/image-viewer")
     },
-  
   props: {
     lbType: {
       type: String,
@@ -203,94 +199,121 @@ export default {
       type: Number,
       default: 0,
     },
+    //内层tab是否展示
     isTab: {
       type: Boolean,
       default: false
     },
+    //表格批量按钮是否展示
     isPl: {
       type: Boolean,
       default: true
     },
+    //暂时废弃
     disPlBtn: {
       type: Boolean,
       default: false
     },
+    //ref 名字
     refName: {
       type: String,
       default: "aa"
     },
+    //表格的多选框列是否展示 默认不展示
     isSelect: {
       type: Boolean,
       default: false
     },
+    //表格操作列是否展示
     isEdit: {
       type: Boolean,
       default: true
     },
+    //暂时无用
     isRowClick: {
       type: Boolean,
       default: true
     },
+    //表格分页是否展示
     isPagination: {
       type: Boolean,
       default: true
     },
+    //表格是否排序
     isSort: {
       type: Boolean,
       default: true
     },
+    //表格分页 每页展示条数分组
     pageSizeArr: {
       type: Array,
       default: () => [10, 20, 30, 40]
     },
-    cxData: {
-      type: Array,
-      default: () => []
-    },
+    // cxData: {
+    //   type: Array,
+    //   default: () => []
+    // },
+    //表格表头数据
     lbData: {
       type: Array,
       default: () => []
     },
+    //简表 特殊处理
     lbControlData: {
       type: Array,
       default: () => []
     },
+    //列表操作列的按钮数据
     lbBtn: {
       type: Array,
       default: () => []
     },
+    //列表的批量按钮数据 因为权限控制 一般是从vuex取值
     plBtn: {
       type: Array,
       default: () => []
     },
+    //列表的tab数据
     lbTab: {
       type: Array,
       default: () => []
     },
+    //列表表格数据
     tableData: {
       type: Object,
       default: () => {}
     },
+    //列表多选框选中数据
     selection: {
       type: Array,
       default: () => []
     },
+    //列表操作列的宽度
     czWidth: {
       type: String,
       default: "auto"
     },
+    //监听数据 是否清除排序
     clearSort: {
       type: Number,
       default:0
     },
+    //数据导出需要传递的参数
     expData:{
       type:Object,
       default: () => {}
     },
+    //导出路径
     expUrl:{
       type:String,
       default:''
     },
+    //导出excel格式
+    expType:{
+      type:String,
+      default:'xlsx'
+    },
+    //颜色配置
     colorDes:{
       type:Array,
       default: () => []
@@ -299,7 +322,8 @@ export default {
     tableMerge:{
       type:Object,
       default: () => {}
-    }
+    },
+    
   },
   data() {
     return {
@@ -328,13 +352,6 @@ export default {
     };
   },
   watch: {
-    refName(val){
-      // console.log('进入',val)
-      if(val=='jbxxTable'){
-        // console.log('进入来了',val)
-        
-      }
-    },
     selection(val) {
       this.$nextTick(function() {
         this.toggleSelection(val);
@@ -349,14 +366,7 @@ export default {
       handler() {},
       deep: true
     },
-    // lbData: {
-    //   handler(n) {
-    //     this.lbArr = n;
-    //   },
-    //   deep: true
-    // },
     page(val) {
-      // console.log('page1',val)
       this.page1 = val;
     },
     clzt(val){
@@ -448,7 +458,7 @@ export default {
      }
   },
   methods: {
-     imgclick(data,path) {
+    imgclick(data,path) {
       this.imglist=[this.$api.aport6+path];
       this.isimgclick = true;
     },
@@ -533,7 +543,6 @@ export default {
       if(val.py == 'jb'){//简表
         this.dialogTitle = val.menu_name;
         this.dialogType = val.py;
-        this.transData = this.lbData;
         this.timer = new Date().getTime();
         if(this.refName=="hczf"){
           if(this.page1!='1'){
@@ -542,10 +551,6 @@ export default {
             this.transData = this.lbControlData
           }
         }
-        // this.pointData = [];//选中值
-        // this.pointData = this.lbData;//选中值
-        // console.log('this.transData',this.transData)
-        // console.log('this.pointData',this.lbData)
         this.isShowDialog = true;
       }
       if(val.py == 'dc'){//导出
@@ -555,7 +560,7 @@ export default {
         this.expD.menu_name = this.$store.state.breadcrumb[this.$store.state.breadcrumb.length-1].menu_name;
         this.expD.btn_name = val.menu_name;
         this.expD.user = this.$store.state.user;
-        this.expD.pd.listName = this.lbData;
+        if(this.expD.pd){this.expD.pd.listName = this.lbData;}
         this.expD.pageSize = 2000;
         if(this.tableData.list.length==0){
           this.$message({
@@ -568,7 +573,7 @@ export default {
         }
         if(this.tableData.total<=2000){//导出条数小于2000条
           this.expD.pageNum = 1
-          this.$api.post(this.expUrl,this.expD,'','','blob','xlsx',expName)
+          this.$api.post(this.expUrl,this.expD,'','','blob',this.expType,expName)
         }else{
           for(var i=1;i<=Math.ceil(this.tableData.total/2000);i++){
             this.expD.pageNum = i
@@ -577,7 +582,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
               }).then(() => {
-                this.$api.post(this.expUrl,this.expD,'','','blob','xlsx',expName)
+                this.$api.post(this.expUrl,this.expD,'','','blob',this.expType,expName)
               }).catch(() => {
                 this.$message({
                   type: 'info',

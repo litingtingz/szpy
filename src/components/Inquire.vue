@@ -96,7 +96,6 @@
                   :format="dateObj[cx.dm]"
                   value-format="yyyy-MM-dd"
                   @blur="dataHand(cx.dm)"
-                  @focus="dataFocus"
                 ></el-date-picker>
                 </div>
               </template>
@@ -109,7 +108,6 @@
                       placeholder="选择开始时间"
                       :format="dateObj[cx.children[0].dm]"
                       @blur="dataHand(cx.children[0].dm)"
-                      @focus="dataFocus"
                       :value-format="cx.children[0].type=='date'?'yyyy-MM-dd':'yyyy-MM-dd HH:mm:ss'"
                     ></el-date-picker>
                   </div>
@@ -121,7 +119,6 @@
                       placeholder="选择结束时间"
                       :format="dateObj[cx.children[1].dm]"
                       @blur="dataHand(cx.children[1].dm)"
-                      @focus="dataFocus"
                       :value-format="cx.children[0].type=='date'?'yyyy-MM-dd':'yyyy-MM-dd HH:mm:ss'"
                     ></el-date-picker>
                   </div>
@@ -196,6 +193,7 @@
 <script>
 export default {
   props: {
+    //弹窗查询项限制字段
     cxType: {
       type: String,
       default: ""
@@ -204,30 +202,37 @@ export default {
       type: String,
       default: "100px"
     },
+    //查询项数据源
     cxData: {
       type: Array,
       default: () => []
     },
+    //查询项 复选框数据源
     cxCheck: {
       type: Array,
       default: () => []
     },
+    //查询项 button数据源
     cxButton: {
       type: Array,
       default: () => []
     },
+    //快速筛查数据源
     facxData:{
       type:Array,
       default: () => []
     },
+    //查询 入参
     pd: {
       type: Object,
       default: () => {}
     },
+    //查询 按钮日志入参
     cxPara:{
       type: Object,
       default: () => {}
     },
+    //快速筛查&筛选条件切换
     cxShow:{
       type: Boolean,
       default: true
@@ -239,7 +244,6 @@ export default {
       dateF:'yyyyMMdd',
       dateRangS:'yyyyMMdd',
       dateRangE:'yyyyMMdd',
-
       dateObj:{},
       tagCheck:'',
       rules: {},
@@ -293,13 +297,14 @@ export default {
     });  
   },
   methods: {
+    //日期转换格式查询
     dataHand(val){
       this.$set(this.dateObj,val,'yyyy-MM-dd')
     },
-    dataFocus(){},
     dateKeyDown(val){
       this.$set(this.dateObj,val,'yyyyMMdd')
     },
+    //查询项 按钮事件
     btnClick(py,pb) {
       if (py == "cx") {
         this.submitForm("inquire",pb);
@@ -307,6 +312,7 @@ export default {
         this.resetForm("inquire");
       }
     },
+    //查询项 button点击事件
     quickView(val){
       if(this.btnChecked == val){
         this.btnChecked = ''
@@ -315,6 +321,7 @@ export default {
       }
       this.$emit('quickView',this.btnChecked)
     },
+    //快速筛查
     tagClick(value,data,ind){
       this.checkArr[ind] = JSON.parse(JSON.stringify(this.$store.state[data.dm]))
       this.flag[ind] = !this.flag[ind]
@@ -370,6 +377,7 @@ export default {
     //   console.log('flag==',ind,this.flag[data.dm],this.checkArr[data.dm])
     //   this.$emit('tagClickFnc',{value:value,data:data})
     // },
+    //暂时废弃
     commandfnc(command){
       this.$nextTick(()=>{
         let obj={
@@ -399,14 +407,17 @@ export default {
         }
       });
     },
+    //切换
     queryShow() {
       this.queryIsShow = !this.queryIsShow;
       // this.checkArr={0:this.facxData.length==0?[]:this.$store.state[this.facxData[0].dm],1:[],2:[],3:[],},
       this.$emit("queryShowFnc", this.queryIsShow);
     },
+    //查询项联动
     linkChange(key, val, inquire) {
       this.$emit("lcFnc", { key: key, data: val, obj: inquire });
     },
+    //清除
     resetForm() {
       let mrz = {};
       Object.assign(mrz, this.mrz);

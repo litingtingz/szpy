@@ -61,6 +61,10 @@
                                 <span class="label-item">住宿地址：</span>
                                 <span class="value-item">{{item.address}}</span>
                             </div>
+                             <div class="item-item">
+                                <span class="label-item">下发时间：</span>
+                                <span class="value-item">{{item.suboffice_issuedate}}</span>
+                            </div>
                         </template>
                     </el-checkbox>
                     <p v-if="loading">加载中...</p>

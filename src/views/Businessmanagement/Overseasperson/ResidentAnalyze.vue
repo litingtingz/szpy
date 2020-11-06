@@ -18,7 +18,7 @@
     <div class="page-box">
       <el-row v-if="tab=='1'">
         <p class="trend-title mb-12">统计类别</p>
-        <el-checkbox-group v-model="cx.pd.statiType">
+        <el-checkbox-group class="statistics-type" v-model="cx.pd.statiType">
           <el-checkbox v-for="(item,ind) in checkList" :key="ind" :label="item.dm">{{item.mc}}</el-checkbox>
         </el-checkbox-group>
         <Table
@@ -46,6 +46,52 @@
         ></Table>
       </el-row>
       <el-row v-if="tab=='2'">
+        
+         <!-- TOP -->
+        <el-col :xl="12" :lg="12" class="pad-15">
+          <p class="chart-title mb-10">TOP</p>
+          <div class="chart-outer ml-10">
+            <div class="chart-outer-label">分析维度</div>
+            <el-select class="chart-select" v-model="analyArr.type_4" @change="analyFun(4)" placeholder="请选择" size="medium">
+              <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
+            </el-select>
+          </div>
+          <div @click="chartDiaFun(4)"><Charts @chartAllClick="chartAllClick" :timeRange="timeRange_4" :optData="optData_4" :id="'4'"></Charts></div>
+        </el-col>
+        <!-- 变化趋势分析图 -->
+        <!-- <el-col :xl="16" :lg="12" class="pad-15">
+          <p class="chart-title mb-10">变化趋势分析图</p>
+          <div class="chart-outer ml-10">
+            <div class="chart-outer-label">分析维度</div>
+            <el-select class="chart-select" v-model="analyArr.type_5" @change="analyFun(5)" placeholder="请选择" size="medium">
+              <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
+            </el-select>
+          </div>
+          <div @click="chartDiaFun(5)"><Charts @chartAllClick="chartAllClick" :key="timeRange_5" :optData="optData_5" :id="'5'"></Charts></div>
+        </el-col> -->
+        
+        <!-- 国家地区 -->
+        <el-col :xl="12" :lg="12" class="pad-15">
+          <p class="chart-title mb-10">占比图</p>
+          <div class="chart-outer ml-10">
+            <div class="chart-outer-label">分析维度</div>
+            <el-select class="chart-select" v-model="analyArr.type_3" @change="analyFun(3)" placeholder="请选择" size="medium">
+              <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
+            </el-select>
+          </div>
+          <div @click="chartDiaFun(3)"><Charts @chartAllClick="chartAllClick" :timeRange="timeRange_3" :optData="optData_3" :id="'3'"></Charts></div>
+        </el-col>
+        <!--  -->
+        <el-col :xl="24" :lg="24" class="pad-15">
+          <p class="chart-title mb-10">变化趋势分析图</p>
+          <div class="chart-outer ml-10">
+            <div class="chart-outer-label">分析维度</div>
+            <el-select class="chart-select chart-ts"  v-model="analyArr.type_6" @change="analyFun(6)" placeholder="请选择" size="medium">
+              <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
+            </el-select>
+          </div>
+          <div @click="chartDiaFun(6)"><Charts @chartAllClick="chartAllClick" :key="timeRange_6" :Cheight="'400px'" :optData="optData_6" :id="'6'"></Charts></div>
+        </el-col>
         <!-- 迁入量 -->
         <el-col :xl="12" :lg="12" class="pad-15">
           <p class="chart-title mb-10">迁入量</p>
@@ -61,7 +107,7 @@
               <div class="chart-compare">环比：<span>{{InObj.m2m}}</span><i :class="InObj.m2m.includes('-')?'el-icon-bottom compare-icon icon-red':'el-icon-top compare-icon icon-green'"></i></div>
             </div>
           </div>
-          <div @click="chartDiaFun(1)"><Charts :timeRange="timeRange_1" :optData="optData_1" :id="'1'" @chartAllClick="chartAllClick"></Charts></div>
+          <div @click="chartDiaFun(1)"><Charts :key="timeRange_1" :optData="optData_1" :id="'1'" @chartAllClick="chartAllClick"></Charts></div>
           <!-- <div class="chart-box">
             <div>
               <Charts
@@ -110,7 +156,7 @@
               <div class="chart-compare">环比：<span>{{OutObj.m2m}}</span><i :class="OutObj.m2m.includes('-')?'el-icon-bottom compare-icon icon-red':'el-icon-top compare-icon icon-green'"></i></div>
             </div>
           </div>
-          <div @click="chartDiaFun(2)"><Charts @chartAllClick="chartAllClick" :timeRange="timeRange_2" :optData="optData_2" :id="'2'"></Charts></div>
+          <div @click="chartDiaFun(2)"><Charts @chartAllClick="chartAllClick" :key="timeRange_2" :optData="optData_2" :id="'2'"></Charts></div>
           <!-- <div class="chart-box">
             <div>
               <Charts
@@ -144,51 +190,6 @@
             </div>
           </div> -->
         </el-col>
-         <!-- TOP -->
-        <el-col :xl="12" :lg="12" class="pad-15">
-          <p class="chart-title mb-10">TOP</p>
-          <div class="chart-outer ml-10">
-            <div class="chart-outer-label">分析维度</div>
-            <el-select class="chart-select" v-model="analyArr.type_4" @change="analyFun(4)" placeholder="请选择" size="medium">
-              <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
-            </el-select>
-          </div>
-          <div @click="chartDiaFun(4)"><Charts @chartAllClick="chartAllClick" :timeRange="timeRange_4" :optData="optData_4" :id="'4'"></Charts></div>
-        </el-col>
-        <!-- 变化趋势分析图 -->
-        <!-- <el-col :xl="16" :lg="12" class="pad-15">
-          <p class="chart-title mb-10">变化趋势分析图</p>
-          <div class="chart-outer ml-10">
-            <div class="chart-outer-label">分析维度</div>
-            <el-select class="chart-select" v-model="analyArr.type_5" @change="analyFun(5)" placeholder="请选择" size="medium">
-              <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
-            </el-select>
-          </div>
-          <div @click="chartDiaFun(5)"><Charts @chartAllClick="chartAllClick" :key="timeRange_5" :optData="optData_5" :id="'5'"></Charts></div>
-        </el-col> -->
-        
-        <!-- 国家地区 -->
-        <el-col :xl="12" :lg="12" class="pad-15">
-          <p class="chart-title mb-10">国家地区</p>
-          <div class="chart-outer ml-10">
-            <div class="chart-outer-label">分析维度</div>
-            <el-select class="chart-select" v-model="analyArr.type_3" @change="analyFun(3)" placeholder="请选择" size="medium">
-              <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
-            </el-select>
-          </div>
-          <div @click="chartDiaFun(3)"><Charts @chartAllClick="chartAllClick" :timeRange="timeRange_3" :optData="optData_3" :id="'3'"></Charts></div>
-        </el-col>
-        <!--  -->
-        <el-col :xl="24" :lg="24">
-          <p class="chart-title mb-10">变化趋势分析图</p>
-          <div class="chart-outer ml-10">
-            <div class="chart-outer-label">分析维度</div>
-            <el-select class="chart-select chart-ts" multiple collapse-tags v-model="analyArr.type_6" @change="analyFun(6)" placeholder="请选择" size="medium">
-              <el-option v-for="(item,ind) in sflbArr" :key="ind" :label="item.MC" :value="item.DM"></el-option>
-            </el-select>
-          </div>
-          <div @click="chartDiaFun(6)"><Charts @chartAllClick="chartAllClick" :key="timeRange_6" :Cheight="'400px'" :optData="optData_6" :id="'6'"></Charts></div>
-        </el-col>
       </el-row>
     </div>
     <Dialog :isShowDialog="isShowDialog" :width="dialogType=='chart'?'90%':'1000px'" :class="dialogType=='chart'?'dia-height':''" :title="dialogTitle" @hideDialog="isShowDialog=false">
@@ -220,7 +221,7 @@ export default {
       cx: {
         pd: {
           statiType:[],
-          analysisType:'',
+          // analysisType:'',
           resident_type:'',
         },
         pageSize: 15,
@@ -298,22 +299,22 @@ export default {
           mc:'居留事由'
         },
 
-        // {
-        //   dm:'jzd_ssfj',
-        //   mc:'居住地分局'
-        // },
-        // {
-        //   dm:'inhabi_police_station',
-        //   mc:'居住地派出所'
-        // },
-        // {
-        //   dm:'gzd_ssfj',
-        //   mc:'工作地分局'
-        // },
-        // {
-        //   dm:'workplace_police_station',
-        //   mc:'工作地派出所'
-        // },
+        {
+          dm:'jzd_ssfj',
+          mc:'居住地分局'
+        },
+        {
+          dm:'inhabi_police_station',
+          mc:'居住地派出所'
+        },
+        {
+          dm:'gzd_ssfj',
+          mc:'工作地分局'
+        },
+        {
+          dm:'workplace_police_station',
+          mc:'工作地派出所'
+        },
       ],
       tableHead:[
         {
@@ -352,22 +353,22 @@ export default {
           dm:'reside_reason_desc',
           cm:'居留事由'
         },
-        // {
-        //   dm:'jzd_ssfj_desc',
-        //   cm:'居住地分局'
-        // },
-        // {
-        //   dm:'inhabi_police_station_desc',
-        //   cm:'居住地派出所'
-        // },
-        // {
-        //   dm:'gzd_ssfj_desc',
-        //   cm:'工作地分局'
-        // },
-        // {
-        //   dm:'workplace_police_station_desc',
-        //   cm:'工作地派出所'
-        // },
+        {
+          dm:'jzd_ssfj_desc',
+          cm:'居住地分局'
+        },
+        {
+          dm:'inhabi_police_station_desc',
+          cm:'居住地派出所'
+        },
+        {
+          dm:'gzd_ssfj_desc',
+          cm:'工作地分局'
+        },
+        {
+          dm:'workplace_police_station_desc',
+          cm:'工作地派出所'
+        },
       ],
       tableHeadReal:[
         {
@@ -423,15 +424,31 @@ export default {
           dm:'reside_reason',
           mc:'居留事由'
         },
+        {
+          dm:'jzd_ssfj',
+          mc:'居住地分局'
+        },
+        {
+          dm:'inhabi_police_station',
+          mc:'居住地派出所'
+        },
+        {
+          dm:'gzd_ssfj',
+          mc:'工作地分局'
+        },
+        {
+          dm:'workplace_police_station',
+          mc:'工作地派出所'
+        },
       ],
       sflbArr:[],
       analyArr:{
-        type_1:'gender',
-        type_2:'gender',
+        type_1:'',
+        type_2:'',
         type_3:'gender',
         type_4:'gender',
         type_5:'gender',
-        type_6:[],
+        type_6:'gender',
       },
       optData_D:{},
       optData_1:{},
@@ -459,7 +476,7 @@ export default {
     this.$store.dispatch("aGetDMPro",'dm_jwrysf');
     this.$store.dispatch("aGetDMPro",'dm_crjbs');
     this.$store.dispatch("aGetDMPro",'dm_rydylbb');
-
+    this.$cdata.cusCountry();
     this.getSflb();
     this.getTable();
   },
@@ -471,11 +488,12 @@ export default {
       })
     },
     cxFnc(data) {
-      this.cx.pd = data;
-      this.cx.pageNum = 1;
       if(this.tab == '1'){
+        this.cx.pd = data;
+        this.cx.pageNum = 1;
         this.getTable(true);
-      }else{  
+      }else{
+        console.log('===',this.cx.pd)  
         this.chartsBegin()
       }
     },
@@ -1290,13 +1308,68 @@ export default {
       };
     },
     chartFun_1(){
-      this.cx.pd.analysisType = this.analyArr.type_1;
-      this.cx.pd.qcl = ''
-      this.$api.post(this.$api.aport4 + '/comprehensive/periodComparison',this.cx.pd,r=>{
+      let cx_1 = {};
+      cx_1 = JSON.parse(JSON.stringify(this.cx.pd))
+      cx_1.analysisType = this.analyArr.type_1;
+      cx_1.qcl = ''
+      this.$api.post(this.$api.aport4 + '/comprehensive/periodComparison',cx_1,r=>{
         this.InObj.y2y = r.y2y;
         this.InObj.m2m = r.m2m;
-        this.chartShow_1(r.xAxis.xAxis,r.series[0].data)
-        this.timeRange_1 = new Date().getTime()
+        let double={
+          type: "bar",
+            barWidth: 10,
+            showBackground: true,
+            backgroundStyle: {
+              // color: "#AA30DF",
+              color: 'rgba(220, 220, 220, 0.3)',
+              // opacity: 0.1,
+              barBorderRadius: 30
+            },
+            itemStyle: {
+              normal: {
+                barBorderRadius: 10, //柱状图边角圆弧化
+                label: {
+                  show: true, //开启显示
+                  position: "top", //在上方显示
+                  textStyle: {
+                    //数值样式
+                    color: "#000",
+                    fontSize: 12,
+                    fontWeight:'bold'
+                  }
+                },
+                // color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                //   {
+                //     offset: 0,
+                //     color: "#AA30DF"
+                //   },
+                //   {
+                //     offset: 1,
+                //     color: "#CE4AC0"
+                //   }
+                // ])
+              },
+              emphasis: {
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  {
+                    offset: 0,
+                    color: "#D5C95D"
+                  },
+                  {
+                    offset: 1,
+                    color: "#C39E69"
+                  }
+                ])
+              }
+            },
+        }
+        let dataReal = [];
+        r.series.forEach(item => {
+          let dataItem = Object.assign({},item,double)
+          dataReal.push(dataItem)
+        })
+        this.chartShow_1(r.xAxis.xAxis,dataReal)
+        
       })
     },
     chartShow_1(xAxis,series){
@@ -1349,14 +1422,26 @@ export default {
             }
           }
         ],
-        series: [
-          {
-            type: "bar",
+        series: series
+      };
+      this.timeRange_1 = new Date().getTime()
+    },
+    chartFun_2(){
+      let cx_2 = {}
+      cx_2 = JSON.parse(JSON.stringify(this.cx.pd))
+      cx_2.analysisType = this.analyArr.type_2;
+      cx_2.qcl = '1';
+      this.$api.post(this.$api.aport4 + '/comprehensive/periodComparison2',cx_2,r=>{
+        this.OutObj.y2y = r.y2y;
+        this.OutObj.m2m = r.m2m;
+        let double={
+          type: "bar",
             barWidth: 10,
             showBackground: true,
             backgroundStyle: {
-              color: "#AA30DF",
-              opacity: 0.1,
+              // color: "#AA30DF",
+              color: 'rgba(220, 220, 220, 0.3)',
+              // opacity: 0.1,
               barBorderRadius: 30
             },
             itemStyle: {
@@ -1372,16 +1457,70 @@ export default {
                     fontWeight:'bold'
                   }
                 },
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  {
-                    offset: 0,
-                    color: "#AA30DF"
-                  },
-                  {
-                    offset: 1,
-                    color: "#CE4AC0"
-                  }
-                ])
+                color:((para)=>{
+                  var colorList = [
+                    {
+                      c1:"#FCAC62",
+                      c2:"#FC8C7E"
+                    },
+                    {
+                      c1:"#F86948",
+                      c2:"#E2453F"
+                    },
+                    {
+                      c1:"#AA30DF",
+                      c2:"#CE4AC0"
+                    },
+                    {
+                      c1:"#30BFDA",
+                      c2:"#1ACCE8"
+                    },
+                    {
+                      c1:"#0FACFA",
+                      c2:"#1ACCE8"
+                    },
+                    {
+                      c1:"#FCAC62",
+                      c2:"#FC8C7E"
+                    },
+                    {
+                      c1:"#F86948",
+                      c2:"#E2453F"
+                    },
+                    {
+                      c1:"#AA30DF",
+                      c2:"#CE4AC0"
+                    },
+                    {
+                      c1:"#30BFDA",
+                      c2:"#1ACCE8"
+                    },
+                    {
+                      c1:"#0FACFA",
+                      c2:"#1ACCE8"
+                    }
+                  ]
+                  return new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                    {
+                      offset: 0,
+                      color: colorList[para.dataIndex].c1
+                    },
+                    {
+                      offset: 1,
+                      color: colorList[para.dataIndex].c2
+                    }
+                  ])
+                })
+                // color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                //   {
+                //     offset: 0,
+                //     color: "#AA30DF"
+                //   },
+                //   {
+                //     offset: 1,
+                //     color: "#CE4AC0"
+                //   }
+                // ])
               },
               emphasis: {
                 color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
@@ -1396,18 +1535,13 @@ export default {
                 ])
               }
             },
-            data: series
-          }
-        ]
-      };
-    },
-    chartFun_2(){
-      this.cx.pd.analysisType = this.analyArr.type_2;
-      this.cx.pd.qcl = '1'
-      this.$api.post(this.$api.aport4 + '/comprehensive/periodComparison2',this.cx.pd,r=>{
-        this.OutObj.y2y = r.y2y;
-        this.OutObj.m2m = r.m2m;
-        this.chartShow_2(r.xAxis.xAxis,r.series[0].data)
+        }
+        let dataReal = [];
+        r.series.forEach(item => {
+          let dataItem = Object.assign({},item,double)
+          dataReal.push(dataItem)
+        })
+        this.chartShow_2(r.xAxis.xAxis,dataReal)
         this.timeRange_2 = new Date().getTime()
       })
     },
@@ -1461,67 +1595,26 @@ export default {
             }
           }
         ],
-        series: [
-          {
-            type: "bar",
-            barWidth: 10,
-            showBackground: true,
-            backgroundStyle: {
-              color: "#30BFDA",
-              opacity: 0.1,
-              barBorderRadius: 30
-            },
-            itemStyle: {
-              normal: {
-                barBorderRadius: 30, //柱状图边角圆弧化
-                label: {
-                  show: true, //开启显示
-                  position: "top", //在上方显示
-                  textStyle: {
-                    //数值样式
-                    color: "#000",
-                    fontSize: 12,
-                    fontWeight:'bold'
-                  }
-                },
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  {
-                    offset: 0,
-                    color: "#30BFDA"
-                  },
-                  {
-                    offset: 1,
-                    color: "#1ACCE8"
-                  }
-                ])
-              },
-              emphasis: {
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  {
-                    offset: 0,
-                    color: "#D5C95D"
-                  },
-                  {
-                    offset: 1,
-                    color: "#C39E69"
-                  }
-                ])
-              }
-            },
-            data: series
-          }
-        ]
+        series: series
       };
     },
     //国家地区
     chartFun_3(){
-      this.cx.pd.analysisType = this.analyArr.type_3;
-      this.$api.post(this.$api.aport4 + '/comprehensive/pieChart',this.cx.pd,r=>{
-        this.chartShow_3(r.legend.data,r.series[0].data);
+      let cx_3={};
+      cx_3 = JSON.parse(JSON.stringify(this.cx.pd))
+      cx_3.analysisType = this.analyArr.type_3;
+      let chartName = '';
+      this.analysis_3.forEach((item) => {
+        if(item.dm == this.analyArr.type_3){
+          chartName = item.mc
+        }
+      })
+      this.$api.post(this.$api.aport4 + '/comprehensive/pieChart',cx_3,r=>{
+        this.chartShow_3(r.legend.data,r.series[0].data,chartName);
         this.timeRange_3 = new Date().getTime()
       })
     },
-    chartShow_3(legend,series) {
+    chartShow_3(legend,series,name) {
       this.optData_3 = {
         tooltip: {
           trigger: "item",
@@ -1541,7 +1634,7 @@ export default {
         },
         series: [
           {
-            // name:'',
+            name:name,
             type: "pie",
             radius: ["35%", "50%"],
             center: ["50%", "45%"],
@@ -1622,13 +1715,21 @@ export default {
     },
     //TOP
     chartFun_4(){
-      this.cx.pd.analysisType = this.analyArr.type_4;
-      this.$api.post(this.$api.aport4 + '/comprehensive/topCount',this.cx.pd,r=>{
-        this.chartShow_4(r.xAxis.xAxis,r.series[0].data)
+      let cx_4={};
+      cx_4 = JSON.parse(JSON.stringify(this.cx.pd))
+      cx_4.analysisType = this.analyArr.type_4;
+      let chartName = '';
+      this.analysis_3.forEach((item) => {
+        if(item.dm == this.analyArr.type_4){
+          chartName = item.mc
+        }
+      })
+      this.$api.post(this.$api.aport4 + '/comprehensive/topCount',cx_4,r=>{
+        this.chartShow_4(r.xAxis.xAxis,r.series[0].data,chartName)
         this.timeRange_4 = new Date().getTime()
       })
     },
-    chartShow_4(xAxis,series) {
+    chartShow_4(xAxis,series,name) {
       this.optData_4 = {
         tooltip: {},
         grid: {
@@ -1680,7 +1781,7 @@ export default {
         ],
         series: [
           {
-           
+            name:name,
             type: "bar",
             barWidth: 10,
             showBackground: true,
@@ -1733,8 +1834,10 @@ export default {
     },
     //
     chartFun_5(){
-      this.cx.pd.analysisType = this.analyArr.type_5
-      this.$api.post(this.$api.aport4 + '/residetrend/trendchart',this.cx.pd,r=>{
+      let cx_5={};
+      cx_5 = JSON.parse(JSON.stringify(this.cx.pd))
+      cx_5.analysisType = this.analyArr.type_5;
+      this.$api.post(this.$api.aport4 + '/residetrend/trendchart',cx_5,r=>{
         let series={
           type: "line",
             smooth: 0.7,
@@ -1845,8 +1948,10 @@ export default {
     },
     //
     chartFun_6(){
-      this.cx.pd.sflb = this.analyArr.type_6
-      this.$api.post(this.$api.aport4+'/comprehensive/stackedBarChart',this.cx.pd,r=>{
+      let cx_6={};
+      cx_6 = JSON.parse(JSON.stringify(this.cx.pd))
+      cx_6.analysisType = this.analyArr.type_6;
+      this.$api.post(this.$api.aport4+'/comprehensive/stackedBarChart',cx_6,r=>{
         let series = {
             type: "bar",
             stack: "总量",

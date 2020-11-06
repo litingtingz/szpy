@@ -374,24 +374,24 @@ export default new Vuex.Store({
     },
     aGetNation(context, payload) {
       return new Promise((resolve) => {
-        api.post(api.aport1 + '/DmController/getDMInfo', { tableName: 'dm_gjdqb' }, r => {
-          context.commit('getNation', fnc.ToArray(r.list))
+        api.post(api.aport1 + '/DmController/getDMAllInfo', { tableName: 'dm_gjdqb_all' }, r => {
+          context.commit('getNation', fnc.sortByKey(r.list,'dm'))
           resolve(payload)
         })
       })
     },
     aGetGender(context, payload) {
       return new Promise((resolve) => {
-        api.post(api.aport1 + '/DmController/getDMInfo', { tableName: 'dm_xbb' }, r => {
-          context.commit('getGender', fnc.ToArray(r.list))
+        api.post(api.aport1 + '/DmController/getDMAllInfo', { tableName: 'dm_xbb_all' }, r => {
+          context.commit('getGender', fnc.sortByKey(r.list,'dm'))
           resolve(payload)
         })
       })
     },
     aGetSex(context, payload) {
       return new Promise((resolve) => {
-        api.post(api.aport1 + '/DmController/getDMInfo', { tableName: 'dm_xbb' }, r => {
-          context.commit('getSex', fnc.ToArray(r.list))
+        api.post(api.aport1 + '/DmController/getDMAllInfo', { tableName: 'dm_xbb_all' }, r => {
+          context.commit('getSex', fnc.sortByKey(r.list,'dm'))
           resolve(payload)
         })
       })
@@ -407,24 +407,24 @@ export default new Vuex.Store({
     },
     aGetDM(context, payload) {
       return new Promise((resolve) => {
-        api.post(api.aport1 + '/DmController/getDMInfo', { tableName: 'dm_' + payload + 'b' }, r => {
-          context.commit('getDM', { type: payload, data: fnc.ToArray(r.list) })
+        api.post(api.aport1 + '/DmController/getDMAllInfo', { tableName: 'dm_' + payload + 'b_all' }, r => {
+          context.commit('getDM', { type: payload, data: fnc.sortByKey(r.list,'dm') })
           resolve(r)
         })
       })
     },
     aGetPassport(context, payload) {
       return new Promise((resolve) => {
-        api.post(api.aport1 + '/DmController/getDMInfo', { tableName: 'dm_zjzlb' }, r => {
-          context.commit('getPassport', fnc.ToArray(r.list))
+        api.post(api.aport1 + '/DmController/getDMAllInfo', { tableName: 'dm_zjzlb_all' }, r => {
+          context.commit('getPassport', fnc.sortByKey(r.list,'dm'))
           resolve(payload)
         })
       })
     },
     aGetDMPro(context, payload) {
       return new Promise((resolve) => {
-        api.post(api.aport1 + '/DmController/getDMInfo', { tableName: payload }, r => {
-          context.commit('getDMPro', { type: payload, data: fnc.ToArray(r.list) })
+        api.post(api.aport1 + '/DmController/getDMAllInfo', { tableName: payload + '_all' }, r => {
+          context.commit('getDMPro', { type: payload, data: fnc.sortByKey(r.list,'dm') })
           resolve(payload)
         })
       })
@@ -508,8 +508,8 @@ export default new Vuex.Store({
    
     aGetCountryCode(context, payload) {
       return new Promise((resolve) => {
-        api.post(api.aport1 + '/DmController/getDMInfo', { tableName: 'dm_gjdqb' }, r => {
-          context.commit('getCountryCode', fnc.ToArray(r.list))
+        api.post(api.aport1 + '/DmController/getDMAllInfo', { tableName: 'dm_gjdqb_all' }, r => {
+          context.commit('getCountryCode', fnc.sortByKey(r.list,'dm'))
           resolve(payload)
         })
       })

@@ -97,26 +97,14 @@ import Form from "@/components/Form.vue";
 export default {
   components: { Table,Jbxx,Form },
   props:{
-    // jbxxdiaData:{
-    //   type: Object,
-    //   default: () => {}
-    // },
     dialogType:{
       type: String,
       default: ""
     },
-    // dialogImgData: {
-    //   type: Array,
-    //   default: () => []
-    // },
     timer:{
       type: Number,
       default: 0
     },
-    // onlyId:{
-    //   type: String,
-    //   default: ""
-    // }
   },
   watch:{
     timer(){
@@ -176,7 +164,15 @@ export default {
   },
   mounted(){
     this.editPage='1'
-    this.onlyId = this.$route.query.onlyId
+    this.onlyId = this.$route.query.onlyId;
+    this.$store.dispatch("aGetGender");
+    this.$store.dispatch("aGetPassport");
+    this.$store.dispatch("aGetNation");
+    this.$store.dispatch("aGetDM",'qzzl');
+    this.$store.dispatch('aGetDM', "wgr_sqsy");//停留事由&&入境事由
+    this.$store.dispatch("aGetDMPro",'dm_jwrysf');
+    this.$store.dispatch("aGetDMPro",'dm_crjbs');
+    this.$store.dispatch("aGetDMPro",'dm_rydylbb');
     this.begin();
   },
   methods:{

@@ -356,6 +356,7 @@ const options = {
    ],
    inhabi_police_station:[],//居住地所在派出所
    workplace_police_station:[],//单位所在地派出所
+   customCountry:[],//自定义国家
 
     // 照片类型
     collectionItem:[
@@ -440,6 +441,14 @@ function aGetArea(){
         resolve(options.czpzlx)
       })
   }
+  function cusCountry(){
+    return new Promise((resolve) => {
+        api.post(api.aport4 + '/country/getCustomDmMc',{},r=>{
+            options.customCountry = r
+            resolve(r)
+        })
+    })
+  }
 export default {
     menu,
     options,
@@ -460,5 +469,6 @@ export default {
     JoinZrq,
     jzdZrq,
     czpzlxFuc,
+    cusCountry,
     foreigners
 }

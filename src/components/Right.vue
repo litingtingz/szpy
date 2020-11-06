@@ -53,36 +53,7 @@ export default {
   data() {
     return {
       righttWidth: "36px",
-      dbData: {
-        // total: 8000,
-        // allData: [
-        //   {
-        //     menu_url: "Specialcheck",
-        //     menu_name: "核查走访",
-        //     dataList: [
-        //       {
-        //         name: "市局未处理",
-        //         num: "4000",
-        //         url: "Specialcheck",
-        //         page: "1"
-        //       },
-        //       {
-        //         name: "派出所未处理",
-        //         num: "3000",
-        //         url: "Specialcheck",
-        //         page: "3"
-        //       }
-        //     ],
-        //     sum: 6000
-        //   },
-        //   {
-        //     menu_url: "Temporary",
-        //     menu_name: "网报临住",
-        //     dataList: [],
-        //     sum: 6000
-        //   }
-        // ]
-      }
+      dbData: {}
     };
   },
   mounted() {

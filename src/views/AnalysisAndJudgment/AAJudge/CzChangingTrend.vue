@@ -105,6 +105,7 @@ export default {
     this.$store.dispatch('aGetDM', "wgr_sqsy");//停留事由&&入境事由
     // this.$store.dispatch("aGetDMPro",'dm_pcswlb');
     this.$store.dispatch("aGetDMPro",'dm_rydylbb');
+    this.$cdata.cusCountry();
     this.$cdata.jzdZrq()
     // this.chartShow();
     this.getChart();

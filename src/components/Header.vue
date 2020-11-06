@@ -125,6 +125,12 @@ export default {
       this.$store.state.token = "";
       this.$store.state.leftMenu = [];
       this.$store.state.itstate = false;
+      let p={
+        menu_name:this.$store.state.breadcrumb[this.$store.state.breadcrumb.length-1].menu_name,
+        btn_name:'退出',
+        user:this.$store.state.user
+      }
+      this.$api.post(this.$api.aport1+'/loginOut',p)
       if (url) {
         window.location.href = url.replace(/login\?/, "logout?");
       } else {
@@ -150,7 +156,7 @@ export default {
   margin-left: 14px;
   width: 516px;
   height: 46px;
-  background: url(../assets/images/main/title_1.png);
+  background: url(../assets/images/main/title_2.png) no-repeat;
 }
 .head-nav {
   /* width: 905px; */

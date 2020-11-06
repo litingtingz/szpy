@@ -60,6 +60,7 @@
                   <el-option
                     v-for="(item,index) in $store.state[cx.dm]"
                     :key="index"
+                    v-show="item.sfyx == 1 || item.sfyx == undefined"
                     :label="item.dm+' - '+item.mc"
                     :value="item.dm"
                   ></el-option>
@@ -203,6 +204,7 @@
                   <el-option
                     v-for="(item,index) in $store.state[cx.dm]"
                     :key="index"
+                    v-show="item.sfyx == 1 || item.sfyx == undefined"
                     :label="item.dm+' - '+item.mc"
                     :value="item.dm"
                   ></el-option>
@@ -376,6 +378,7 @@ export default {
   },
   mounted() {
     console.log("erceng", this.dialogData.name);
+    
     // this.form = this.dialogData;
     // console.log(this.form);
   },
