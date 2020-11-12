@@ -10,9 +10,9 @@
       <div class="tab-top-item hand" :class="(tabPage=='0')?'tabImgActive_1':'tabImg_1'" @click="tabTopClick('0');tabPage='0'">数据查询</div>
       <!-- <div class="tab-top-item hand" :class="(cx.pd.compareStatus=='0' && cx.pd.checkStatus=='2')?'tabImgActive_2':'tabImg_2'" @click="tabTopClick('0','2')">全部待处理</div>
       <div class="tab-top-item hand" :class="(cx.pd.compareStatus=='0' && cx.pd.checkStatus=='3')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('0','3')">全部已处理</div> -->
-      <div class="tab-top-item hand" :class="(tabPage=='1')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1');tabPage='1'">待接收</div>
-      <div class="tab-top-item hand" :class="(tabPage=='2')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1');tabPage='2'">待处理</div>
-      <div class="tab-top-item hand" :class="(tabPage=='3')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1');tabPage='3'">已处理</div>
+      <div class="tab-top-item hand" :class="(tabPage=='1')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1','1');tabPage='1'">待接收</div>
+      <div class="tab-top-item hand" :class="(tabPage=='2')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1','2');tabPage='2'">待处理</div>
+      <div class="tab-top-item hand" :class="(tabPage=='3')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1','3');tabPage='3'">已处理</div>
     </div>
     <div class="page-box">
       <el-row :gutter="20">
@@ -160,11 +160,17 @@ export default {
         this.$store.dispatch("aGetssdw", { bmbh: data.data, type: "sspcs" });
       }
     },
-    tabTopClick(m){
+    tabTopClick(m,n){
        this.cx.pd.compareStatus = m;
-      //  this.cx.pd.checkStatus=n;
+       this.cx.pd.checkStatus=n;
        this.cx.pageNum = 1;
        this.plBtn = this.$store.state.plBtn;
+      //  状态判断
+       if(this.cx.pd.compareStatus=='0'){
+         this.cx.pd.checkStatusdis = false;
+       }else if(this.cx.pd.compareStatus=='1'){
+         this.cx.pd.checkStatusdis = true;
+       }
        if(this.cx.pd.compareStatus=='0' && this.cx.pd.checkStatus=='1') {
          this.plBtn = this.plBtn.filter(item => ['jc','qxqb','qxxz'].indexOf(item.py) == -1);
        } else if(this.cx.pd.compareStatus=='0' && this.cx.pd.checkStatus=='2'){

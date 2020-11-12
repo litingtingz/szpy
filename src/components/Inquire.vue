@@ -57,6 +57,7 @@
                   filterable
                   v-if="cx.optype"
                   :clearable="!cx.must"
+                  :disabled="inquire[cx.dm+'dis']"
                   placeholder="请选择"
                   @change="linkChange(cx,inquire[cx.dm],inquire)"
                 >
