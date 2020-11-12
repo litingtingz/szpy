@@ -29,12 +29,12 @@ const znCollectlistIntranet = {
         {
             cm: '采集人姓名',
             type: 'input',
-            dm: 'userName_str'
+            dm: 'userName'
         },
         {
             cm: '采集地址',
             type: 'input',
-            dm: 'znAddress_str',
+            dm: 'znAddress',
 
         },
         // {
@@ -115,6 +115,14 @@ const znCollectlistIntranet = {
             dm: 'sexName'
         },
         {
+            cm: '手机号',
+            dm: 'phone'
+        },
+        {
+            cm: '备注',
+            dm: 'remark'
+        },
+        {
             cm: '出生日期',
             dm: 'birthday'
         },
@@ -122,10 +130,10 @@ const znCollectlistIntranet = {
             cm: '居住地址',
             dm: 'znAddress'
         },
-        {
+/*        {
             cm: '操作状态',
             dm: 'option'
-        },
+        },*/
         {
             cm: '本户境外人数',
             dm: 'abroad'
@@ -282,13 +290,25 @@ const znCollectlistIntranet = {
               type: 'input',
               dm: 'birthAddress'
           },
+
+            {
+                cm: '手机号',
+                type: 'input',
+                dm: 'phone'
+            },
+
+            {
+                cm: '备注',
+                type: 'input',
+                dm: 'remark'
+            },
           {
               cm: '居住地址',
               type: 'input',
               dm: 'znAddress',
               col:24
           },
-          
+
         ],
       },
     plBtn: [
