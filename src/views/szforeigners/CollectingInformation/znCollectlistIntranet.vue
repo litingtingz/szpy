@@ -7,18 +7,20 @@
       @lcFnc="lcFnc">
     </Inquire>
     <div class="t-tab-top">
-      <div class="tab-top-item hand" :class="(tabPage=='0')?'tabImgActive_1':'tabImg_1'" @click="tabTopClick('0');tabPage='0'">数据查询</div>
+      <div class="tab-top-item hand" :class="(tabPage==0)?'tabImgActive_1':'tabImg_1'" @click="tabTopClick('0');tabPage=0">数据查询</div>
       <!-- <div class="tab-top-item hand" :class="(cx.pd.compareStatus=='0' && cx.pd.checkStatus=='2')?'tabImgActive_2':'tabImg_2'" @click="tabTopClick('0','2')">全部待处理</div>
       <div class="tab-top-item hand" :class="(cx.pd.compareStatus=='0' && cx.pd.checkStatus=='3')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('0','3')">全部已处理</div> -->
-      <div class="tab-top-item hand" :class="(tabPage=='1')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1','1');tabPage='1'">待接收</div>
-      <div class="tab-top-item hand" :class="(tabPage=='2')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1','2');tabPage='2'">待处理</div>
-      <div class="tab-top-item hand" :class="(tabPage=='3')?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1','3');tabPage='3'">已处理</div>
+      <div class="tab-top-item hand" :class="(tabPage==1)?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1','1');tabPage=1">待接收</div>
+      <div class="tab-top-item hand" :class="(tabPage==2)?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1','2');tabPage=2">待处理</div>
+      <div class="tab-top-item hand" :class="(tabPage==3)?'tabImgActive_2':'tabImg_2'" style="margin-left:-18px" @click="tabTopClick('1','3');tabPage=3">已处理</div>
     </div>
     <div class="page-box">
       <el-row :gutter="20">
         <el-col :span="24">
           <Table
             lbType="yhtb"
+            :refName="'cjxx'"
+            :clzt="tabPage"
             :lbData="lbData"
             :isSelect="true"
             :isEdit="isEdit"
@@ -65,7 +67,6 @@
         @dialogCancel="isShowDialog=false">
       </Edit>
     </Dialog>
-  
   </div>
 </template>
 <script>
@@ -85,7 +86,7 @@ export default {
   data() {
     return {
       tabImgActive_1: require("../../../assets/images/main/tab_2_pre.png"),
-      tabPage:'0',
+      tabPage:0,
       // 【展示数据】
       isSelect: true,
       isEdit: true,
@@ -139,15 +140,19 @@ export default {
     this.cx.queryParams = this.cx.pd;
     this.tabTopClick('0');
     this.getTable();
+
+
     // this.begin();
 
     // 加载 国家地区 下拉选
     this.$store
       .dispatch("aGetCountryCode", { })
       .then(() => {});
+
   },
 
   methods: {
+   
      //下拉框联动
     lcFnc(data) {
       if (data.key.dm == "subBureauCode") {
@@ -167,18 +172,19 @@ export default {
        this.plBtn = this.$store.state.plBtn;
       //  状态判断
        if(this.cx.pd.compareStatus=='0'){
+         this.plBtn = this.plBtn.filter(item => ['qxqb','qxxz','lqqb','lqsj','lqxz'].indexOf(item.py) == -1);
          this.cx.pd.checkStatusdis = false;
        }else if(this.cx.pd.compareStatus=='1'){
          this.cx.pd.checkStatusdis = true;
        }
        if(this.cx.pd.compareStatus=='0' && this.cx.pd.checkStatus=='1') {
-         this.plBtn = this.plBtn.filter(item => ['jc','qxqb','qxxz'].indexOf(item.py) == -1);
+         this.plBtn = this.plBtn.filter(item => ['qxqb','qxxz','lqqb','lqsj','lqxz'].indexOf(item.py) == -1);
        } else if(this.cx.pd.compareStatus=='0' && this.cx.pd.checkStatus=='2'){
-         this.plBtn = this.plBtn.filter(item => ['lqqb','lqsj','lqxz','jc','qxqb','qxxz'].indexOf(item.py) == -1);
+         this.plBtn = this.plBtn.filter(item => ['qxqb','qxxz','lqqb','lqsj','lqxz'].indexOf(item.py) == -1);
        }else if(this.cx.pd.compareStatus=='0' && this.cx.pd.checkStatus=='3'){
-         this.plBtn = this.plBtn.filter(item => ['lqqb','lqsj','lqxz','qxqb','qxxz'].indexOf(item.py) == -1);
+         this.plBtn = this.plBtn.filter(item => ['qxqb','qxxz','lqqb','lqsj','lqxz'].indexOf(item.py) == -1);
        }else if(this.cx.pd.compareStatus=='1' && this.cx.pd.checkStatus=='1'){
-         this.plBtn = this.plBtn.filter(item => ['lqqb','lqsj','lqxz','jc','qxqb','qxxz'].indexOf(item.py) == -1);
+         this.plBtn = this.plBtn.filter(item => ['jc','qxqb','qxxz'].indexOf(item.py) == -1);
        }else if(this.cx.pd.compareStatus=='1' && this.cx.pd.checkStatus=='2'){
          this.plBtn = this.plBtn.filter(item => ['lqqb','lqsj','lqxz','jc'].indexOf(item.py) == -1);
        }else if(this.cx.pd.compareStatus=='1' && this.cx.pd.checkStatus=='3'){
@@ -332,6 +338,7 @@ export default {
 
 
       }else if(data.py=='jc'){//纠错
+
         if (this.multipleArr.length == 0) {
           this.$message({
             message: "请先选择数据！",

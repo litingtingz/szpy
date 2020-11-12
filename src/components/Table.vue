@@ -184,6 +184,7 @@ export default {
    "el-image-viewer": () =>
       import("element-ui/packages/image/src/image-viewer")
     },
+    // 父元素传的参数
   props: {
     lbType: {
       type: String,
@@ -488,9 +489,16 @@ export default {
       this.$emit("selectPageFnc",{data:val,refName:ref})
     },
     rowBackground(row){
-      return{
-        "background-color":row.row.yjssys
+      if(this.refName=='cjxx'){
+          return{
+             "background-color":row.row.checkStatus==3 && this.clzt==0?"red":''
+          }
+      }else{
+        return{
+          "background-color":row.row.yjssys
+        }
       }
+      
     },
     objectSpanMethod({column ,rowIndex }){
         for(var i in this.tableMerge){
