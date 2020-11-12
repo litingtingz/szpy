@@ -20,6 +20,9 @@ var aport5 = "szforeigners"
 // var aport6 = "szforeigners/static"
 var aport6 = "http://50.73.70.116:1101/szforeigners/static"//采集系统图片资源
 // var aport6 = "http://192.168.3.131:1101/szforeigners/static"
+// 苏州市公安局.APP采集系统管理后台-上传文件专用
+var aport7 = "http://50.73.70.26:9124"  // 线上
+// var aport7 = "http://192.168.3.100:8001"  // 测试
 
 // var aport5 = "http://192.168.3.100:8001" // 174测试环境
 // var aport6 = "http://192.168.3.100:8001/static" // 图片服务器
@@ -198,5 +201,6 @@ export default {
   aport3,
   aport4,
   aport5,
-  aport6
+  aport6,
+  aport7
 }

@@ -302,7 +302,7 @@
 	<Dialog  width="500px" :isShowDialog="isShowDialog" :title="dialogTitle" @hideDialog="isShowDialog=false" :modalappendtobody='modalappendtobody' :appendtobody="appendtobody">
       <BatchIm
       v-if='isShowDialog'
-      :url="$api.aport5 + '/znAudioIntranet/audioUpload'"
+      :url="$api.aport7 + '/znAudioIntranet/audioUpload'"
       :urlErr="''"
       :dataType="'y1001'"
       :datamodel="datamodel"
