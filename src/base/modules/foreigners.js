@@ -58,7 +58,7 @@ const znCollectlistIntranet = {
         {
             cm: '采集日期',
             type: 'datePicker',
-            dm: 'addTime'
+            dm: 'addtime'
         },
         {
             cm: '所属分局',
