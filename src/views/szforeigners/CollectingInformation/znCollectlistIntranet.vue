@@ -426,7 +426,7 @@ export default {
      
       this.dialogTitle = data.btn.button_name;
       this.dialogType = data.btn.button_type; 
-      this.cx.pageS=data.index
+      this.cx.pageS=data.index + 1
     
       if (data.double) {
 
