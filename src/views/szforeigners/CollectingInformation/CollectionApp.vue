@@ -129,11 +129,8 @@ export default {
       //所属分局
       this.$store.dispatch("aGetssdw", { bmbh: "320500000000", type: "ssfj" });
     });
-
     this.getSpInit();
     this.getISValue(1);
-    this.getTable(true);
-    
   },
   methods: {
     //下拉框联动
@@ -208,6 +205,7 @@ export default {
           }
           this.$store.dispatch("aGetssdw", { bmbh: data.bmbh, type: "sspcs" });
           this.cx.pd.subBureauCodedis = true; //true 分局有值
+          this.getTable(true);
         } else if (this.$store.state.user.jb == 3) {
           //级别 2 是派出所
           this.$store.dispatch("aGetssdw", { bmbh: data.fj, type: "sspcs" });
@@ -215,6 +213,9 @@ export default {
           this.cx.pd.policeStationCode = data.bmbh;
           this.cx.pd.subBureauCodedis = true;
           this.cx.pd.policeStationCodedis = true; //true 派出所有值 置灰
+          this.getTable(true);
+        }else{
+          this.getTable(true);
         }
       });
     },

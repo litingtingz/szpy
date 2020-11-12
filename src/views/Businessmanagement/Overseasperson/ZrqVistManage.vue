@@ -237,27 +237,9 @@ export default {
       this.$store.dispatch("aGetPassport");
       this.$cdata.zrqReciData(this.$store.state.user.zrqList).then();
       this.getSpInit();
-      // if (this.$store.state.user.jb == '1') {
-      //   this.$store.dispatch("aGetSuboffice");
-      // } else if (this.$store.state.user.jb == '2') {
-      //   this.$store.dispatch("aGetSuboffice",this.$store.state.user.bmbh.slice(0, 6));
-      // } else if (this.$store.state.user.jb == '3') {
-      //   this.$store.dispatch("aGetSuboffice",this.$store.state.user.bmbh.slice(0, 6) + '000000');
-      // }  
-      // if (this.$store.state.user.jb == '1') {
-      //   this.$store.dispatch("aGetPolice");
-      //   this.$store.dispatch("aGetZrq");
-      // } else if (this.$store.state.user.jb == '2') {
-      //   this.$store.dispatch("aGetPolice",this.$store.state.user.bmbh.slice(0, 6));
-      //   this.$store.dispatch("aGetZrq",this.$store.state.user.bmbh.slice(0, 6));
-      // } else if (this.$store.state.user.jb == '3') {
-      //   this.$store.dispatch("aGetPolice",this.$store.state.user.bmbh);
-      //   this.$store.dispatch("aGetZrq",this.$store.state.user.bmbh.slice(0, 8));
-      // } 
       this.$store.dispatch("aGetDatatype");
       this.getPcsQueryData();
       this.pcsQuery = this.$store.state.user.bmbh
-      this.getTable();
       // this.getLeftData();
       // this.getHandData();
       this.getColorDes();
@@ -286,6 +268,7 @@ export default {
           }
           this.$store.dispatch("aGetssdw", { bmbh: data.bmbh, type: "sspcs" });
           this.cx.pd.subofficedis = true;
+          this.getTable();
         } else if (this.$store.state.user.jb == 3) {
           this.$store.dispatch("aGetssdw", { bmbh: data.fj, type: "sspcs" });
           this.$store.dispatch("aGetssdw", { bmbh: data.bmbh, type: "zrq" });
@@ -293,6 +276,9 @@ export default {
           this.cx.pd.policestation = data.bmbh;
           this.cx.pd.subofficedis = true;
           this.cx.pd.policestationdis = true;
+          this.getTable();
+        }else{
+          this.getTable();
         }
       });
     },
@@ -712,7 +698,7 @@ export default {
         clzt: this.clzt,
         cljg: 4
       };
-      this.cx.pd = Object.assign({}, this.cx.pd, pdAdd);
+      this.cx.pd = Object.assign(this.cx.pd, pdAdd);
       this.$api.post(
         this.$api.aport2 + "/issueData/getIssueDataPage",
         this.cx,

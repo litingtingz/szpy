@@ -320,13 +320,13 @@ const lzsb = {
                 cm: '签证种类',
                 type: 'select',
                 dm: 'visaType',
-                dis:true,
+                // dis:true,
             },
             {
                 cm: '签证号码',
                 type: 'input',
                 dm: 'visaNo',
-                dis:true,
+                // dis:true,
             },
             {
                 cm: '停留有效期至',
@@ -334,23 +334,23 @@ const lzsb = {
                 dm: 'tlyxqz',
                 dis:true,
             },
-            {
-                cm: '签发地',
-                type: 'select',
-                dm: 'qfjg',
-                dis:true,
-            },
+            // {
+            //     cm: '签发地',
+            //     type: 'select',
+            //     dm: 'qfjg',
+            //     dis:true,
+            // },
             {
                 cm: '入境日期',
                 type: 'datePicker',
                 dm: 'rjrq',
-                dis:true,
+                // dis:true,
             },
             {
                 cm: '入境口岸',
                 type: 'select',
                 dm: 'rjka',
-                dis:true,
+                // dis:true,
             },
             {
                 cm: '停留事由',

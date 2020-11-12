@@ -168,11 +168,15 @@ export default {
     this.$store.dispatch("aGetGender");
     this.$store.dispatch("aGetPassport");
     this.$store.dispatch("aGetNation");
+    this.$store.dispatch("aGetBackstatus",'1');
+    this.$store.dispatch('aGetDM', "xzqh");//居住地所在区县
+    this.$store.dispatch('aGetDMPro', "dm_pcswlb");//居住地所在派出所
     this.$store.dispatch("aGetDM",'qzzl');
     this.$store.dispatch('aGetDM', "wgr_sqsy");//停留事由&&入境事由
     this.$store.dispatch("aGetDMPro",'dm_jwrysf');
     this.$store.dispatch("aGetDMPro",'dm_crjbs');
     this.$store.dispatch("aGetDMPro",'dm_rydylbb');
+    this.$cdata.aGetArea()//居住地责任区
     this.begin();
   },
   methods:{

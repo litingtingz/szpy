@@ -471,6 +471,7 @@ export default {
     this.$store.dispatch("aGetGender");
     this.$store.dispatch("aGetPassport");
     this.$store.dispatch("aGetNation");
+    this.$store.dispatch("aGetBackstatus");
     this.$store.dispatch("aGetDM",'qzzl');
     this.$store.dispatch('aGetDM', "wgr_sqsy");//停留事由&&入境事由
     this.$store.dispatch("aGetDMPro",'dm_jwrysf');
@@ -478,9 +479,44 @@ export default {
     this.$store.dispatch("aGetDMPro",'dm_rydylbb');
     this.$cdata.cusCountry();
     this.getSflb();
-    this.getTable();
+    this.getSpInit();
   },
   methods: {
+    getSpInit(){
+      this.$cdata.qxgl.getSjBm(this.$store.state.user.bmbh).then(data => {
+        this.$store.dispatch("aGetssdw", {
+          bmbh: "320500000000",
+          type: "ssfj",
+        });
+        if (this.$store.state.user.jb == 2) {
+          if(data.fj){
+            this.cx.pd.jzd_ssfj = data.fj
+            this.cx.pd.gzd_ssfj = data.fj
+          }else{
+            this.cx.pd.jzd_ssfj = data.bmbh
+            this.cx.pd.gzd_ssfj = data.fj
+          }
+          this.$store.dispatch("aGetssdw", { bmbh: data.bmbh, type: "sspcs" });
+          this.cx.pd.jzd_ssfjdis = true;
+          this.cx.pd.gzd_ssfjdis = true;
+          this.getTable();
+        } else if (this.$store.state.user.jb == 3) {
+          this.$store.dispatch("aGetssdw", { bmbh: data.fj, type: "sspcs" });
+          this.$store.dispatch("aGetssdw", { bmbh: data.bmbh, type: "zrq" });
+          this.cx.pd.jzd_ssfj = data.fj;
+          this.cx.pd.gzd_ssfj = data.fj;
+          this.cx.pd.workplace_police_station = data.bmbh;
+          this.cx.pd.inhabi_police_station = data.bmbh;
+          this.cx.pd.jzd_ssfjdis = true;
+          this.cx.pd.gzd_ssfjdis = true;
+          this.cx.pd.workplace_police_stationdis = true;
+          this.cx.pd.inhabi_police_stationdis = true;
+          this.getTable();
+        }else{
+          this.getTable();
+        }
+      });
+    },
     // 获取查询参数
     getSflb(){
       this.$api.post(this.$api.aport4+'/comprehensive/sflb',null,r=>{

@@ -414,7 +414,10 @@ export default {
             //算出鼠标相对元素的位置
             let disX = e.clientX - oImg.offsetLeft;
             let disY = e.clientY - oImg.offsetTop;
-            // console.log("img=", document);
+
+            // let off_left = oImg.offsetLeft;
+            // let off_top = oImg.offsetTop;
+            // console.log("img=",oImg, off_left);
             e.preventDefault();
             document.onmousemove = e => {
               // console.log("移动", e);
@@ -424,6 +427,11 @@ export default {
               // console.log("oImg.offsetLeft", oImg.offsetLeft,oImg.offsetParent.offsetLeft);
               leftImg = e.clientX - disX - 40;
               topImg = e.clientY - disY - 40;
+              // leftImg = e.clientX - disX - off_left;
+              // topImg = e.clientY - disY - off_top;
+
+              // leftImg = e.clientX - disX - oImg.offsetLeft;
+              // topImg = e.clientY - disY;
               //绑定元素位置到positionX和positionY上面
               //移动当前元素
               oImg.style.left = leftImg + "px";

@@ -144,7 +144,9 @@ export default {
     this.$store.dispatch("aGetDMPro", "dm_jwrygxb");//境外人员关系
     
     this.getSpInit();
-    this.tabTopClick(0);
+    // this.$nextTick(()=>{
+    //   this.tabTopClick(0);
+    // })
     if(this.$route.query.pageA){
       this.tabTopClick(this.$route.query.pageA);
     }
@@ -180,12 +182,15 @@ export default {
           }
           this.$store.dispatch("aGetssdw", { bmbh: data.bmbh, type: "sspcs" });
           this.cx.pd.subofficedis = true;
+          this.tabTopClick(0);
         } else if (this.$store.state.user.jb == 3) {
           this.$store.dispatch("aGetssdw", { bmbh: data.fj, type: "sspcs" });
           this.cx.pd.suboffice = data.fj;
           this.cx.pd.policestation = data.bmbh;
           this.cx.pd.subofficedis = true;
           this.cx.pd.policestationdis = true;
+        }else{
+          this.tabTopClick(0);
         }
       });
     },
@@ -357,6 +362,15 @@ export default {
           data.data.givenname = data.data.firstname +' '+data.data.surname
         }else{
           data.data.givenname = data.data.surname
+        }
+        if((data.data.nationality == "MAC" || data.data.nationality == "HKG" || data.data.nationality == "TWN")&&data.data.visaType!="V"){
+          this.$message({
+            message: "港澳台无签证，请重新选择签证！",
+            duration:13000,
+            showClose: true,
+            type: "warning"
+          });
+          return
         }
         if (data.btnType == 1) {//审核通过
           let p = data.data;

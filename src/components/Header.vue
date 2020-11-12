@@ -9,11 +9,17 @@
         :key="nind"
         @click="toLeftMenu(nn,nind)"
       >
-        <img v-if="active==nind" :src="nn.menu_url?require('@/assets/images/menu/'+nn.menu_url+'_1_1.png'):require('@/assets/images/menu/ywgl_1_1.png')" />
-        <img v-else :src="nn.menu_url?require('@/assets/images/menu/'+nn.menu_url+'_1.png'):require('@/assets/images/menu/ywgl_1.png')" />
-        
+        <img
+          v-if="active==nind"
+          :src="nn.menu_url?require('@/assets/images/menu/'+nn.menu_url+'_1_1.png'):require('@/assets/images/menu/ywgl_1_1.png')"
+        />
+        <img
+          v-else
+          :src="nn.menu_url?require('@/assets/images/menu/'+nn.menu_url+'_1.png'):require('@/assets/images/menu/ywgl_1.png')"
+        />
+
         <!-- <img v-if="active==nind" :src="require('@/assets/images/menu/'+nn.menu_url+'_1_1.png')" />
-        <img v-else :src="require('@/assets/images/menu/'+nn.menu_url+'_1.png')" /> -->
+        <img v-else :src="require('@/assets/images/menu/'+nn.menu_url+'_1.png')" />-->
 
         <div class="ml-10">{{nn.menu_name}}</div>
       </div>
@@ -26,13 +32,28 @@
             <i class="el-icon-location"></i>
           </div>
         </div>
-        <div class="user-logout" style="border-right:1px solid rgb(130, 124, 124);margin-left:15px" @click="$router.push({name:'Home'});$store.dispatch('aGetHttp',false)">
+        <div
+          class="user-logout"
+          style="border-right:1px solid rgb(130, 124, 124);margin-left:15px"
+          @click="$router.push({name:'Home'});$store.dispatch('aGetHttp',false)"
+        >
           <img src="@/assets/images/main/home.png" />
         </div>
         <div class="user-logout" @click="logout">
           <img src="@/assets/images/main/exit.png" />
         </div>
       </div>
+    </div>
+    <div v-show="false">
+      <iframe
+        name="myiframe"
+        id="myrame-record-query"
+        :src="loginUrl"
+        frameborder="0"
+        align="middle"
+        width="100%"
+        height="700px"
+      ></iframe>
     </div>
   </div>
 </template>
@@ -50,33 +71,52 @@ export default {
     return {
       msg: "我是头部",
       headMenu: [],
-      active: "0"
+      active: "0",
+      loginUrl:''
     };
   },
   created() {
     this.getNav();
   },
-  watch:{
-    $route:{
-      handler(val){
-        console.log('route==',val)
-        if(val.query.turn){
-          for(var k=0;k<this.$store.state.menu.length;k++){
-            for(var i=0;i<this.$store.state.menu[k].childrenMenu.length;i++){
-              for(var j=0;j<this.$store.state.menu[k].childrenMenu[i].childrenMenu.length;j++){
-                if(this.$store.state.menu[k].childrenMenu[i].childrenMenu[j].menu_url == val.query.turn){
+  watch: {
+    $route: {
+      handler(val) {
+        console.log("route==", val);
+        if (val.query.turn) {
+          for (var k = 0; k < this.$store.state.menu.length; k++) {
+            for (
+              var i = 0;
+              i < this.$store.state.menu[k].childrenMenu.length;
+              i++
+            ) {
+              for (
+                var j = 0;
+                j <
+                this.$store.state.menu[k].childrenMenu[i].childrenMenu.length;
+                j++
+              ) {
+                if (
+                  this.$store.state.menu[k].childrenMenu[i].childrenMenu[j]
+                    .menu_url == val.query.turn
+                ) {
                   this.active = k;
-                  this.toLeftMenu(this.$store.state.menu[k],k,i,j,val.query);
+                  this.toLeftMenu(
+                    this.$store.state.menu[k],
+                    k,
+                    i,
+                    j,
+                    val.query
+                  );
                   // console.log('header',this.$store.state.menu[k],k,i,j)
                 }
               }
             }
           }
         }
-        if(val.name == 'Home'){
+        if (val.name == "Home") {
           this.$store.dispatch("aGetHome", true); //是否隐藏菜单标志
-          this.active = "5"
-        }else{
+          this.active = "5";
+        } else {
           this.$store.dispatch("aGetHome", false); //是否隐藏菜单标志
         }
         // else{
@@ -93,7 +133,7 @@ export default {
         //   });
         // }
       },
-      deep:true,
+      deep: true,
       immediate: true
     }
   },
@@ -102,41 +142,55 @@ export default {
       // if(this.$route.name == 'Frame'){
       //   this.toLeftMenu(this.$store.state.menu[0], 0);
       // }
-      if(this.$route.name == 'Home' || this.$store.state.isFirst){
+      if (this.$route.name == "Home" || this.$store.state.isFirst) {
         this.$router.push({ name: "Home" });
-        this.active = '5'
+        this.active = "5";
         this.$store.dispatch("aGetFirst", false); //是否首次登陆
-      }else{
+      } else {
         this.toLeftMenu(this.$store.state.menu[0], 0);
       }
     },
-    toLeftMenu(item, index ,active1,active2,query) {
-      console.log(1, item,index);
+    toLeftMenu(item, index, active1, active2, query) {
+      console.log(1, item, index);
       this.active = index;
       this.$store.commit("getLeftMenu", item.childrenMenu);
-      this.$store.commit("getMenuTo",{active1:active1,active2:active2,query:query})
+      this.$store.commit("getMenuTo", {
+        active1: active1,
+        active2: active2,
+        query: query
+      });
       this.$store.dispatch("aGetHome", false); //是否隐藏菜单标志
     },
     logout() {
       let url = this.$store.state.aurl;
+      if (url) {
+        // let p={
+        //   menu_name:this.$store.state.breadcrumb[this.$store.state.breadcrumb.length-1].menu_name,
+        //   btn_name:'退出',
+        //   user:this.$store.state.user
+        // }
+        // this.$api.post(this.$api.aport1+'/loginOut',{},r=>{
+        //   window.location.href=r.url
+        // })
+        // window.location.href="http://tyyh.szh.js:9080/cas/logout"
+        // window.location.href = (url.replace(/login\?/, "logout?")).replace('http://50.73.70.116:1101/permission/login',"http://50.73.70.120:8080/wg3q/");
+        // console.log(window.location.href)
+        this.loginUrl = 'http://tyyh.szh.js:9080/cas/logout'
+        setTimeout(()=>{
+          window.location.href = 'http://50.73.70.120:8080/wg3q/'
+          // window.location.href = 'http://10.0.30.101:8080'
+        },20)
+        // window.location.href = url.replace(/login\?/, "logout?");
+      } else {
+        this.$router.push({ name: "Login" });
+        // location.reload();
+      }
       window.sessionStorage.clear();
       this.$store.state.user = {};
       this.$store.state.menu = [];
       this.$store.state.token = "";
       this.$store.state.leftMenu = [];
       this.$store.state.itstate = false;
-      let p={
-        menu_name:this.$store.state.breadcrumb[this.$store.state.breadcrumb.length-1].menu_name,
-        btn_name:'退出',
-        user:this.$store.state.user
-      }
-      this.$api.post(this.$api.aport1+'/loginOut',p)
-      if (url) {
-        window.location.href = url.replace(/login\?/, "logout?");
-      } else {
-        this.$router.push({ name: "Login" });
-        // location.reload();
-      }
     }
   }
 };
@@ -198,7 +252,7 @@ export default {
   color: #9fb8fb;
   max-width: 230px;
   overflow: hidden;
-  text-overflow:ellipsis;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 .user-logout {

@@ -48,6 +48,7 @@ export default {
     return {
       cx: {
         resident_type:'',
+        time_begin:''
       },
       analysisType:[
         {
@@ -97,6 +98,7 @@ export default {
     };
   },
   mounted() {
+    this.cx.time_begin = this.$fnc.format(new Date(new Date().getTime() - 30*24*60*60*1000),'yyyy-mm-dd')
     this.$store.dispatch("aGetGender");
     this.$store.dispatch("aGetPassport");
     this.$store.dispatch("aGetNation");
@@ -108,7 +110,7 @@ export default {
     this.$cdata.cusCountry();
     this.$cdata.jzdZrq()
     // this.chartShow();
-    this.getChart();
+    
     this.getSpInit();
 
   },
@@ -130,6 +132,7 @@ export default {
           this.$store.dispatch("aGetssdw", { bmbh: data.bmbh, type: "sspcs" });
           this.cx.jzd_ssfjdis = true;
           this.cx.gzd_ssfjdis = true;
+          this.getChart();
         } else if (this.$store.state.user.jb == 3) {
           this.$store.dispatch("aGetssdw", { bmbh: data.fj, type: "sspcs" });
           this.$store.dispatch("aGetssdw", { bmbh: data.bmbh, type: "zrq" });
@@ -141,6 +144,9 @@ export default {
           this.cx.gzd_ssfjdis = true;
           this.cx.workplace_police_stationdis = true;
           this.cx.inhabi_police_stationdis = true;
+          this.getChart();
+        }else{
+          this.getChart();
         }
       });
     },

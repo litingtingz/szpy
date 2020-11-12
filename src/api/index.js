@@ -6,7 +6,7 @@ var root = 'http://192.168.3.131:1101/'//测试
 
 // var root = 'http://10.0.30.43:1101'//石本地
 // var root = 'http://10.0.30.79:1101/'//任本地
-
+// 
 var aport1 = 'permission'//任
 // var aport1 = 'http://10.0.30.64:9404'
 var aport2 = 'datarelease'//石
