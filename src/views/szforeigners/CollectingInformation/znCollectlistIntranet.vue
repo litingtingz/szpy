@@ -132,8 +132,7 @@ export default {
       userRoleData: [],
       multipleArr: [],
       multipleSelection:[],
-      seachData:{}
-
+      seachData:{},
     };
   },
   mounted() {
@@ -222,7 +221,6 @@ export default {
     },
        //表格复选框选择
     SelectionChange(data) {
-       
         this.multipleSelection = data;
         this.multipleArr = [];
          for (var i = 0; i < this.multipleSelection.length; i++) {
@@ -356,8 +354,15 @@ export default {
             type: "warning"
           });
           return false;
+         }else if(this.multipleArr.length == 1&&this.multipleSelection[0].checkStatus != 3){
+           this.$message({
+            message: "未处理数据不能纠错！",
+            duration: 13000,
+            showClose: true,
+            type: "warning"
+          });
+          return false;
          }
-
          this.hct=2;
 
          this.isShowDialog = true;
@@ -420,8 +425,7 @@ export default {
     blFnc(data) {
      
       this.dialogTitle = data.btn.button_name;
-      this.dialogType = data.btn.button_type;
-
+      this.dialogType = data.btn.button_type; 
       this.cx.pageS=data.index
     
       if (data.double) {
