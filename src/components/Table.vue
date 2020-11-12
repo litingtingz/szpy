@@ -491,7 +491,7 @@ export default {
     rowBackground(row){
       if(this.refName=='cjxx'){
           return{
-             "background-color":row.row.checkStatus==3 && this.clzt==0?"red":''
+             "background-color":row.row.checkStatus==3 && this.clzt==0?"#CEE9FB":''
           }
       }else{
         return{
