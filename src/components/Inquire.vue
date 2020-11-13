@@ -97,6 +97,7 @@
                   :format="dateObj[cx.dm]"
                   value-format="yyyy-MM-dd"
                   @blur="dataHand(cx.dm)"
+                  @change="dateChange(cx.dm,inquire[cx.dm])"
                 ></el-date-picker>
                 </div>
               </template>
@@ -109,6 +110,7 @@
                       placeholder="选择开始时间"
                       :format="dateObj[cx.children[0].dm]"
                       @blur="dataHand(cx.children[0].dm)"
+                      @change="dateChange(cx.children[0].dm,inquire[cx.children[0].dm])"
                       :value-format="cx.children[0].type=='date'?'yyyy-MM-dd':'yyyy-MM-dd HH:mm:ss'"
                     ></el-date-picker>
                   </div>
@@ -120,6 +122,7 @@
                       placeholder="选择结束时间"
                       :format="dateObj[cx.children[1].dm]"
                       @blur="dataHand(cx.children[1].dm)"
+                      @change="dateChange(cx.children[1].dm,inquire[cx.children[1].dm])"
                       :value-format="cx.children[0].type=='date'?'yyyy-MM-dd':'yyyy-MM-dd HH:mm:ss'"
                     ></el-date-picker>
                   </div>
@@ -304,6 +307,9 @@ export default {
     },
     dateKeyDown(val){
       this.$set(this.dateObj,val,'yyyyMMdd')
+    },
+    dateChange(key,value){
+      this.$emit('dateChangeFun',{key:key,value:value})
     },
     //查询项 按钮事件
     btnClick(py,pb) {

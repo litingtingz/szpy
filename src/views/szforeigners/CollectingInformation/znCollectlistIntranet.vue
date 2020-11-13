@@ -138,20 +138,43 @@ export default {
   mounted() {
     this.cx.queryParams = this.cx.pd;
     this.tabTopClick('0');
-    this.getTable();
-
-
-    // this.begin();
-
+    this.getSpInit();
     // 加载 国家地区 下拉选
     this.$store
       .dispatch("aGetCountryCode", { })
       .then(() => {});
-
   },
-
   methods: {
-   
+   //所属派出所
+    getSpInit() {
+      this.$cdata.qxgl.getSjBm(this.$store.state.user.bmbh).then((data) => {
+        this.$store.dispatch("aGetssdw", {
+          bmbh: "320500000000",
+          type: "ssfj",
+        });
+        if (this.$store.state.user.jb == 2) {
+          //级别 2 是分局
+          if (data.fj) {
+            this.cx.pd.subBureauCode = data.fj;
+          } else {
+            this.cx.pd.subBureauCode = data.bmbh;
+          }
+          this.$store.dispatch("aGetssdw", { bmbh: data.bmbh, type: "sspcs" });
+          this.cx.pd.subBureauCodedis = true; //true 分局有值
+          this.getTable(true);
+        } else if (this.$store.state.user.jb == 3) {
+          //级别 2 是派出所
+          this.$store.dispatch("aGetssdw", { bmbh: data.fj, type: "sspcs" });
+          this.cx.pd.subBureauCode = data.fj;
+          this.cx.pd.policeStationCode = data.bmbh;
+          this.cx.pd.subBureauCodedis = true;
+          this.cx.pd.policeStationCodedis = true; //true 派出所有值 置灰
+          this.getTable(true);
+        }else{
+          this.getTable(true);
+        }
+      });
+    },
      //下拉框联动
     lcFnc(data) {
       if (data.key.dm == "subBureauCode") {

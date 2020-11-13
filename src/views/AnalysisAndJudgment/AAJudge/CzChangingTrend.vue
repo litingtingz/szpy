@@ -8,7 +8,8 @@
     :cxPara="cx" 
     @cxFnc="cxFnc" 
     @lcFnc="lcFnc"
-    @quickView="quickView"></Inquire>
+    @quickView="quickView"
+    @dateChangeFun="dateChangeFun"></Inquire>
     <div class="t-tab-top">
       <div class="tab-top-item tabImgActive_1 hand">常住变化趋势</div>
     </div>
@@ -48,7 +49,10 @@ export default {
     return {
       cx: {
         resident_type:'',
-        time_begin:''
+        history_time_begin:'',
+        history_time_end:'',
+        time_begin:'',
+        time_end:''
       },
       analysisType:[
         {
@@ -98,7 +102,8 @@ export default {
     };
   },
   mounted() {
-    this.cx.time_begin = this.$fnc.format(new Date(new Date().getTime() - 30*24*60*60*1000),'yyyy-mm-dd')
+    this.cx.history_time_begin = this.$fnc.format(new Date(new Date().getTime() - 30*24*60*60*1000),'yyyy-mm-dd');
+    this.cx.history_time_end = this.$fnc.format(new Date().getTime(),'yyyy-mm-dd');
     this.$store.dispatch("aGetGender");
     this.$store.dispatch("aGetPassport");
     this.$store.dispatch("aGetNation");
@@ -155,6 +160,16 @@ export default {
       this.cx = data;
       this.cx.analysisType = this.analysisTypeCx
       this.getChart();
+    },
+    dateChangeFun(data){
+      if((data.key == "time_begin" && data.value) || (data.key == "time_end" && data.value)){
+        this.cx.history_time_begin = ''
+        this.cx.history_time_end = ''
+      }
+      if((data.key == "history_time_begin" && data.value) || (data.key == "history_time_end" && data.value)){
+        this.cx.time_begin = ''
+        this.cx.time_end = ''
+      }
     },
     lcFnc(data) {
       console.log(data)

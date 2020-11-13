@@ -264,7 +264,7 @@ input[type="number"]{
   right:-6px!important;
 }
 .el-icon-circle-close:before {
-    color: #fff;
+    color: #000;
 }
 .el-form-item__label{
   /* color: #666666!important; */

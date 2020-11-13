@@ -1016,5 +1016,9 @@
 .home-pop.el-popover{
     min-width: 70px;
 }
+.color-unit{
+    display: block;
+    width: 30px!important;
+}
 
 

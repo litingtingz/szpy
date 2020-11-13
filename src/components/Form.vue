@@ -237,13 +237,13 @@
         <el-col :span="16">
           <el-col :span="24" class="color-part" v-for="(all,alls) in ColorData.data" :key="alls">
             <el-row type="flex">
-              <el-col :span="19">
+              <el-col :span="20">
                   <el-form-item  v-for="(item,ind) in ColorLabel" :key="ind" :label="item.cm" :prop="item.dm=='ysshbz'?'':'data.'+alls+'.'+item.dm" 
                   :rules="{required: true, message: '此项必填', trigger: 'blur'}" :class="item.class">
                     <template v-if="item.type=='inpUnit'">
                       <el-row type="flex" justify="start">
                         <el-input v-model="all[item.dm]" :type="item.mold?item.mold:''"></el-input>
-                        <el-col :span="3" class="ml-10"><span>天</span></el-col>
+                        <el-col :span="3" class="ml-10"><span class="color-unit">小时</span></el-col>
                       </el-row>
                     </template>
                     <template v-if="item.type=='input'">
@@ -262,7 +262,7 @@
                     </template>
                   </el-form-item>
                 </el-col>
-                <el-col :span="5" class="ml-5 align-center"> 
+                <el-col :span="4" class="ml-5 align-center"> 
                   <el-button type="primary" icon="el-icon-plus" size="mini" circle @click="Add()" v-if="ColorData.data.length-1==alls"></el-button>
                   <el-button type="danger" icon="el-icon-minus" size="mini" circle @click="deleteModel(alls)" v-if="alls!=0"></el-button>
                 </el-col>

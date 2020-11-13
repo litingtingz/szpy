@@ -6,7 +6,8 @@
     :cxCheck="$cdata.czxx.zhfx.cxCheck"   
     :cxPara="cx" 
     @lcFnc="lcFnc"
-    @cxFnc="cxFnc"></Inquire>
+    @cxFnc="cxFnc"
+    @dateChangeFun="dateChangeFun"></Inquire>
     <div class="t-tab-top">
       <div class="tab-top-item hand" :class="tab=='1'?'tabImgActive_1':'tabImg_1'" @click="tabTopClick('1')">
         列表
@@ -221,8 +222,10 @@ export default {
       cx: {
         pd: {
           statiType:[],
-          // analysisType:'',
           resident_type:'',
+          time_begin:'',
+          time_end:'',
+          history_time:'',
         },
         pageSize: 15,
         pageNum: 1,
@@ -468,6 +471,7 @@ export default {
     };
   },
   mounted() {
+    this.cx.pd.history_time = this.$fnc.format(new Date().getTime(),'yyyy-mm-dd');
     this.$store.dispatch("aGetGender");
     this.$store.dispatch("aGetPassport");
     this.$store.dispatch("aGetNation");
@@ -516,6 +520,15 @@ export default {
           this.getTable();
         }
       });
+    },
+    dateChangeFun(data){
+      if((data.key == "time_begin" && data.value) || (data.key == "time_end" && data.value)){
+        this.cx.pd.history_time = ''
+      }
+      if(data.key == "history_time" && data.value){
+        this.cx.pd.time_begin = ''
+        this.cx.pd.time_end = ''
+      }
     },
     // 获取查询参数
     getSflb(){

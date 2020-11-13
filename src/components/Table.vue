@@ -108,6 +108,19 @@
         <el-table-column
           align="left"
           show-overflow-tooltip
+          v-else-if="lb.subS"
+          :key="i"
+          :prop="lb.dm"
+          :label="lb.cm"
+          :width="lb.width"
+          :sortable="'custom'&&isSort">
+          <template slot-scope="scope">
+            {{scope.row[lb.dm] | subString}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="left"
+          show-overflow-tooltip
           v-else
           :key="i"
           :prop="lb.dm"
@@ -351,6 +364,12 @@ export default {
       imglist:[],
       timeClick:null,
     };
+  },
+  filters: {
+    subString(value) {
+      if (!value) return "";
+      return value.slice(0,10);
+    }
   },
   watch: {
     selection(val) {

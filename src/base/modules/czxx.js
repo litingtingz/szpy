@@ -150,6 +150,7 @@ const xxwhgl = {
     {
       cm: '出生日期',
       dm: 'birthday',
+      subS:true,//列表数据截取
     },
     {
       cm: '国家地区',
@@ -170,6 +171,7 @@ const xxwhgl = {
     {
       cm: '停留有效期',
       dm: 'localize_period',
+      subS:true,//列表数据截取
     },
   ],
   lbBtn: [
@@ -241,7 +243,7 @@ const xxwhgl = {
       {
           cm: '出生日期',
           type: 'datePicker',
-          dm: 'birthday'
+          dm: 'birthday',
       },
       // {
       //   cm: '人员地域类别',

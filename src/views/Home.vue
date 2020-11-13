@@ -297,7 +297,7 @@ export default {
           color:'#FFA897'
         },
         {
-          type:'协查任务',
+          type:'核查走访任务',
           content:'未完成：12648 条',
           num:'已完成：40560 条',
           color:'#8AC3F8'
