@@ -131,7 +131,7 @@ export default {
            getnext(t){
 
             if(t==0){
-                if (this.pagen == 1) {
+                if (this.pagen <= 1) {
                     this.alertNoData();
                     return;
                 }
