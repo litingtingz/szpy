@@ -425,9 +425,10 @@ export default {
     blFnc(data) {
      
       this.dialogTitle = data.btn.button_name;
-      this.dialogType = data.btn.button_type; 
-      this.cx.pageS=data.index + 1
-    
+      this.dialogType = data.btn.button_type;
+
+      this.cx.pageS=(this.cx.pageNum - 1) * this.cx.pageSize + (data.index + 1);
+
       if (data.double) {
 
        if(data.data.compareStatus=='1' && data.data.checkStatus=='2')

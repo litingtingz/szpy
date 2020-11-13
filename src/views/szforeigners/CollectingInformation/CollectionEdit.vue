@@ -104,8 +104,10 @@ export default {
             },
             clearSort:0,
             bntshow:true,
-            pages:this.seachData.pageS,
-            pagen:this.seachData.pageNum,
+            pages:1, // 每页记录数
+            pagen:this.seachData.pageS, // 页码（第几页）
+            total:-1, // 总记录数
+            isHandle: false // 当前数据是否已处理
            }
         },
         mounted(){
@@ -127,23 +129,23 @@ export default {
             }
           },
            getnext(t){
-           
-            
-            if(t==0){
-                //上一条
-                this.pages=this.pages-1
-              
-            }else if(t==1)
-            {
-                //下一条
-                this.pages= this.pages+1
-               
-            }
 
-            if(this.pages==0 && this.seachData.pageNum>1)
-            {
-                this.pagen=this.pagen-1;
-                this.pages=this.seachData.pageSize;
+            if(t==0){
+                if (this.pagen == 1) {
+                    this.alertNoData();
+                    return;
+                }
+                //上一条
+                this.pagen=this.pagen-1
+            }else if(t==1) {
+                if (this.total != -1 && this.pagen >= this.total) {
+                    this.alertNoData();
+                    return;
+                }
+                //下一条 如果当前记录已处理（保存/无效数据），下一条还是当前页码
+                if (! this.isHandle) {
+                    this.pagen= this.pagen+1
+                }
             }
           
              let p={
@@ -158,15 +160,12 @@ export default {
                   this.$api.aport5 + "/znCollectlistIntranet/listData",
                   p,
                   r => {
-                    
+                      this.total = r.total;
+
                     if(r.records.length==0){
-                       this.$message({
-                         message: "没有数据了!",
-                         duration: 8000,
-                         showClose: true,
-                         type: "success"
-                        });
+                        this.alertNoData();
                     }else{
+                        this.isHandle = false;
                       this.jbxxdiaDataN = r.records[r.records.length-1];
                       this.dialogImgData=[];
                       if(this.jbxxdiaDataN){
@@ -191,6 +190,7 @@ export default {
                     })
                 },
              save(){
+                 this.isHandle = true;
                  this.$refs['jbxx'].save('form')
              },
              
@@ -198,6 +198,7 @@ export default {
                this.$emit("dialogCancel");
              },
              setdis() {
+                 this.isHandle = true;
                 this.$emit('dialogDis',{
                     data: this.jbxxdiaDataN,
                  })
@@ -227,7 +228,14 @@ export default {
               this.cx1.order = data.prop;
               this.cx1.direction = data.direction;
              },
-             
+             alertNoData() {
+                 this.$message({
+                     message: "没有数据了!",
+                     duration: 8000,
+                     showClose: true,
+                     type: "success"
+                 });
+             }
         }
 }
 </script>
