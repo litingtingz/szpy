@@ -98,10 +98,11 @@
           :sortable="'custom'&&isSort">
             <template slot-scope="scope">
              <div style="cursor:pointer;position: relative;"> 
-               <img @click="imgclick(isimgclick,scope.row.imgpath)" :src="getimglist(scope.row.imgpath)" class="yimg">
-              </div>
-               <div id="big-img-box" v-if="isimgclick">
-                <el-image-viewer :on-close="()=>{isimgclick=false}" :url-list="imglist" />
+               <img 
+                @click="imgclick(isimgclick,scope.row.imgpath)" 
+                style="cursor:pointer" 
+                :src="getimglist(scope.row.imgpath)" 
+                class="yimg">
               </div>
             </template>
         </el-table-column>
@@ -187,6 +188,9 @@
         @transSave="transSave"
         @dialogCancel="isShowDialog=false"></Trans>
     </Dialog>
+     <div id="big-img-box" v-drag v-if="isimgclick">
+        <el-image-viewer :on-close="()=>{isimgclick=false}" :url-list="imglist" />
+      </div>
   </div>
 </template>
 <script>
@@ -412,68 +416,68 @@ export default {
       // 指令的定义
       bind: el => {
         console.log(el);
-    //     let odiv = el; //获取当前元素
-    //     let left = "";
-    //     let top = "";
-    //     el.onmousedown = e => {
-    //       //算出鼠标相对元素的位置
-    //       console.log("el===", el, el.getElementsByTagName("img")[0]);
-    //       let oImg = el.getElementsByTagName("img")[0];
-    //       console.log("oImg==", oImg);
+        let odiv = el; //获取当前元素
+        let left = "";
+        let top = "";
+        el.onmousedown = e => {
+          //算出鼠标相对元素的位置
+          // console.log("el===", el, el.getElementsByTagName("img")[0]);
+          let oImg = el.getElementsByTagName("img")[0];
+          // console.log("oImg==", oImg);
          
-    //       if (e.target.tagName == "IMG") {
-    //         let leftImg = "";
-    //         let topImg = "";
-    //         // oImg.style.position = "relative";
-    //         console.log("onmousedown", e);
-    //         //算出鼠标相对元素的位置
-    //         let disX = e.clientX - oImg.offsetLeft;
-    //         let disY = e.clientY - oImg.offsetTop;
-    //         // console.log("img=", document);
-    //         e.preventDefault();
-    //         document.onmousemove = e => {
-    //           console.log("移动", e);
-    //           //用鼠标的位置减去鼠标相对元素的位置，得到元素的位置
-    //           console.log("e.clientX", e.clientX);
-    //           console.log("disX", disX);
-    //           console.log(
-    //             "oImg.offsetLeft",
-    //             oImg.offsetLeft,
-    //             oImg.offsetParent.offsetLeft
-    //           );
-    //           leftImg = e.clientX - disX - 40;
-    //           topImg = e.clientY - disY - 40;
-    //           //绑定元素位置到positionX和positionY上面
-    //           //移动当前元素
-    //           oImg.style.left = leftImg + "px";
-    //           oImg.style.top = topImg + "px";
-    //           oImg.style.right = "auto";
-    //           oImg.style.bottom = "auto";
-    //         };
-    //         document.onmouseup = () => {
-    //           document.onmousemove = null;
-    //           document.onmouseup = null;
-    //         };
-    //       } else {
-    //         let disX = e.clientX - odiv.offsetLeft;
-    //         let disY = e.clientY - odiv.offsetTop;
-    //         document.onmousemove = e => {
-    //           //用鼠标的位置减去鼠标相对元素的位置，得到元素的位置
-    //           left = e.clientX - disX;
-    //           top = e.clientY - disY;
-    //           //绑定元素位置到positionX和positionY上面
-    //           //移动当前元素
-    //           odiv.style.left = left + "px";
-    //           odiv.style.top = top + "px";
-    //           odiv.style.right = "auto";
-    //           odiv.style.bottom = "auto";
-    //         };
-    //         document.onmouseup = () => {
-    //           document.onmousemove = null;
-    //           document.onmouseup = null;
-    //         };
-    //       }
-    //     };
+          if (e.target.tagName == "IMG") {
+            let leftImg = "";
+            let topImg = "";
+            // oImg.style.position = "relative";
+            // console.log("onmousedown", e);
+            //算出鼠标相对元素的位置
+            let disX = e.clientX - oImg.offsetLeft;
+            let disY = e.clientY - oImg.offsetTop;
+            // console.log("img=", document);
+            e.preventDefault();
+            document.onmousemove = e => {
+              // console.log("移动", e);
+              //用鼠标的位置减去鼠标相对元素的位置，得到元素的位置
+              // console.log("e.clientX", e.clientX);
+              // console.log("disX", disX);
+              // console.log(
+              //   "oImg.offsetLeft",
+              //   oImg.offsetLeft,
+              //   oImg.offsetParent.offsetLeft
+              // );
+              leftImg = e.clientX - disX - 40;
+              topImg = e.clientY - disY - 40;
+              //绑定元素位置到positionX和positionY上面
+              //移动当前元素
+              oImg.style.left = leftImg + "px";
+              oImg.style.top = topImg + "px";
+              oImg.style.right = "auto";
+              oImg.style.bottom = "auto";
+            };
+            document.onmouseup = () => {
+              document.onmousemove = null;
+              document.onmouseup = null;
+            };
+          } else {
+            let disX = e.clientX - odiv.offsetLeft;
+            let disY = e.clientY - odiv.offsetTop;
+            document.onmousemove = e => {
+              //用鼠标的位置减去鼠标相对元素的位置，得到元素的位置
+              left = e.clientX - disX;
+              top = e.clientY - disY;
+              //绑定元素位置到positionX和positionY上面
+              //移动当前元素
+              odiv.style.left = left + "px";
+              odiv.style.top = top + "px";
+              odiv.style.right = "auto";
+              odiv.style.bottom = "auto";
+            };
+            document.onmouseup = () => {
+              document.onmousemove = null;
+              document.onmouseup = null;
+            };
+          }
+        };
        }
      }
   },

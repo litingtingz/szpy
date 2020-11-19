@@ -42,9 +42,7 @@
             @transSaveFnc="transSaveFnc"
           ></Table>
         </el-col>
-       
       </el-row>
-  
     </div>
 
     <!-- 弹窗 -->

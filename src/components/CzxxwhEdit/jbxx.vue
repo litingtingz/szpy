@@ -139,6 +139,7 @@
             ></el-image>-->
             <img
               @click="imgclick(isimgclick)"
+              
               class="dt"
               style="cursor:pointer"
               :src="require('@/assets/images/main/wmask.png')"
