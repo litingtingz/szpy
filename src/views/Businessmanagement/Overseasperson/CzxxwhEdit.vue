@@ -11,7 +11,7 @@
     </div>
      <el-row class="page-inner-box" v-show="editPage == '1'">
        <Table
-          :lbData="$cdata.czxx.xxwhgl.lb"
+          :lbData="$cdata.czxx.xxwhgl.jbxxTableEdit"
           :isSelect="false"
           :isPl="false"
           :isEdit="false"
@@ -248,7 +248,7 @@ export default {
                 this.jbxxtableData.list[0].valid_statedis = true
               }
             }
-            this.jbxxdiaData = this.jbxxtableData.list[0]
+            this.jbxxtableData.list.length==0?this.jbxxdiaData={}:this.jbxxdiaData = this.jbxxtableData.list[0]
             this.getDetailLzsbTp({paperno:this.jbxxdiaData.paperno,nationality:this.jbxxdiaData.nationality})
             // console.log('===',this.jbxxdiaData)
           }
@@ -262,7 +262,9 @@ export default {
         this.$api.post(this.$api.aport4 + "/czjzd/getCzJzdxx", this.cx2, r => {
           this.jzdtableData.list = r.list;
           this.jzdtableData.total = r.total;
-          if(begin == 'begin'){this.jzddiaData = this.jzdtableData.list[0]}
+          if(begin == 'begin'){
+            this.jzdtableData.list.length==0?this.jzddiaData={}:this.jzddiaData = this.jzdtableData.list[0]
+          }
           this.$refs.jzdTable.cRowHighlight();
         });
     },
@@ -273,7 +275,9 @@ export default {
         this.$api.post(this.$api.aport4 + "/czgzd/getCzGzdxx", this.cx3, r => {
           this.gzdtableData.list = r.list;
           this.gzdtableData.total = r.total;
-          if(begin == 'begin'){this.gzddiaData = this.gzdtableData.list[0]}
+          if(begin == 'begin'){ 
+            this.gzdtableData.list.length==0?this.gzddiaData={}:this.gzddiaData = this.gzdtableData.list[0]
+          }
           this.$refs.gzdTable.cRowHighlight();
         });
     },

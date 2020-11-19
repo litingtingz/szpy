@@ -191,8 +191,9 @@ export default new Vuex.Store({
       } else if (data.type == "wgr_sqsy") {
         state.rjsy = data.data
         state.entry_reason = data.data//入境事由
-        state.reside_reason = data.data
-      } else if (data.type == "spqfd") {
+      } else if(data.type == "jltlsy"){
+        state.reside_reason = data.data//居留事由
+      }else if (data.type == "spqfd") {
         state.qfjg = data.data
       } else {
         state[data.type] = data.data;

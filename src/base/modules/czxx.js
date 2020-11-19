@@ -128,13 +128,17 @@ const xxwhgl = {
       type: 'checkbox',
       dm: 'valid_state',
       trueLabel:'1',
-      falseLabel:'0',
+      falseLabel:'',
       check:true,
     },
   ],
   facx: [
   ],
   lb: [
+    {
+      cm:'业务编号',
+      dm:'business_number'
+    },
     {
       cm: '中文姓名',
       dm: 'name'
@@ -193,6 +197,50 @@ const xxwhgl = {
     {
         "mc": '工作地/学校信息',
         "dm": '3',
+    },
+  ],
+  jbxxTableEdit:[
+    {
+      cm:'人员编号',
+      dm:'personnel_id'
+    },
+    {
+      cm: '中文姓名',
+      dm: 'name'
+    },
+    {
+      cm: '英文姓名',
+      dm: 'ename'
+    },
+    {
+      cm: '性别',
+      dm: 'gender_desc'
+    },
+    {
+      cm: '出生日期',
+      dm: 'birthday',
+      subS:true,//列表数据截取
+    },
+    {
+      cm: '国家地区',
+      dm: 'nationality_desc',
+    },  
+    {
+      cm: '证件号码',
+      dm: 'paperno',
+    },
+    {
+      cm: '证件种类',
+      dm: 'paper_type_desc',
+    },
+    {
+      cm: '签证种类',
+      dm: 'visa_type_desc',
+    },
+    {
+      cm: '停留有效期',
+      dm: 'localize_period',
+      subS:true,//列表数据截取
     },
   ],
   jbxxEdit:{
@@ -335,7 +383,7 @@ const xxwhgl = {
           dm: 'localize_period'
       },
       {
-          cm: '停留事由',
+          cm: '居留事由',
           type: 'select',
           dm: 'reside_reason'
       },
@@ -438,7 +486,7 @@ const xxwhgl = {
     },
     {
       cm: '居住地所在派出所',
-      dm: 'inhabi_police_station'
+      dm: 'inhabi_police_station_desc'
     },
     
     // {
@@ -587,12 +635,12 @@ const xxwhgl = {
     //   dm: 'workplace_businessno',
     //   col:8
     // },
-    {
-      cm: '工作地城市',
-      type: 'select',
-      dm: 'workplace_city',
-      col:8
-    },
+    // {
+    //   cm: '工作地城市',
+    //   type: 'select',
+    //   dm: 'workplace_city',
+    //   col:8
+    // },
     {
       cm: '单位所在地派出所',
       type: 'select',
@@ -1001,14 +1049,14 @@ const zhfx = {
     //   falseLabel:'false',
     //   check:true,
     // },
-    {
-      mc: '有效常住人员',
-      type: 'checkbox',
-      dm: 'valid_state',
-      trueLabel:'1',
-      falseLabel:'0',
-      check:true,
-    },
+    // {
+    //   mc: '有效常住人员',
+    //   type: 'checkbox',
+    //   dm: 'valid_state',
+    //   trueLabel:'1',
+    //   falseLabel:'0',
+    //   check:true,
+    // },
   ],
   lbBtn: [
     {

@@ -11,7 +11,7 @@
     </div>
      <el-row class="page-inner-box" v-show="editPage == '1'">
        <Table
-          :lbData="$cdata.czxx.xxwhgl.lb"
+          :lbData="$cdata.czxx.xxwhgl.jbxxTableEdit"
           :isSelect="false"
           :isPl="false"
           :isEdit="false"
@@ -163,7 +163,7 @@ export default {
     }
   },
   mounted(){
-    this.editPage='1'
+    this.editPage='1';
     this.onlyId = this.$route.query.onlyId;
     this.$store.dispatch("aGetGender");
     this.$store.dispatch("aGetPassport");
@@ -172,11 +172,17 @@ export default {
     this.$store.dispatch('aGetDM', "xzqh");//居住地所在区县
     this.$store.dispatch('aGetDMPro', "dm_pcswlb");//居住地所在派出所
     this.$store.dispatch("aGetDM",'qzzl');
-    this.$store.dispatch('aGetDM', "wgr_sqsy");//停留事由&&入境事由
+    this.$store.dispatch('aGetDM', "wgr_sqsy");//入境事由
+    this.$store.dispatch('aGetDM', "jltlsy");//居留事由
+    this.$store.dispatch('aGetDMPro', "dm_jzztlx");//居住状态类型
+    this.$store.dispatch('aGetDMPro', "dm_gzztlx");//工作状态类型
+    this.$store.dispatch('aGetDMPro', "dm_spqfdb");//签发地
+    this.$store.dispatch('aGetDMPro', "dm_bjjgkab");//入境口岸
     this.$store.dispatch("aGetDMPro",'dm_jwrysf');
-    this.$store.dispatch("aGetDMPro",'dm_crjbs');
+    this.$store.dispatch("aGetDMPro",'dm_crjbs');//出入境状态
     this.$store.dispatch("aGetDMPro",'dm_rydylbb');
     this.$cdata.aGetArea()//居住地责任区
+    this.$cdata.jzdZrq()
     this.begin();
   },
   methods:{
@@ -255,7 +261,7 @@ export default {
                 this.jbxxtableData.list[0].valid_statedis = true
               }
             }
-            this.jbxxdiaData = this.jbxxtableData.list[0]
+            this.jbxxtableData.list.length==0?this.jbxxdiaData={}:this.jbxxdiaData = this.jbxxtableData.list[0]
             this.getDetailLzsbTp({paperno:this.jbxxdiaData.paperno,nationality:this.jbxxdiaData.nationality})
             // console.log('===',this.jbxxdiaData)
           }
@@ -269,7 +275,9 @@ export default {
         this.$api.post(this.$api.aport4 + "/czjzd/getCzJzdxx", this.cx2, r => {
           this.jzdtableData.list = r.list;
           this.jzdtableData.total = r.total;
-          if(begin == 'begin'){this.jzddiaData = this.jzdtableData.list[0]}
+          if(begin == 'begin'){
+            this.jzdtableData.list.length==0?this.jzddiaData={}:this.jzddiaData = this.jzdtableData.list[0]
+          }
           this.$refs.jzdTable.cRowHighlight();
         });
     },
@@ -280,7 +288,9 @@ export default {
         this.$api.post(this.$api.aport4 + "/czgzd/getCzGzdxx", this.cx3, r => {
           this.gzdtableData.list = r.list;
           this.gzdtableData.total = r.total;
-          if(begin == 'begin'){this.gzddiaData = this.gzdtableData.list[0]}
+          if(begin == 'begin'){
+            this.gzdtableData.list.length==0?this.gzddiaData={}:this.gzddiaData = this.gzdtableData.list[0]
+          }
           this.$refs.gzdTable.cRowHighlight();
         });
     },

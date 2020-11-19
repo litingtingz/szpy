@@ -79,13 +79,13 @@ export default {
   },
   mounted() {
     // if(this.$route.name == 'Frame'){
+      this.toChildren(this.$store.state.leftMenu[0], 0);//首次加载第一个二级菜单
+    // }
+    // if(this.$route.name == 'Home'){
+    //   console.log('left==',this.$route.name)
+    // }else{
     //   this.toChildren(this.$store.state.leftMenu[0], 0);//首次加载第一个二级菜单
     // }
-    if(this.$route.name == 'Home'){
-      console.log('left==',this.$route.name)
-    }else{
-      this.toChildren(this.$store.state.leftMenu[0], 0);//首次加载第一个二级菜单
-    }
   },
   methods: {
     openLeft() {

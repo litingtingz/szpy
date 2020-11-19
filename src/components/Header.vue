@@ -32,13 +32,13 @@
             <i class="el-icon-location"></i>
           </div>
         </div>
-        <div
+        <!-- <div
           class="user-logout"
           style="border-right:1px solid rgb(130, 124, 124);margin-left:15px"
           @click="$router.push({name:'Home'});$store.dispatch('aGetHttp',false)"
         >
           <img src="@/assets/images/main/home.png" />
-        </div>
+        </div> -->
         <div class="user-logout" @click="logout">
           <img src="@/assets/images/main/exit.png" />
         </div>
@@ -139,16 +139,15 @@ export default {
   },
   methods: {
     getNav() {
-      // if(this.$route.name == 'Frame'){
+      this.toLeftMenu(this.$store.state.menu[0], 0);
+      //首页菜单
+      // if (this.$route.name == "Home" || this.$store.state.isFirst) {
+      //   this.$router.push({ name: "Home" });
+      //   this.active = "5";
+      //   this.$store.dispatch("aGetFirst", false); //是否首次登陆
+      // } else {
       //   this.toLeftMenu(this.$store.state.menu[0], 0);
       // }
-      if (this.$route.name == "Home" || this.$store.state.isFirst) {
-        this.$router.push({ name: "Home" });
-        this.active = "5";
-        this.$store.dispatch("aGetFirst", false); //是否首次登陆
-      } else {
-        this.toLeftMenu(this.$store.state.menu[0], 0);
-      }
     },
     toLeftMenu(item, index, active1, active2, query) {
       console.log(1, item, index);
@@ -262,6 +261,6 @@ export default {
   align-items: center;
   justify-content: center;
   background: rgba(10, 22, 49, 0.4);
-  /* margin-left: 15px; */
+  margin-left: 15px;
 }
 </style>

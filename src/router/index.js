@@ -193,7 +193,6 @@ router.beforeEach((to, from, next) => {
     return //以下的代码不执行
   }
   if (islogin) {
-    // console.log('to==',to,'from',from)
     if(window.location.href.includes("sfzh")){
       var query = window.location.href.split("?")[1].split("&");
       let sfzh = ''
@@ -202,7 +201,6 @@ router.beforeEach((to, from, next) => {
           sfzh = query[i].split("=")[1];
         }
       }
-      // console.log('to==shzh',sfzh,store.state.sfzhTurn)
       if(sfzh == store.state.sfzhTurn){
         if(to.path==='/Frame'&&to.query.page=='Specialcheck'){
           store.dispatch("aGetPage", 'Specialcheck'); //存入跳转页面page
@@ -220,7 +218,33 @@ router.beforeEach((to, from, next) => {
         next({ name: 'Login', query: to.query })
       }
     }else{
-      next()
+      var result = store.state.menuC.some((item)=>{
+        if(item.menu_url == to.name || to.name == 'Frame' || to.name == 'Home'){
+          next()
+          return true
+        }
+        if((item.menu_url.includes('CzChangingTrend') || item.menu_url.includes('ResidentAnalyze')) && to.name == 'CzCTXQ'){
+          next()
+          return true
+        }
+        if(item.menu_url.includes('RYHX') && to.name == 'RYHXXQ'){
+          next()
+          return true
+        }
+      })
+      if(!result){
+        alert("您没有此功能权限！请联系管理员", "提示", {
+          confirmButtonText: "确定",
+          type: "warning"
+        })
+        next({ name: 'Login', query: to.query })
+        window.sessionStorage.clear();
+        store.state.user = {};
+        store.state.menu = [];
+        store.state.token = "";
+        store.state.leftMenu = [];
+        store.state.itstate = false;
+      }
     }
   } else {
     next({ name: 'Login', query: to.query })

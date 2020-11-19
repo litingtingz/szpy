@@ -193,7 +193,7 @@
         </el-col>
       </el-row>
     </div>
-    <Dialog :isShowDialog="isShowDialog" :width="dialogType=='chart'?'90%':'1000px'" :class="dialogType=='chart'?'dia-height':''" :title="dialogTitle" @hideDialog="isShowDialog=false">
+    <Dialog :isShowDialog="isShowDialog" :width="dialogType=='chart'?'90%':'1000px'" :class="dialogType=='chart'?'dia-height':''" :title="dialogTitle" @hideDialog="hideDialog">
       <CzTable
         v-if="dialogType == 'detail'"
         :key="timer"
@@ -238,6 +238,7 @@ export default {
         y2y:"",
         m2m:"",
       },
+      barGap:'90%',
       timeRange_1:0,
       timeRange_2:0,
       timeRange_3:0,
@@ -467,7 +468,8 @@ export default {
       optData_3: {},
       optData_4: {},
       optData_5: {},
-      optData_6: {}
+      optData_6: {},
+      chartType:0
     };
   },
   mounted() {
@@ -477,15 +479,42 @@ export default {
     this.$store.dispatch("aGetNation");
     this.$store.dispatch("aGetBackstatus");
     this.$store.dispatch("aGetDM",'qzzl');
-    this.$store.dispatch('aGetDM', "wgr_sqsy");//停留事由&&入境事由
+    this.$store.dispatch('aGetDM', "wgr_sqsy");//入境事由
+    this.$store.dispatch('aGetDM', "jltlsy");//居留事由
     this.$store.dispatch("aGetDMPro",'dm_jwrysf');
     this.$store.dispatch("aGetDMPro",'dm_crjbs');
     this.$store.dispatch("aGetDMPro",'dm_rydylbb');
     this.$cdata.cusCountry();
     this.getSflb();
     this.getSpInit();
+    if(document.body.clientWidth < 1500){
+      this.barGap = '50%'
+    }else{
+      this.barGap = '90%'
+    }
+    // window.addEventListener("resize",((e)=>{
+    //   console.log('e====',e)
+    //   if(e.target.innerWidth < 1500){
+    //     this.barGap = '50%'
+    //     this.chartFun_1();
+    //   }else{
+    //     this.barGap = '90%'
+    //     this.chartFun_1();
+    //   }
+    // }))
   },
   methods: {
+    hideDialog(){
+      this.isShowDialog=false
+      // if(this.tab == '2'&&(this.chartType == 1||this.chartType == 2)){
+      //   if(document.body.clientWidth < 1500){
+      //     this.barGap = '50%'
+      //   }else{
+      //     this.barGap = '90%'
+      //   }
+      //   this.chartType == 1?this.chartFun_1():this.chartFun_2()
+      // }
+    },
     getSpInit(){
       this.$cdata.qxgl.getSjBm(this.$store.state.user.bmbh).then(data => {
         this.$store.dispatch("aGetssdw", {
@@ -700,16 +729,17 @@ export default {
     chartAllClick(data){
       this.dialogType="chart"
       this.dialogTitle="图表"
+      this.isShowDialog = true;
+      this.chartType = data
       if(data == 1){this.chartFun_1();this.optData_D = this.optData_1;}
       if(data == 2){this.chartFun_2();this.optData_D = this.optData_2;}
       if(data == 3){this.chartFun_3();this.optData_D = this.optData_3;}
       if(data == 4){this.chartFun_4();this.optData_D = this.optData_4;}
       if(data == 5){this.chartFun_5();this.optData_D = this.optData_5;}
       if(data == 6){this.chartFun_6();this.optData_D = this.optData_6;}
-      this.isShowDialog = true;
       this.$nextTick(()=>{
-        // console.log(this.$refs.diacRef.offsetHeight)
         this.DiaHeight = this.$refs.diacRef.offsetHeight+'px'
+        // this.barGap = "140%";
       })
     },
     chartDiaFun(val){
@@ -1365,8 +1395,9 @@ export default {
         this.InObj.y2y = r.y2y;
         this.InObj.m2m = r.m2m;
         let double={
-          type: "bar",
+            type: "bar",
             barWidth: 10,
+            barGap: this.barGap,
             showBackground: true,
             backgroundStyle: {
               // color: "#AA30DF",

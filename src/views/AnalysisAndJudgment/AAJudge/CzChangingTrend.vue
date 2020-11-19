@@ -25,7 +25,7 @@
             <el-button size="small" class="cx-btn" type="success" round @click="btnClick(btnText)">{{btnText}}</el-button>
           </div>
         </div>
-        <Charts :key="new Date().getTime()" :optData="optData" :Cheight="'400px'" @chartClick="chartClick"></Charts>
+        <Charts :key="timeRange" :optData="optData" :Cheight="'400px'" @chartClick="chartClick"></Charts>
       </div>
     </div>
     <Dialog :isShowDialog="isShowDialog" :title="dialogTitle" @hideDialog="isShowDialog=false">
@@ -54,6 +54,7 @@ export default {
         time_begin:'',
         time_end:''
       },
+      timeRange:0,
       analysisType:[
         {
           mc:'性别',
@@ -102,14 +103,16 @@ export default {
     };
   },
   mounted() {
-    this.cx.history_time_begin = this.$fnc.format(new Date(new Date().getTime() - 30*24*60*60*1000),'yyyy-mm-dd');
+    // this.cx.history_time_begin = this.$fnc.format(new Date(new Date().getTime() - 30*24*60*60*1000),'yyyy-mm-dd');
+    this.cx.history_time_begin = '2017-07-01'
     this.cx.history_time_end = this.$fnc.format(new Date().getTime(),'yyyy-mm-dd');
     this.$store.dispatch("aGetGender");
     this.$store.dispatch("aGetPassport");
     this.$store.dispatch("aGetNation");
     this.$store.dispatch("aGetDM",'qzzl');
     this.$store.dispatch("aGetDMPro",'dm_jwrysf');
-    this.$store.dispatch('aGetDM', "wgr_sqsy");//停留事由&&入境事由
+    this.$store.dispatch('aGetDM', "wgr_sqsy");//入境事由
+    this.$store.dispatch('aGetDM', "jltlsy");//居留事由
     // this.$store.dispatch("aGetDMPro",'dm_pcswlb');
     this.$store.dispatch("aGetDMPro",'dm_rydylbb');
     this.$cdata.cusCountry();
@@ -290,6 +293,7 @@ export default {
                 }
               ]
           this.chartShow(r.xAxis.data,single,[])
+          this.timeRange = new Date().getTime();
         }
       })
     },

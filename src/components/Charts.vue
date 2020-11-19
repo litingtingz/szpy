@@ -29,16 +29,21 @@ export default {
   },
   data(){
     return{
-      MyChart:null
+      MyChart:null,
+      leftWid:this.$store.state.leftWid
     }
   },
   watch:{
-    timeRange:function(){
+    timeRange:(()=>{
       console.log('jin')
       this.initchart();
-    },
+    }),
+    leftWid:(()=>{
+      this.MyChart.resize();
+    })
   },
   mounted() {
+    this.leftWid = this.$store.state.leftWid
     this.initchart();
   },
   methods: {

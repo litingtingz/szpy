@@ -129,7 +129,7 @@
               class="dt"
               :src="require('@/assets/images/main/wmask.png')"
               :preview-src-list="imgList"
-            ></el-image>-->
+            ></el-image> -->
             <img
               @click="imgclick(isimgclick)"
               class="dt"

@@ -306,12 +306,12 @@ const options = {
             dm:'0'
         },
         {
-            mc:'实有常住',
-            dm:''
+            mc:'核查走访',
+            dm:'1'
         },
         {
-            mc:'非办证常住',
-            dm:'1'
+            mc:'实有常住',
+            dm:''
         },
    ],
    //常住有效状态
@@ -426,7 +426,7 @@ function aGetArea(){
   }
   function jzdZrq(){
     return new Promise((resolve) =>{
-        api.post(api.aport1 + '/zrq/getSubZrqDmMc',{tableName:'dm_zrqb'},r=>{
+        api.post(api.aport1 + '/zrq/getZrqDmMc',{pcsDm:''},r=>{
             options.turnoutarea = r
             resolve(r)
         })

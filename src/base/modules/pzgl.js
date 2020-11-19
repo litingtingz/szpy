@@ -36,11 +36,11 @@ const sjkz = {
           dm: 'czpzlx_desc'
       },
       {
-          cm: '规定时间（天）',
+          cm: '超期时间（小时）',
           dm: 'gdsj',
       },
       {
-          cm: '规定颜色',
+          cm: '超期显示（颜色）',
           dm: 'gdyssh',
           color:true
       },
@@ -108,6 +108,7 @@ const sjkz = {
         cm: '超期时间',
         type: 'inpUnit',
         dm: 'gdsj',
+        unit:'hour'
       },
       {
         cm: '超期显示(颜色)',

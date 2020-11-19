@@ -5,7 +5,7 @@ var root = 'http://192.168.3.131:1101/'//测试
 // var root = 'http://50.73.70.116:1101/'//公安正式环境
 
 // var root = 'http://10.0.30.43:1101'//石本地
-// var root = 'http://10.0.30.79:1101/'//任本地
+// var root = 'http://192.168.20.113:1101/'//任本地
 // 
 var aport1 = 'permission'//任
 // var aport1 = 'http://10.0.30.64:9404'
@@ -13,7 +13,7 @@ var aport2 = 'datarelease'//石
 // var aport2 = 'http://10.0.30.154:9405'//石本地
 var aport3 = 'lzsb'
 var aport4 = 'yewu'
-// var aport4 = 'http://192.168.3.131:9426'
+// var aport4 = 'http://10.0.9.63:9426'
 
 // 苏州市公安局.APP采集系统管理后台 http://192.168.3.100:8001
 var aport5 = "szforeigners"
