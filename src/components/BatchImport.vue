@@ -1,12 +1,13 @@
 <template>
   <div>
+    <!-- :before-upload="beforeUpload"  -->
     <el-upload
       ref="upload"
       action
       :multiple="false"
-      :http-request="uploadFile"
       :auto-upload="false"
-    >
+      :http-request="uploadFile"
+      >
       <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
       <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
     </el-upload>
@@ -33,6 +34,11 @@ export default {
     datamodel: {
       type: String,
       default: ""
+    },
+    //导入父组件名称
+    uploadCom:{
+      type:String,
+      default:''
     }
   },
   data() {
@@ -50,9 +56,19 @@ export default {
       }
     },
     uploadFile(file) {
-      console.log(file);
+      console.log('file===',file);
       this.fileData.append("file", file.file);
     },
+    // beforeUpload(file){
+    //   if(this.uploadCom =='address'){
+    //     console.log('files===',file);
+    //     var copyFile = new File([file], file.name.replace('xlsx','xls'));
+    //     console.log('修改后',copyFile)
+    //     this.fileData.append("file", copyFile);
+    //   }else{
+    //     this.fileData.append("file", file);
+    //   }
+    // },
     submitUpload() {
       if (this.$refs.upload.uploadFiles.length == 0) {
         this.$message({

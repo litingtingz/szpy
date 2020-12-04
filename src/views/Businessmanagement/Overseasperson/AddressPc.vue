@@ -9,26 +9,16 @@
       @cxFnc="cxFnc" 
       @lcFnc="lcFnc" 
       @tagClickFnc="tagClickFnc"
-      @queryShowFnc="queryShowFnc"
-      @commandfnc="commandfnc"></Inquire>
+      @queryShowFnc="queryShowFnc"></Inquire>
     <div class="t-tab-top">
-      <div class="tab-top-item hand" :class="clzt==1?'tabImgActive_1':'tabImg_1'" @click="tabTopClick1">
-        未走访
-        <!-- <img :src="clzt==1?tabImgActive_1:tabImg_1" alt />
-        <span>未走访</span> -->
-      </div>
-      <div class="tab-top-item hand" :class="clzt==2?'tabImgActive_2':'tabImg_2'" @click="tabTopClick2">
-        已走访
-        <!-- <img :src="clzt==2?tabImgActive_2:tabImg_2" alt />
-        <span class="t-leftT">已走访</span> -->
-      </div>
+      <div class="tab-top-item hand" :class="clzt==1?'tabImgActive_1':'tabImg_1'" @click="tabTopClick1">未走访 </div>
+      <div class="tab-top-item hand" :class="clzt==2?'tabImgActive_2':'tabImg_2'" @click="tabTopClick2">已走访</div>
     </div>
     <div class="page-box">
       <Table
         :page="page"
         :clzt="clzt"
         :lbData="lbData"
-        :colorDes="colorDes"
         :lbControlData="lbControlData"
         :isSelect="isSelect"
         :lbBtn="lbBtn"
@@ -36,14 +26,14 @@
         :isTab="isTab"
         :lbTab="lbTab"
         :tableData="tableData"
-        :refName="'hczf'"
+        :refName="'address'"
         :selection="selection"
         :pageSizeArr="pageSizeArr"
         :czWidth="'100'"
         :clearSort="clearSort"
         :expData="cxShow?cx:cxQ"
         :key="timer"
-        :expUrl="$api.aport2+'/issueData/exportIssueData'"
+        :expUrl="$api.aport2+'/issueDataAddress/exportIssueDataAddress'"
         @plFnc="plFnc"
         @pageSizeFnc="pageSizeFnc"
         @pageNumFnc="pageNumFnc"
@@ -60,11 +50,15 @@
     <Dialog :isShowDialog="isShowDialog" :title="dialogTitle" @hideDialog="isShowDialog=false" 
     :top="dialogType=='edit'||dialogType=='ck'?'3vh':'15vh'" :class="{'hczf-dia':dialogType == 'edit'}">
       <Form
-        :key="new Date().getTime()"
+        :key="timeRange"
         :cxData="labelData"
         :dialogType="dialogType"
         :dialogData="dialogData"
+        :rulsName="'address'"
+        :diaCus="'address'"
         :joinFlag="joinFlag"
+        :joinZf="joinZf"
+        :editAllJz="editAllJz"
         :isEditBtn="isEditBtn"
         :commonBtn="commonBtn"
         :isDb="isDb"
@@ -81,6 +75,15 @@
       v-if="dialogType == 'edit'"
       :cxData="timeData"
       style="width:34%"></Timeline>
+      <BatchIm
+      ref="batchIm"
+      :uploadCom="'address'"
+      v-else-if="dialogType=='dr'"
+      :url="$api.aport2 + '/issueDataAddress/readExcel'"
+      :urlErr="$api.aport2 + '/issueDataAddress/exportErrData'"
+      :dataType="'4'"
+      @expFun="expFun"
+      @dialogCancel="isShowDialog=false"></BatchIm>
     </Dialog>
     <Dialog :isShowDialog="innerVisible" :title="indialogTitle" @hideDialog="innerVisible=false">
       <Form
@@ -102,34 +105,31 @@ import Inquire from "@/components/Inquire.vue";
 import Table from "@/components/Table.vue";
 import Dialog from "@/components/Dialog.vue";
 import Form from "@/components/Form.vue";
-import Timeline from "@/components/Timeline.vue"
+import Timeline from "@/components/Timeline.vue";
+import BatchIm from "@/components/BatchImport.vue";
 export default {
   components: {
     Inquire,
     Table,
     Dialog,
     Form,
-    Timeline
+    Timeline,
+    BatchIm
   },
   data() {
     return {
-      // 查询项
-      tabImg_1: require("../../../assets/images/main/tab_2.png"),
-      tabImgActive_1: require("../../../assets/images/main/tab_2_pre.png"),
-      tabImg_2: require("../../../assets/images/main/tab_1.png"),
-      tabImgActive_2: require("../../../assets/images/main/tab_1_pre.png"),
       //数据展示
+      timeRange:0,
       isSelect: true,
       isTab: true,
-      cxShow:false,//默认收起
-      colorDes:[],
-      cxData: this.$cdata.zxhc.zxhc.cx,
-      facxData: this.$cdata.zxhc.zxhc.facx,//快速查询项
-      lbData: this.$cdata.zxhc.zxhc.lb,
-      lbControlData:this.$cdata.zxhc.zxhc.lb,//简表里有需要隐藏显示的列表项，用此数据控制
-      lbBtn: this.$cdata.zxhc.zxhc.lbBtn,
+      cxShow:true,//默认展开
+      cxData: this.$cdata.zxhc.dzxspc.cx,
+      facxData: this.$cdata.zxhc.dzxspc.facx,//快速查询项
+      lbData: this.$cdata.zxhc.dzxspc.lb,
+      lbControlData:this.$cdata.zxhc.dzxspc.lb,//简表里有需要隐藏显示的列表项，用此数据控制
+      lbBtn: this.$cdata.zxhc.dzxspc.lbBtn,
       plBtn: this.$store.state.plBtn,
-      lbTab: this.$cdata.zxhc.zxhc.lbTab,
+      lbTab: this.$cdata.zxhc.dzxspc.lbTab,
       pageSizeArr: [15, 100, 500],
       //业务数据
       cx: {
@@ -164,7 +164,9 @@ export default {
       seriFlag: "", //唯一标识
       //弹窗数据
       isShowDialog: false,
-      joinFlag: true,
+      joinFlag: true,//走访信息 控制走访备注
+      joinZf:true,//走访信息 控制走访自定义信息
+      editAllJz:false,//编辑弹窗全禁止输入
       dialogTitle: "",
       dialogType: "",
       dialogData: {},
@@ -226,7 +228,7 @@ export default {
         //未处理
         this.plBtn = this.$store.state.plBtn;
         if (val == "1") {
-          this.lbData = this.jbData.length==0?this.$cdata.zxhc.zxhc.lb:this.jbData;
+          // this.lbData = this.jbData.length==0?this.$cdata.zxhc.zxhc.lb:this.jbData;
           this.plBtn = this.plBtn.filter(item => ['sb'].indexOf(item.py) == -1);
         } else if(val == "2"){  
           this.plBtn = this.plBtn.filter(item => ['sb'].indexOf(item.py) == -1);
@@ -235,44 +237,27 @@ export default {
         } else if (val == "3") {   
           this.plBtn = this.plBtn.filter(item => ['sb','xf'].indexOf(item.py) == -1);
         }
-      }else{
-        if(val == 1){
-          this.lbData = this.jbData.length==0?this.$cdata.zxhc.zxhc.lb:this.jbData;
-        }
       }
+      // else{
+      //   if(val == 1){
+      //     this.lbData = this.jbData.length==0?this.$cdata.zxhc.zxhc.lb:this.jbData;
+      //   }
+      // }
     }
   },
   mounted() {
-       console.log('zxhc',this.plBtn)
       this.$store.dispatch("aGetNation");
-      this.$store.dispatch("aGetGender");
-      this.$store.dispatch("aGetPassport");
-      this.$store.dispatch("aGetDatatype");
-      this.cx.pd.backstatusdis = true;
       this.getSpInit();
       this.$nextTick(() => {
-        // console.log('mount',this.jbData)
         this.plBtn=this.$store.state.plBtn;
-        this.plBtn = this.plBtn.filter(item => ['sb'].indexOf(item.py) == -1);
-        this.$cdata.zxhc.lbTabShow(this.$store.state.user.jb).then(data => {
+        this.$cdata.zxhc.lbTabShow_DZ(this.$store.state.user.jb).then(data => {
           this.lbTab = data.lbTab;
           this.page = this.lbTab[0].dm;
-          if(this.$route.query.page){
-            this.page = this.$route.query.page
-            this.timer = new Date().getTime()//路由切换时 page变，重新请求Table组件 使page渲染
-            this.getColorDes()
-          }
           this.getTable();
-          this.getColorDes();
         });
       });
   },
   methods: {
-    getColorDes(){
-      this.$api.post(this.$api.aport2+'/issueTimeControl/getIssueTimeControlShAndBzList',{dwjb:this.page},r=>{
-        this.colorDes = r
-      })
-    },
     getSpInit(){
       this.$cdata.qxgl.getSjBm(this.$store.state.user.bmbh).then(data => {
         this.$store.dispatch("aGetssdw", {
@@ -303,11 +288,15 @@ export default {
         this.timeData = r;
       })
     },
+    //导入--导出错误信息
+    expFun(){
+      this.isShowDialog = false;
+      this.queryShowFnc(this.cxShow);
+    },
     //简表数据 子组件通知父组件改表格数据
     transSaveFnc(data){
       this.jbData = data
       this.lbData = data
-      console.log('djkjdd',data)
     },
     //查询条件转换查询
     queryShowFnc(flag){
@@ -331,18 +320,6 @@ export default {
       }
       this.getTable(true,this.cxQ)
     },
-    //筛选条件 快速查询
-    commandfnc(data){
-      if(data.data=='datatype'){
-        this.$store.dispatch("aGetBackstatus",data.command).then(() => {});
-      }
-      this.cxQ.pd.clzt = this.clzt;
-      this.cxQ.pd.cljg =this.page;
-      for(var key in data.obj){
-        this.cxQ.pd[data.obj[key].dmx] = data.obj[key].dm;
-      }
-      this.getTable(true,this.cxQ)
-    },
     cxFnc(data) {
       this.cx.pd = data;
       this.cx.pageNum = 1;
@@ -352,42 +329,32 @@ export default {
       this.clzt = 1;
       this.cx.pageNum = 1;
       this.cxQ.pageNum = 1;
-      this.$cdata.zxhc.lbTabShow(this.$store.state.user.jb).then(data => {
+      this.$cdata.zxhc.lbTabShow_DZ(this.$store.state.user.jb).then(data => {
         this.lbTab = data.lbTab;
         this.page = this.lbTab[0].dm;
       });
       this.plBtn = this.$store.state.plBtn;
-      this.plBtn = this.plBtn.filter(item => ['sb'].indexOf(item.py) == -1);
       this.queryShowFnc(this.cxShow);
-      // this.getTable(true);
     },
     tabTopClick2() {
       this.clzt = 2;
       this.cx.pageNum = 1;
       this.cxQ.pageNum = 1;
-      this.$cdata.zxhc.lbTabShow(this.$store.state.user.jb).then(data => {
+      this.$cdata.zxhc.lbTabShow_DZ(this.$store.state.user.jb).then(data => {
         this.lbTab = data.lbTab1;
-        this.page = this.lbTab[0].dm;
+        this.page = this.lbTab1[0].dm;
       });
       this.plBtn = this.$store.state.plBtn;
-      this.plBtn = this.plBtn.filter(item => ['sb','xf'].indexOf(item.py) == -1);
+      this.plBtn = this.plBtn.filter(item => ['xf','xz','dr','sb'].indexOf(item.py) == -1);
       this.queryShowFnc(this.cxShow);
-      // this.getTable(true);
     },
     //列表tab切换  data==page 从1开始 控制按钮是否出现 v-for 和 v-if不能同时使用
     tabFnc(data) {
       this.page = data;
-      if(this.page!='1'){
-        this.lbData = this.lbData.filter(item => ['datasources_desc'].indexOf(item.dm) == -1);
-      }else{
-        this.lbData = this.jbData.length==0?this.$cdata.zxhc.zxhc.lb:this.jbData;
-      }
       this.cx.pageNum = 1;
       this.cxQ.pageNum = 1;
       this.selection = [];
       this.queryShowFnc(this.cxShow);
-      this.getColorDes();
-      // this.getTable(true);
     },
     rowClick(data) {
       // console.log('单击==',data)
@@ -395,27 +362,7 @@ export default {
       this.selection.push(data.data);
     },
     //下拉框联动
-    lcFnc(data) {
-      if (data.key.dm == "datatype") {
-        if (data.data == "") {
-          this.$store.state.backstatus = [];
-          data.obj.backstatus = "";
-          this.cx.pd.backstatusdis = true;
-        } else {
-          this.$store.dispatch("aGetBackstatus", data.data).then(() => {});
-          this.cx.pd.backstatusdis = false;
-        }
-      }
-      if (data.key.dm == "suboffice") {
-        if (data.data == "") {
-          data.obj.policestation = "";
-        }
-        if (data.obj.policestation) {
-          data.obj.policestation = "";
-        }
-        this.$store.dispatch("aGetssdw", { bmbh: data.data, type: "sspcs" });
-      }
-    },
+    lcFnc() {},
     //弹窗form下拉框联动
     formLcFnc(data) {
       if (data.key.dm == "datatype") {
@@ -461,10 +408,15 @@ export default {
       }
     },
     radioChange(val) {
-      console.log('变化',val)
       if (val) {//有值 可填
         if (this.joinFlag == true) {
           this.joinFlag = false;
+        }
+        if(val == 'zfzt_1' || val == 'zfzt_3'){//无效地址 和 无境外人员 不可编辑走访信息
+          this.joinZf = true;
+          console.log('this.joinZf',this.joinZf)
+        }else{
+          this.joinZf = false;
         }
       }
     },
@@ -473,17 +425,14 @@ export default {
       this.cx.pageSize = data;
       this.cxQ.pageSize = data;
       this.queryShowFnc(this.cxShow);
-      // this.getTable();
     },
     pageNumFnc(data) {
       this.cx.pageNum = data;
       this.cxQ.pageNum = data;
       this.queryShowFnc(this.cxShow);
-      // this.getTable();
     },
     //表格复选框选择
     SelectionChange(data) {
-      console.log("this.multipleSelection", this.multipleSelection);
       this.multipleSelection = data;
       this.multipleArr = [];
       this.officeArr = [];
@@ -503,8 +452,6 @@ export default {
           this.multipleSelection[i].backstatus
         ]);
       }
-      // console.log("this.officeArr==", this.officeArr);
-      // console.log("this.policeArr==", this.policeArr);
     },
     //判断数组元素是否完全相等
     isAllEqual(array) {
@@ -537,12 +484,10 @@ export default {
       this.cx.pd.clzt = this.clzt;
       this.cx.pd.cljg = this.page;
       this.$api.post(
-        this.$api.aport2 + "/issueData/getIssueDataPage",
+        this.$api.aport2 + "/issueDataAddress/getIssueDataAddressPage",
         pdQ||this.cx,
         r => {
           this.tableData = r;
-          // this.tableData.list = r.list;
-          // this.tableData.total = r.total;
         }
       );
     },
@@ -573,7 +518,7 @@ export default {
           clzt: this.clzt
         };
         this.$api.post(
-          this.$api.aport2 + "/issueData/reportDataSuboffice",
+          this.$api.aport2 + "/issueDataAddress/reportDataSuboffice",
           p,
           r => {
             this.$message({
@@ -588,27 +533,20 @@ export default {
         );
       } else if (data.py == "xf") {
         if (this.multipleArr.length == 0) {
-        this.$message({
-          message: "请先选择数据！",
-          duration: 13000,
-          showClose: true,
-          type: "warning"
-        });
-        return false;
-      }
+          this.$message({
+            message: "请先选择数据！",
+            duration: 13000,
+            showClose: true,
+            type: "warning"
+          });
+          return false;
+        }
         //批量下发
         this.dialogData = {};
         if (this.page == "1") {
-          // if (!this.isArrEmpty(this.officeArr)) {
-          //   //市局下发分局 如果选择数据分局有空值 不允许下发
-          //   this.$message({
-          //     message: "分局不能为空！",
-          //     type: "warning"
-          //   });
-          //   return false;
-          // }
           this.labelData = this.$cdata.zxhc.zxhc.xfSContent;
           this.isShowDialog = true;
+          this.timeRange = new Date().getTime()
         } else if (this.page == "2") {
           if (!this.isAllEqual(this.officeArr)) {
             //分局下发 选择数据的分局必须为同一分局
@@ -620,62 +558,45 @@ export default {
             });
             return false;
           }
-          // if (!this.isArrValue(this.backstatusArr)) {
-          //   //分局下发 选择数据已处理过走访状态不能下发
-          //   this.$message({
-          //     message: "已走访的数据不能再下发！",
-          //     type: "warning"
-          //   });
-          //   return false;
-          // }
-          // if (
-          //   !this.isArrEmpty(this.policeArr) &&
-          //   !this.isArrValue(this.policeArr)
-          // ) {
-          //   //派出所空值和有值同时存在
-          //   this.$message({
-          //     message: "不支持多所混发！",
-          //     duration: 13000,
-          //     showClose: true,
-          //     type: "warning"
-          //   });
-          //   return false;
-          // } else 
-          // if (!this.isArrEmpty(this.policeArr)) {
-            //都是空值
-            this.$store.dispatch("aGetssdw", { bmbh: this.officeArr[0], type: "sspcs" });
-            this.labelData = this.$cdata.zxhc.zxhc.xfFContent;
-            this.isShowDialog = true;
-          // } 
-          // else if (!this.isArrValue(this.policeArr)) {
-          //   //都有值
-          //   let p = {
-          //     // suboffice:this.officeArr[0],
-          //     serialList: this.multipleArr,
-          //     jb: this.$store.state.user.jb,
-          //     bmbh: this.$store.state.user.bmbh,
-          //     userId: this.$store.state.user.userId,
-          //     cljg: this.page,
-          //     clzt: this.clzt
-          //   };
-          //   this.$api.post(
-          //     this.$api.aport2 + "/issueData/issueDataTrigger",
-          //     p,
-          //     r => {
-          //       this.$message({
-          //         message: r.message,
-          //         duration: 8000,
-          //         showClose: true,
-          //         type: "success"
-          //       });
-          //       this.getTable();
-          //       this.selection = [];
-          //     }
-          //   );
-          // }
-          // console.log(this.isArrEmpty(this.officeArr, this.policeArr));
-          // console.log(this.isAllEqual(this.policeArr));
+          //都是空值
+          this.$store.dispatch("aGetssdw", { bmbh: this.officeArr[0], type: "sspcs" });
+          this.labelData = this.$cdata.zxhc.dzxspc.xfFContent;
+          this.isShowDialog = true;
+          this.timeRange = new Date().getTime()
         }
+      }else if(data.py == 'xz'){
+        this.dialogData={};
+        this.labelData = this.$cdata.zxhc.dzxspc.xzDia;
+        this.$cdata.qxgl.getSjBm(this.$store.state.user.bmbh).then(data => {
+          this.$store.dispatch("aGetssdw", {
+            bmbh: "320500000000",
+            type: "ssfj"
+          });
+          if (this.$store.state.user.jb == 2) {
+            if(data.fj){
+              this.dialogData.suboffice = data.fj
+            }else{
+              this.dialogData.suboffice = data.bmbh
+            }
+            this.$store.dispatch("aGetssdw", { bmbh: data.bmbh, type: "sspcs" });
+            this.dialogData.subofficedis = true;
+          } else if (this.$store.state.user.jb == 3) {
+            this.$store.dispatch("aGetssdw", { bmbh: data.fj, type: "sspcs" });
+            this.$store.dispatch("aGetssdw", { bmbh: data.bmbh, type: "zrq" });
+            this.dialogData.suboffice = data.fj;
+            this.dialogData.policestation = data.bmbh;
+            this.dialogData.subofficedis = true;
+            this.dialogData.policestationdis = true;
+          }
+        });
+        this.isShowDialog = true
+        this.timeRange = new Date().getTime()
+      }else if(data.py == 'dr'){
+        this.isShowDialog = true
+        this.timeRange = new Date().getTime()
+      }else if(data.py=='mbxz'){//模板下载
+        var url = this.$api.root + this.$api.aport2 +'/webapp/templateFile/地址线索排查导入模板.xlsx';
+        window.location.href = url;
       }
     },
     //列表内按钮
@@ -692,23 +613,9 @@ export default {
           this.dialogTitle = '处理'
         }
       }
-      if(data.data.datatype=='3'||data.data.datatype=='4'||data.data.datatype=='5'){//专项核查 把自定义项插入
-        if(data.data.issueDataFeedbackList){//存在自定义项
-          this.$cdata.zxhc.editShow(this.$store.state.user.jb, data.data.whetherUpdateState).then(label => {
-            label.splice(16,0,{'issueDataFeedbackList':JSON.parse(data.data.issueDataFeedbackList)},{cm: '反馈总时长',type: 'inpUnit', dm: 'issue_time',unit:'hour',dis:true})
-            this.labelData = label;
-          });
-        }else{
-          this.$cdata.zxhc.editShow(this.$store.state.user.jb, data.data.whetherUpdateState).then(label => {//不存在自定义项，只渲染时间，默认0
-            label.splice(16,0,{cm: '反馈总时长',type: 'inpUnit', dm: 'issue_time',unit:'hour',dis:true})
-            this.labelData = label;
-          });
-        }
-      }else{
-        this.$cdata.zxhc.editShow(this.$store.state.user.jb, data.data.whetherUpdateState).then(data => {
-          this.labelData = data;
-        });
-      }
+      this.$cdata.zxhc.editShow_DZ(this.$store.state.user.jb, data.data.whetherUpdateState).then(data => {
+        this.labelData = data;
+      });
       this.$store.dispatch("aGetBackstatus", data.data.datatype);
       if (data.data.suboffice) {
         this.$store.dispatch("aGetssdw", { bmbh: data.data.suboffice, type: "sspcs" });
@@ -720,7 +627,7 @@ export default {
         this.getTimeData(data.data.serial)//时间轴
         if (this.clzt == 2) {
           //已走访
-          if (data.data.whetherUpdateState == "0") {
+          if (data.data.whetherUpdateState == 0) {
             //whetherUpdateState 0:不可修改；1：可修改；
             this.isEditBtn = false;
             this.commonBtn = true;
@@ -741,46 +648,35 @@ export default {
           this.isEditBtn = true;
           this.commonBtn = false;
           this.isDb = true;
-          this.$cdata.zxhc.innerBtn("2", this.page,data.data.datatype,data.data.backstatus_desc,data.data.statusName).then(data => {
+          this.$cdata.zxhc.innerBtn("2", this.page,data.data.datatype,data.data.backstatus_desc,data.data.statusName,'dzpc').then(data => {
             this.dbBtn = data;
           });
         }
-        this.isShowDialog = true;
         if (data.data.backstatus) {
           this.joinFlag = false;
+          if(data.data.backstatus == 'zfzt_1' || data.data.backstatus == 'zfzt_3'){
+            this.joinZf = true;
+          }else{
+            this.joinZf = false;
+          }
         } else {
           data.data.backstatus = ''
           this.joinFlag = true;
+          this.joinZf = true;
         }
-        if(data.data.datatype=='3'||data.data.datatype=='4'||data.data.datatype=='5'){//专项核查自定义  唯一id为默认值
-          if(data.data.issueDataFeedbackList){//存在自定义选项
-            let cusArr = JSON.parse(data.data.issueDataFeedbackList)
-            this.currentCus = JSON.parse(data.data.issueDataFeedbackList)
-            for(var i=0;i<cusArr.length;i++){
-              data.data[cusArr[i].serial] = {
-                serial:cusArr[i].serial,
-              }
-              if(cusArr[i].value){//回填
-                this.$set(data.data[cusArr[i].serial],'value',cusArr[i].type=='checkbox'?JSON.parse(cusArr[i].value):cusArr[i].type=='text'?cusArr[i].value:parseInt(cusArr[i].value))
-              }else{//渲染
-                this.$set(data.data[cusArr[i].serial],'value',cusArr[i].type=='checkbox'?[]:'')
-              }
-            }
-          } 
-          if(!data.data.issue_time){data.data.issue_time='0'}//反馈时间回填  没有反馈时间默认0
-          this.dialogData = Object.assign({}, data.data);
+        if(this.clzt == 1&&this.page=='5'){//分局待上报 编辑页面不能修改，只能上报或下发
+          this.editAllJz = true
         }else{
-          this.dialogData = Object.assign({}, data.data);
+          this.editAllJz = false
         }
-      } 
-      // else if (this.dialogType == "detail") {
-      //   this.isEditBtn = false;
-      //   this.commonBtn = true;
-      //   this.isDb = false;
-      //   this.dialogData = Object.assign({}, data.data);
-      //   this.isShowDialog = true;
-      // }
-      else if(this.dialogType == "back"){
+        this.dialogData = Object.assign({}, data.data);
+        this.$api.post(this.$api.aport2 + '/issueDataAddress/getIssueDataAddressInfor',{ADDRESS_SERIAL:data.data.serial},r=>{
+          this.dialogData.userInforList = r
+          this.isShowDialog = true;
+          this.timeRange = new Date().getTime()
+        })
+         
+      }else if(this.dialogType == "back"){
         this.$confirm('是否回退本条数据？','提示',{
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -873,6 +769,7 @@ export default {
     },
     // 编辑上报 下发操作
     dbFnc(data) {
+      console.log('===',data)
       if (data.button_type == "singXf") {
         this.indialogData = {};
         this.indialogTitle = data.button_name;
@@ -889,17 +786,9 @@ export default {
         p.userId = this.$store.state.user.userId;
         p.pageData = {
           clzt: this.clzt,
-          cljg: this.page
+          cljg: this.page,
+          userInforList:this.dialogData.userInforList
         };
-        let arr=[];
-        for(var i in p){
-          for(var j=0;j<this.currentCus.length;j++){
-            if(i == this.currentCus[j].serial){
-              arr.push(p[i])
-            }
-          }
-        }
-        p.pageData.customFeedback=arr;
         console.log("上报", p);
         if(!this.dialogData.backstatus){
           this.$message({
@@ -919,6 +808,45 @@ export default {
           ||((this.dialogData.datatype == "2"||this.dialogData.datatype == "3"|| this.dialogData.datatype == "4" || this.dialogData.datatype == "5") &&this.dialogData.backstatus == "zfzt_1" ||this.dialogData.backstatus == "zfzt_2" ||this.dialogData.backstatus == "zfzt_5" )) &&
           (this.dialogData.turnoutarea == "" ||this.dialogData.turnoutarea == undefined))
         ) {
+          console.log(this.dialogData)
+          for(var i=0;i<this.dialogData.pageData.userInforList.length;i++){
+            if(this.dialogData.pageData.userInforList[i].passportno == ''){
+              this.$message({
+                message: '境外人员证件号码不能为空！',
+                duration: 13000,
+                showClose: true,
+                type: "warning"
+              });
+              return
+            }
+            if(this.dialogData.pageData.userInforList[i].nationality == ''){
+              this.$message({
+                message: '境外人员国家地区不能为空！',
+                duration: 13000,
+                showClose: true,
+                type: "warning"
+              });
+              return
+            }
+            if(this.dialogData.pageData.userInforList[i].phone == ''){
+              this.$message({
+                message: '手机号码不能为空！',
+                duration: 13000,
+                showClose: true,
+                type: "warning"
+              });
+              return
+            }
+            if(this.dialogData.pageData.userInforList[i].arr_passport_photo.length == 0){
+              this.$message({
+                message: '护照资料页照片不能为空！',
+                duration: 13000,
+                showClose: true,
+                type: "warning"
+              });
+              return
+            }
+          }
           this.indialogData = {};
           this.indialogTitle = data.button_name;
           this.indialogType = data.button_type;
@@ -928,7 +856,7 @@ export default {
           this.innerVisible = true;
         } else {
           this.$api.post(
-            this.$api.aport2 + "/issueData/updateReportData",
+            this.$api.aport2 + "/issueDataAddress/updateReportData",
             p,
             r => {
               this.$message({
@@ -1007,7 +935,7 @@ export default {
       };
       console.log("下发保存", p);
       this.$api.post(
-        this.$api.aport2 + "/issueData/updateSendOutData",
+        this.$api.aport2 + "/issueDataAddress/updateSendOutData",
         p,
         r => {
           this.$message({
@@ -1028,22 +956,11 @@ export default {
       p.jb = this.$store.state.user.jb;
       p.bmbh = this.$store.state.user.bmbh;
       p.userId = this.$store.state.user.userId;
-      p.pageData = {
-        clzt: this.clzt,
-        cljg: this.page,
-        customFeedback:[]
-      };
-      let arr=[];
-      for(var i in p){
-        for(var j=0;j<this.currentCus.length;j++){
-          if(i == this.currentCus[j].serial){
-            arr.push(p[i])
-          }
-        }
-      }
-      p.pageData.customFeedback=arr;
+      p.pageData.clzt = this.clzt;
+      p.pageData.cljg = this.page;
+      p.pageData.userInforList = this.dialogData.userInforList
       console.log('上报保存===',p);
-      this.$api.post(this.$api.aport2 + "/issueData/updateReportData", p, r => {
+      this.$api.post(this.$api.aport2 + "/issueDataAddress/updateReportData", p, r => {
         this.$message({
           message: r.message,
           duration: 8000,
@@ -1067,7 +984,7 @@ export default {
       p.xm = this.$store.state.user.xm;
       p.cljg = this.page;
       p.clzt = this.clzt;
-      this.$api.post(this.$api.aport2 + "/issueData/issueDataTrigger", p, r => {
+      this.$api.post(this.$api.aport2 + "/issueDataAddress/issueDataAddressTrigger", p, r => {
         this.$message({
           message: r.message,
           duration: 8000,
@@ -1079,13 +996,34 @@ export default {
         this.selection = [];
       });
     },
-    
+    //新增保存
+    xzSave(data){
+      let p = data;
+      p.jb = this.$store.state.user.jb;
+      p.bmbh = this.$store.state.user.bmbh;
+      p.userId = this.$store.state.user.userId;
+      p.sfzh = this.$store.state.user.sfzh;
+      p.xm = this.$store.state.user.xm;
+      this.$api.post(this.$api.aport2 + '/issueDataAddress/addIssueDataAddress',p,r=>{
+        this.$message({
+          message: r.message,
+          duration: 8000,
+          showClose: true,
+          type: "success"
+        });
+        this.queryShowFnc(this.cxShow);
+        this.isShowDialog = false;
+        this.selection = [];
+      })
+    },
     //弹窗保存
     dialogSave(data) {
       if (data.type == "edit") {
         this.editSave(data.data);
       } else if (data.type == "xf") {
         this.xfSave(data.data);
+      }else if(data.type == "xz"){
+        this.xzSave(data.data)
       }
     },
     // 内联弹窗保存

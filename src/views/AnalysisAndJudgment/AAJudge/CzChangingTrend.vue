@@ -29,8 +29,9 @@
       </div>
     </div>
     <Dialog :isShowDialog="isShowDialog" :title="dialogTitle" @hideDialog="isShowDialog=false">
+       <el-checkbox  class="quire-check" v-model="tablePd.sfqc" :true-label="'1'" :false-label="''" :checked="true" @change="checkChange">是否去重</el-checkbox>
       <CzTable
-      :key="new Date().getTime()"
+      :key="timeRangeD"
       :pd="tablePd"
       :dialogType="dialogType"
       :dialogData="dialogData"
@@ -55,6 +56,7 @@ export default {
         time_end:''
       },
       timeRange:0,
+      timeRangeD:0,
       analysisType:[
         {
           mc:'性别',
@@ -114,13 +116,22 @@ export default {
     this.$store.dispatch('aGetDM', "wgr_sqsy");//入境事由
     this.$store.dispatch('aGetDM', "jltlsy");//居留事由
     // this.$store.dispatch("aGetDMPro",'dm_pcswlb');
-    this.$store.dispatch("aGetDMPro",'dm_rydylbb');
+    this.$store.dispatch("aGetDMPro",'dm_rydylbb');//人员地域类别
     this.$cdata.cusCountry();
     this.$cdata.jzdZrq()
     // this.chartShow();
-    
     this.getSpInit();
-
+  },
+  computed: {
+    ScreenChange() {
+      return {left:this.$store.state.leftWid,right:this.$store.state.rightWid};
+    }
+  },
+  watch:{
+    ScreenChange(newVal,oldVal){
+      console.log('===',newVal,oldVal)
+      this.timeRange = new Date().getTime()
+    }
   },
   methods: {
     getSpInit(){
@@ -293,7 +304,6 @@ export default {
                 }
               ]
           this.chartShow(r.xAxis.data,single,[])
-          this.timeRange = new Date().getTime();
         }
       })
     },
@@ -357,14 +367,18 @@ export default {
         },
         series: series
       };
+      this.timeRange = new Date().getTime();
+    },
+    checkChange(){
+      this.timeRangeD = new Date().getTime()
     },
     chartClick(data){
-      this.tablePd = Object.assign({},this.cx)
+      this.tablePd = Object.assign({sfqc:'1'},this.cx)
       this.tablePd.xAxis = data.name
       this.tablePd.id = data.seriesId
       this.dialogTitle="列表"
       this.isShowDialog = true
-      // console.log('data==',data)
+      this.timeRangeD = new Date().getTime()
     },
   }
 };

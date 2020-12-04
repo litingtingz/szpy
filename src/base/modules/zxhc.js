@@ -318,6 +318,213 @@ const zxhc = {
         },
     ],
 }
+//地址线索排查
+const dzxspc = {
+    cx: [
+        {
+            cm: '详细地址',
+            type: 'input',
+            dm: 'address'
+        },
+        {
+            cm: '证件号码',
+            type: 'input',
+            dm: 'passportno'
+        },
+        {
+            cm: '国家地区',
+            type: 'select',
+            dm: 'nationality'
+        },
+        {
+            cm: '标题',
+            type: 'input',
+            dm: 'title'
+        },
+        {
+            cm: '分局下发时间',
+            type: 'double',
+            dm: 'fkTime',
+            children: [
+                {
+                    cm: '开始时间',
+                    type: 'date',
+                    dm: 'suboffice_issuedateStart'
+                },
+                {
+                    cm: '结束时间',
+                    type: 'date',
+                    dm: 'suboffice_issuedateEnd'
+                },
+            ],
+        },
+        {
+            cm: '分局上报时间',
+            type: 'double',
+            dm: 'xfTime',
+            children: [
+                {
+                    cm: '开始时间',
+                    type: 'date',
+                    dm: 'suboffice_back_timeStart'
+                },
+                {
+                    cm: '结束时间',
+                    type: 'date',
+                    dm: 'suboffice_back_timeEnd'
+                }
+            ]
+        },
+        {
+            cm: '派出所反馈时间',
+            type: 'double',
+            dm: 'xfTime',
+            children: [
+                {
+                    cm: '开始时间',
+                    type: 'date',
+                    dm: 'policestation_backtimeStart'
+                },
+                {
+                    cm: '结束时间',
+                    type: 'date',
+                    dm: 'policestation_backtimeEnd'
+                }
+            ]
+        },
+    ],
+    facx:[],
+    lb: [
+        {
+            cm: '详细地址',
+            dm: 'address',
+            width:'280'
+        },
+        {
+            cm: '所属分局',
+            dm: 'suboffice_desc',
+            width:'280'
+        },
+        {
+            cm: '所属派出所',
+            dm: 'policestation_desc',
+            width:'280'
+        },
+        {
+            cm: '接收时间',
+            dm: 'turnoutarea_receive_time'
+        },
+        {
+            cm: '市局下发时间',
+            dm: 'issuedate',
+        },   
+        {
+            cm: '分局下发时间',
+            dm: 'suboffice_issue_time'
+        },
+        {
+            cm: '派出所下发时间',
+            dm: 'policestation_issue_time'
+        },
+        {
+            cm: '标题',
+            dm: 'title'
+        },
+        {
+            cm: '备注',
+            dm: 'remarks'
+        },
+        {
+            cm: '采集人',
+            dm: 'create_userid'
+        },
+        {
+            cm: '数据来源',
+            dm: 'datasources_desc',
+        },
+    ],
+    lbBtn: [
+        {
+            "button_name": "处理",
+            "button_type": 'edit',
+            "serial": "201",
+            "user_ctrl":'1',
+            "status":true
+        },
+        {
+            "button_name": "详情",
+            "button_type": 'ck',
+            "serial": "201",
+            "user_ctrl":'0',
+            "status":true
+        },
+    ],
+    lbTab: [],
+    lbTab1: [],
+    //编辑弹窗
+    editcontent: [],
+    //下发市局弹窗
+    xfSContent: [
+        {
+            cm: '所属分局',
+            type: 'select',
+            dm: 'suboffice',
+            dis: false,
+        },
+    ],
+    //下发分局弹窗
+    xfFContent: [
+        {
+            cm: '所属派出所',
+            type: 'select',
+            dm: 'policestation',
+            dis: false,
+        },
+    ],
+    //内联弹窗
+    innerDiaCon:[],
+    dbBtn: [
+        {
+            "button_name": "上报",
+            "serial": "201",
+            "button_type": "singSb",
+            "type": "primary",
+        },
+        {
+            "button_name": "下发",
+            "serial": "201",
+            "button_type": "singXf",
+            "type": "primary",
+        },
+    ],
+    xzDia:[
+        {
+            cm: '标题',
+            type: 'input',
+            dm: 'title',
+        },
+        {
+            cm: '地址',
+            type: 'input',
+            dm: 'address',
+        },
+        {
+            cm: '所属分局',
+            type: 'select',
+            dm: 'suboffice',
+        },
+        {
+            cm: '所属派出所',
+            type: 'select',
+            dm: 'policestation',
+        },
+        {
+            cm: '备注',
+            type: 'textarea',
+            dm: 'remarks',
+        },
+    ]
+}
 //责任区走访
 const zrqzf = {
     cx: [
@@ -2002,7 +2209,7 @@ const jdtj = {
         },
     ],
 }
-// 核查走访
+// 核查走访Tab
 function lbTabShow(jb) {
     return new Promise((resolve) => {
         if(jb=='1'){
@@ -2080,6 +2287,81 @@ function lbTabShow(jb) {
         resolve({lbTab:zxhc.lbTab,lbTab1:zxhc.lbTab1})
     })
 }
+// 地址排查Tab
+function lbTabShow_DZ(jb) {
+    return new Promise((resolve) => {
+        if(jb=='1'){
+            dzxspc.lbTab = [
+                {
+                    "mc": '分局待下发',
+                    "dm": '2',
+                },
+                {
+                    "mc": '分局待上报',
+                    "dm": '5',
+                },
+                {
+                    "mc": '派出所未处理',
+                    "dm": '3',
+                },
+            ]
+            dzxspc.lbTab1 = [
+                {
+                    "mc": '已归档',
+                    "dm": '1',
+                },
+                {
+                    "mc": '分局已上报',
+                    "dm": '2',
+                },
+                {
+                    "mc": '派出所已上报',
+                    "dm": '3',
+                },
+            ]
+        }else if(jb=='2'){
+            dzxspc.lbTab = [   
+                {
+                    "mc": '分局待下发',
+                    "dm": '2',
+                },
+                {
+                    "mc": '分局待上报',
+                    "dm": '5',
+                },
+                {
+                    "mc": '派出所未处理',
+                    "dm": '3',
+                },
+            ]
+            dzxspc.lbTab1 = [
+                {
+                    "mc": '分局已上报',
+                    "dm": '2',
+                },
+                {
+                    "mc": '派出所已上报',
+                    "dm": '3',
+                },
+            ]
+        }else{
+            dzxspc.lbTab = [   
+                {
+                    "mc": '派出所未处理',
+                    "dm": '3',
+                },
+            ]
+            dzxspc.lbTab1 = [
+                {
+                    "mc": '派出所已上报',
+                    "dm": '3',
+                },
+            ]
+        }
+        resolve({lbTab:dzxspc.lbTab,lbTab1:dzxspc.lbTab1})
+    })
+}
+// 核查走访处理弹窗
 function editShow(jb,isE) {
     return new Promise((resolve) => {
         zxhc.editcontent = [
@@ -2201,6 +2483,121 @@ function editShow(jb,isE) {
         resolve(zxhc.editcontent)
     })
 }
+//地址排查 处理弹窗
+function editShow_DZ() {
+    return new Promise((resolve) => {
+        dzxspc.editcontent = [
+            {
+                title:'排查信息',
+                type:'line'
+            },
+            {
+                cm: '详细地址',
+                type: 'input',
+                dm: 'address',
+                dis: true
+            },
+            {
+                cm: '住宿人数',
+                type: 'input',
+                dm: 'live_number',
+                dis: true
+            },
+            
+            {
+                title:'数据基础信息',
+                type:'line'
+            },
+            {
+                cm: '采集人',
+                type: 'inputNumber',
+                dm: 'create_userid',
+                dis: true
+            },
+            {
+                cm: '数据来源',
+                type: 'input',
+                dm: 'datasources_desc',
+                dis: true,
+            },
+            {
+                cm: '标题',
+                type: 'input',
+                dm: 'title',
+                dis: true
+            },
+            {
+                cm: '采集备注',
+                type:'textarea',
+                dm: 'remarks',
+                max:160,
+                dis:true
+            },
+            {
+                title:'数据归属',
+                type:'line'
+            },
+            {
+                cm: '所属分局',
+                type: 'select',
+                dm: 'suboffice',
+                dis: true
+            },
+            {
+                cm: '所属派出所',
+                type: 'select',
+                dm: 'policestation',
+                dis: true
+            },
+            {
+                cm: '所属责任区',
+                type: 'select',
+                dm: 'turnoutarea',
+                dis:true
+            },
+            {
+                title:'走访结果',
+                type:'line'
+            },
+            {
+                cm: '走访信息',
+                type: 'radio',
+                dm: 'backstatus',
+            },
+            {
+                type:'cusform',
+                dm:"userInforList",
+                label:[
+                    {
+                        cm:'境外人员证件号码',
+                        type:'input',
+                        dm:'passportno'
+                    },
+                    {
+                        cm:'境外人员国家地区',
+                        type:'select',
+                        dm:'nationality'
+                    },
+                    {
+                        cm:'手机号码',
+                        type:'input',
+                        dm:'phone'
+                    },
+                    {
+                        cm:'图片',
+                        type:'photo'
+                    }
+                ]
+            },
+            {
+                cm: '走访备注',
+                type: 'joinInput',
+                dm: 'address_back_remarks',
+            },
+        ]
+        resolve(dzxspc.editcontent)
+    })
+}
 // 核查走访内联弹窗内容
 function innerDia(page){
     return new Promise((resolve) => {
@@ -2275,15 +2672,24 @@ function innerSbDia(data){
         resolve(zxhc.innerDiaCon)
     })
 }
-function innerBtn(data,page,datatype,backstatus,statusName){
+function innerBtn(data,page,datatype,backstatus,statusName,dzpc){
     return new Promise((resolve) => {
-        if(data == '1'){//已走访
+        if(data == '1'){//已走访 可修改
             if(page=='1'){//市局已处理 只能下发
                 zxhc.dbBtn = [
                     {
                         "button_name": "下发",
                         "serial": "201",
                         "button_type": "singXf",
+                        "type": "primary",
+                    },
+                ]
+            }else if(page=='3'){//派出所已处理 只能上报
+                zxhc.dbBtn = [
+                    {
+                        "button_name": "上报",
+                        "serial": "201",
+                        "button_type": "singSb",
                         "type": "primary",
                     },
                 ]
@@ -2318,7 +2724,7 @@ function innerBtn(data,page,datatype,backstatus,statusName){
                     ]
                 }
             }else if(page == '3'){//派出所未处理
-                if(statusName == '派出所已下发'){
+                if(statusName == '派出所已下发' || dzpc){
                     zxhc.dbBtn = [
                         {
                             "button_name": "上报",
@@ -3213,13 +3619,16 @@ function zxhcLbbtn(dataType,page){
 }
 export default {
     zxhc,
+    dzxspc,
     zrqzf,
     zxhcgl,
     offgl,
     jzzdhc,
     jdtj,
     lbTabShow,
+    lbTabShow_DZ,
     editShow,
+    editShow_DZ,
     handShow,
     innerDia,
     innerBtn,

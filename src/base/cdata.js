@@ -5,6 +5,7 @@ import pzgl from './modules/pzgl.js'
 import czxx from './modules/czxx.js'
 import ryhx from './modules/ryhx.js'
 import foreigners from './modules/foreigners.js'
+import sjhj from './modules/sjhj.js'
 import api from '@/api/index.js'
 import store from '@/store'
 
@@ -473,6 +474,7 @@ export default {
     pzgl,
     czxx,
     ryhx,
+    sjhj,
     api,
     store,
     tabImg_1,

@@ -147,7 +147,7 @@
               </template>
             </el-form-item>
           </el-col>
-          <el-col v-for="(cc,ind) in cxCheck" :key="ind+'che'" :span="6">
+          <el-col v-for="(cc,ind) in cxCheck" :key="ind+'che'" :span="cc.col?cc.col:6">
             <el-checkbox  class="quire-check" v-model="inquire[cc.dm]" :true-label="cc.trueLabel" :false-label="cc.falseLabel" :checked="cc.check">{{cc.mc}}</el-checkbox>
           </el-col>
           

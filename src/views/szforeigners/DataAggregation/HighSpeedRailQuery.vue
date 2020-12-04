@@ -38,13 +38,13 @@
     </div>
     <Dialog :width="dialogType=='edit'?'1300px':'1000px'" 
       :top="dialogType=='edit'?'3vh':'15vh'" :isShowDialog="isShowDialog" :title="dialogTitle" @hideDialog="isShowDialog=false">
-      <Edit 
+      <!-- <Edit 
       :timer="timer"
       :jbxxdiaData="jbxxdiaData"
       :dialogType="dialogType"
       :onlyId="onlyId"
       @dialogSave="dialogSave"
-      @dialogCancel="isShowDialog=false"></Edit>
+      @dialogCancel="isShowDialog=false"></Edit> -->
     </Dialog>
   </div>
 </template>
@@ -52,14 +52,12 @@
 import Inquire from "@/components/Inquire.vue";
 import Table from "@/components/Table.vue";
 import Dialog from "@/components/Dialog.vue";
-import Edit from "./CzxxwhEdit.vue";
 // import Form from "@/components/Form.vue";
 export default {
 	components: {
     Inquire,
     Table,
     Dialog,
-    Edit
     // Form,
   },
 	data(){
@@ -67,28 +65,23 @@ export default {
 			
 			//数据展示
 			//查询项
-      cxData: this.$cdata.czxx.xxwhgl.cx,
-      cxCheck:this.$cdata.czxx.xxwhgl.cxCheck,
-			facxData: this.$cdata.czxx.xxwhgl.facx,//快速查询项
+      cxData: this.$cdata.sjhj.gtsjcx.cx,
+      cxCheck:this.$cdata.sjhj.gtsjcx.cxCheck,
+			facxData: this.$cdata.sjhj.gtsjcx.facx,//快速查询项
 			//列表
-			lbData: this.$cdata.czxx.xxwhgl.lb,
-      lbBtn: this.$cdata.czxx.xxwhgl.lbBtn,
+			lbData: this.$cdata.sjhj.gtsjcx.lb,
+      lbBtn: this.$cdata.sjhj.gtsjcx.lbBtn,
 			plBtn: this.$store.state.plBtn,
 			pageSizeArr: [15, 100, 500],
 			selection: [],
 			//业务数据
 			cx: {
-        pd: {
-          resident_type:'',
-        },
+        pd: {},
         pageSize: 15,
         pageNum: 1,
       },
       cxQ:{//快速查询
-        pd: {
-          jb : this.$store.state.user.jb,
-          bmbh : this.$store.state.user.bmbh,
-        },
+        pd: {},
         pageSize: 15,
         pageNum: 1,
       },
@@ -104,8 +97,6 @@ export default {
       isShowDialog: false,
       dialogTitle: "",
       dialogType: "",
-      jbxxdiaData:{},
-      onlyId:'',
 		}
   },
   mounted(){

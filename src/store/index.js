@@ -63,6 +63,7 @@ export default new Vuex.Store({
     aurl: aurl || '',
     sjly:[],//数据来源
     leftWid:'auto',
+    rightWid:'36px',
     ywlb:[],//业务类别
     //【常住信息维护】
     birthplace:[],//出生地
@@ -100,6 +101,9 @@ export default new Vuex.Store({
     },
     getLeftWid(state,data){
       state.leftWid = data
+    },
+    getRightWid(state,data){
+      state.rightWid = data
     },
     getUser(state, data) {
       state.user = data;
@@ -457,8 +461,10 @@ export default new Vuex.Store({
     aGetDatatype(context) {
       return new Promise((resolve) => {
         api.post(api.aport2 + '/dm/getDmList', { tableName: 'dm_issue_data' }, r => {
-          context.commit('getDatatype', fnc.sortByKey(r, 'dm'))
-          resolve(fnc.sortByKey(r, 'dm'))
+          let arr = fnc.sortByKey(r, 'dm')
+          arr.splice(arr.findIndex(item => item.dm === "6"), 1) 
+          context.commit('getDatatype', arr)
+          resolve(arr)
         })
       })
     },

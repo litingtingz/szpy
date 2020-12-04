@@ -8,7 +8,7 @@
       ref="form"
       :label-width="cxData[0].labelWid==undefined?'100px':cxData[0].labelWid"
       class="form-ruleForm"
-      :disabled="dialogType=='ck'"
+      :disabled="dialogType=='ck'||editAllJz"
     >
       <el-row :gutter="30" type="flex" align="middle" justify="center">
         <el-col :span="cxData[0].mRow==undefined?16:cxData[0].mRow">
@@ -16,6 +16,9 @@
             <el-form-item :label="!cx.hc_con||(cx.dm=='datasources_desc'&&page==cx.hc_con)||(cx.dm=='phone'&&dialogData['datatype']==cx.hc_con)?cx.cm:''" :prop="cx.dm" :title="cx.cm">
               <template v-if="cx.type=='input'">
                 <el-input v-if="!cx.hc_con||(cx.dm=='datasources_desc'&&page==cx.hc_con)||(cx.dm=='phone'&&dialogData['datatype']==cx.hc_con)" v-model="dialogData[cx.dm]" :disabled="cx.dis" :maxlength="cx.max"></el-input>
+              </template>
+              <template v-if="cx.type=='inputNumber'">
+                <el-input v-model="dialogData[cx.dm]" :disabled="cx.dis"  type="number"></el-input>
               </template>
               <template v-if="cx.type=='joinInput'">
                 <el-input v-model="dialogData[cx.dm]" :disabled="joinFlag"></el-input>
@@ -159,6 +162,7 @@
                 <el-input
                   type="textarea"
                   :rows="1"
+                  :disabled="cx.dis"
                   placeholder="请输入内容"
                   v-model="dialogData[cx.dm]">
                 </el-input>
@@ -205,6 +209,11 @@
                 </el-form-item>
               </el-col>
             </el-row>
+            <!-- <el-row :gutter="30">
+              <el-col >
+
+              </el-col>
+            </el-row> -->
             <template v-if="cx.type=='line'">
                 <span class="divider-text">{{cx.title}}</span>
                 <el-divider></el-divider>
@@ -212,11 +221,126 @@
             <template v-else-if="cx.type=='checkbox'">
               <el-checkbox v-model="dialogData[cx.dm]" :true-label="cx.trueLabel" :false-label="cx.falseLabel">{{cx.mc}}</el-checkbox>
             </template>
-            <template v-if="cx.type=='photo'">
+            <template v-else-if="cx.type=='photo'">
               <el-popover placement="right" title="" trigger="hover">
                 <img :src="dialogData[cx.dm]" style="max-width:700px; max-height:700px;"/>
                 <img slot="reference" :src="dialogData[cx.dm]" :alt="dialogData[cx.dm]"  width="100" height="100" >
             </el-popover>
+            </template>
+            <template v-else-if="cx.type=='cusform'">
+              <el-row :gutter="30"  align="middle" justify="center" class="cus-adress">
+                <el-col :span="24" v-for="(all,alls) in userInforList" :key="alls" class="cus-children">
+                  <el-row type="flex">
+                    <el-col :span="22">
+                      <el-form-item v-for="(item,ind) in cx.label" :key="ind" :label="item.cm" :prop="item.dm">
+                        <template v-if="item.type=='input'">
+                          <el-input v-model="all[item.dm]" :disabled="joinZf"></el-input>
+                        </template>
+                        <template v-else-if="item.type=='select'">
+                          <!-- 取常量值 optype=true  取store值 optype=!true -->
+                          <el-select
+                            v-model="all[item.dm]"
+                            filterable
+                            v-if="item.optype"
+                            clearable
+                            :disabled="item.dis||all[item.dm+'dis']||joinZf"
+                            placeholder="请选择"
+                            @change="linkChange(item,dialogData[item.dm],dialogData)">
+                            <el-option
+                              v-for="items in $cdata.options[item.dm]"
+                              :key="items.dm"
+                              :label="items.dm+' - '+items.mc"
+                              :value="items.dm"
+                            ></el-option>
+                          </el-select>
+                          <el-select
+                            v-model="all[item.dm]"
+                            filterable
+                            v-else
+                            clearable
+                            :disabled="all[item.dm+'dis']||item.dis||joinZf"
+                            placeholder="请选择"
+                            @change="linkChange(item,all[item.dm],dialogData)"
+                          >
+                            <el-option
+                              v-for="(items,index) in $store.state[item.dm]"
+                              :key="index"
+                              v-show="items.sfyx == 1||items.sfyx==undefined"
+                              :label="items.dm+' - '+items.mc"
+                              :value="items.dm"
+                            ></el-option>
+                          </el-select>
+                        </template>
+                        <template v-else-if="item.type == 'photo'">
+                          <div class="dz-upload">
+                            <el-upload
+                              class="upload-box"
+                              :disabled="joinZf"
+                              :name="'arr_passport_photo'"
+                              ref="load1"
+                              action
+                              :limit="1"
+                              :file-list="all.arr_passport_photo"
+                              list-type="picture-card"
+                              :multiple="false"
+                              :on-preview="handlePictureCardPreview"
+                              :on-remove="(file,fileList)=>handleRemove('arr_passport_photo',alls,file,fileList)"
+                              :on-change="(file,fileList)=>imgOnChange('arr_passport_photo',alls,file,fileList)"
+                              :auto-upload="false">
+                              <div class="upload-text">
+                                <i class="el-icon-plus"></i>
+                                <div class="upload-text-span">护照资料页</div>
+                              </div>                
+                            </el-upload>
+                            <el-upload
+                              class="upload-box"
+                              :name="'arr_portrait_photo'"
+                              :disabled="joinZf"
+                              ref="load2"
+                              action="111"
+                              :limit="1"
+                              :file-list="all.arr_portrait_photo"
+                              list-type="picture-card"
+                              :multiple="false"
+                              :on-preview="handlePictureCardPreview"
+                              :on-remove="(file,fileList)=>handleRemove('arr_portrait_photo',alls,file,fileList)"
+                              :on-change="(file,fileList)=>imgOnChange('arr_portrait_photo',alls,file,fileList)"
+                              :auto-upload="false">
+                              <div class="upload-text">
+                                <i class="el-icon-plus"></i>
+                                <div class="upload-text-span">人像照片</div>
+                              </div>                             
+                            </el-upload>
+                            <el-upload
+                              class="upload-box"
+                              :name="'arr_visa_photo'"
+                              :disabled="joinZf"
+                              ref="load3"
+                              action="111"
+                              :limit="1"
+                              :file-list="all.arr_visa_photo"
+                              list-type="picture-card"
+                              :multiple="false"
+                              :on-preview="handlePictureCardPreview"
+                              :on-remove="(file,fileList)=>handleRemove('arr_visa_photo',alls,file,fileList)"
+                              :on-change="(file,fileList)=>imgOnChange('arr_visa_photo',alls,file,fileList)"
+                              :auto-upload="false">
+                              <div class="upload-text">
+                                <i class="el-icon-plus"></i>
+                                <div class="upload-text-span">签证页照片</div>
+                              </div>
+                            </el-upload>
+                          </div>
+                        </template>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="2" class="adress-btn">
+                      <el-button :disabled="joinZf" type="primary" icon="el-icon-plus" size="mini" circle @click="Add_DZ()" v-if="userInforList.length-1==alls"></el-button>
+                      <el-button :disabled="joinZf" type="danger" icon="el-icon-minus" size="mini" circle @click="deleteModel_DZ(alls)" v-if="userInforList.length>1" style="margin-left:0"></el-button>
+                    </el-col>
+                  </el-row>
+                </el-col>
+              </el-row>
             </template>
           </el-col>
         </el-col>
@@ -312,13 +436,21 @@
       @dialogUpload="dialogUpload"
       ></BatchIm>
 	</Dialog>
+  <div id="big-img-box" v-drag v-if="isimgclick">
+    <el-image-viewer :on-close="()=>{isimgclick=false}" :url-list="imgList" />
+  </div>
   </div>
 </template>
 <script>
 import BatchIm from "@/components/BatchImport.vue";
 import Dialog from "@/components/Dialog.vue";
 export default {
-  components: {BatchIm,Dialog},
+  components: {
+    BatchIm,
+    Dialog,
+    "el-image-viewer": () =>
+      import("element-ui/packages/image/src/image-viewer")
+  },
   props: {
     cxData: {
       type: Array,
@@ -349,6 +481,14 @@ export default {
       type: Boolean,
       default: true
     },
+    joinZf:{
+      type: Boolean,
+      default: true
+    },
+    editAllJz:{
+      type: Boolean,
+      default: false,
+    },
     isEditBtn: {
       type: Boolean,
       default: true
@@ -369,6 +509,11 @@ export default {
       type:String,
       default:''
     },
+    //弹窗自定义名称
+    diaCus:{
+      type:String,
+      default:''
+    },
     transData:{
         type:Array,
         default: () => []
@@ -382,6 +527,7 @@ export default {
             } 
         }
     },
+    
   },
   data() {
     var validatePass = (rule, value, callback) => {
@@ -395,7 +541,10 @@ export default {
     };
     return {
       // form: {},
-      
+      dialogVisible:false,
+      dialogImageUrl:'',
+      isimgclick:false,
+      imgList:[],
       rules: this.dialogType=='singSb'?{
         suboffice: [{ required: true, message: "请选择分局", trigger: "blur" }],
         policestation: [{ required: true, message: "请选择派出所", trigger: "blur" }],
@@ -421,6 +570,12 @@ export default {
           audioType:[{required: true, message: "此项必填", trigger: "blur"}],
       }:(this.rulsName=='zdygj')?{
         mc:[{required: true, message: "此项必填", trigger: "blur"}],
+      }:(this.rulsName=='address' && this.dialogType == 'xz')?{
+        title: [{ required: true, message: "此项必填", trigger: "blur" }],
+        address: [{ required: true, message: "此项必填", trigger: "blur" }],
+        suboffice: [{ required: true, message: "此项必填", trigger: "blur" }],
+      }:(this.rulsName=='address' && this.dialogType == 'edit')?{
+        // passportno:[{ required: true, message: "请输入密码", trigger: "blur" }],
       }:{
         xtmm: [{ required: true, message: "请输入密码", trigger: "blur" }],
         qrxtmm: [{ validator: validatePass, trigger: "blur" }],
@@ -464,6 +619,7 @@ export default {
       newForm: {},
       isPS:true,
       isJoinFlag:true,
+      isJoinZf:false,
       isShowDialog:false,
       modalappendtobody:false,
       appendtobody:true,
@@ -506,7 +662,17 @@ export default {
             class:'yssm'
           }
       ],
-    
+      userInforList:[],
+      dzmodel:{
+        id:1,
+        passportno:'',
+        nationality:'',
+        phone:'',
+        arr_passport_photo:[],
+        arr_portrait_photo:[],
+        arr_visa_photo:[],
+      },
+      dzCount:1,
       colorArr:['#67C23A','#E6A23C','#F56C6C','#409EFF','#909399']
     };
   },
@@ -533,16 +699,53 @@ export default {
           },
         ],
       }
-      // document.getElementsByClassName('color-inp')[0].getElementsByClassName('el-input__inner')[0].style.backgroundColor=''
     }
-    // if(this.dialogType == 'edit'){
-    //   document.getElementsByClassName('color-inp')[0].getElementsByClassName('el-input__inner')[0].style.backgroundColor=this.dialogData.gdyssh
-    // }
+    
+    if(this.diaCus == 'address'){
+      console.log('******',this.dialogData.userInforList)
+      if(!this.dialogData.userInforList||this.dialogData.userInforList.length==0){
+        this.userInforList=[{
+          passportno:'',
+          nationality:'',
+          phone:'',
+          arr_passport_photo:[],
+          arr_portrait_photo:[],
+          arr_visa_photo:[],
+        }]
+      }else{
+        this.userInforList=this.dialogData.userInforList
+      }
+    }
+    
   },
   methods: {
     //穿梭框的自定义搜索
     filterMethod(query, item){
       return (item.dm).toLowerCase().indexOf(query) > -1 || (item.dm).toUpperCase().indexOf(query) > -1 || item.mc.indexOf(query) > -1;
+    },
+    //放大查看图片
+    handlePictureCardPreview(file){
+      this.isimgclick = true;
+      this.imgList = [file.url]
+    },
+    //图片上传change事件  base64交互
+    imgOnChange(item,key,file,fileList){
+      console.log('+++',key,file.raw.type,fileList)
+      // var reader = new FileReader()
+      // reader.readAsDataURL(file.raw)
+      // reader.onload = () => {
+      //   // console.log('file 转 base64结果：' + reader.result)
+      //   this.userInforList[key][item] = [{url:reader.result,type:file.raw.type}];
+      //   // console.log('----',this.userInforList)
+      // }
+      this.$fnc.compressImg(file.raw).then(data =>{
+        this.userInforList[key][item] = [{url:data,type:file.raw.type}];
+      })
+    },
+    //删除照片
+    handleRemove(item,key,file,fileList){
+      this.userInforList[key][item] = [];
+      console.log('shanchu',file,fileList)
     },
     expFun(){},
     Upload(data){
@@ -594,6 +797,21 @@ export default {
       this.modelData={id:this.count,gdsj:'',gdyssh:''}
       this.ColorData.data.push(this.modelData)
     },
+    Add_DZ(){
+      this.dzmodel={
+        passportno:'',
+        nationality:'',
+        phone:'',
+        arr_passport_photo:[],
+        arr_portrait_photo:[],
+        arr_visa_photo:[],
+      }
+      this.userInforList.push(this.dzmodel)
+      console.log('====',this.userInforList)
+      },
+    deleteModel_DZ(ind){
+      this.userInforList.splice(ind,1)
+    },
     deleteModel(ind){
       this.ColorData.data.splice(ind,1)
     },
@@ -606,6 +824,12 @@ export default {
       }
     },
     dbBtnFun(val) {
+      if(this.diaCus == 'address'){
+        //编辑上报
+        console.log('====this.dialogData',this.dialogData)
+        this.dialogData.userInforList = this.userInforList
+        console.log('====this.dialogData',this.dialogData)
+      }
       this.$emit("dbFnc", val);
     },
     radioChange(val){

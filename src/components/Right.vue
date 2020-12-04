@@ -64,6 +64,7 @@ export default {
       // console.log('e==',e)
       // if (!e.target.className.includes("targetItem") && e.target.tagName != "SUP") {
         this.righttWidth = this.righttWidth == "36px" ? "182px" : "36px";
+        this.$store.commit('getRightWid',this.righttWidth)
         this.oneData();
       // }
     },

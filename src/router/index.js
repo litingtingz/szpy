@@ -122,6 +122,12 @@ const routes = [
         name: 'ProgressStatisticsHCZF',
         component: () => import(/* webpackChunkName: "Businessmanagement" */ '../views/Businessmanagement/SupervisionAndCheck/ProgressStatisticsHCZF.vue')
       },
+      
+      {
+        path: '/AddressPc',
+        name: 'AddressPc',
+        component: () => import(/* webpackChunkName: "Businessmanagement" */ '../views/Businessmanagement/Overseasperson/AddressPc.vue')
+      },
       /**
        * 分析研判CzChangingTrend
        */
@@ -165,6 +171,19 @@ const routes = [
         path: '/CollectionVoice',
         name: 'CollectionVoice',
         component: () => import(/* webpackChunkName: "szforeigners" */ '../views/szforeigners/CollectingInformation/CollectionVoice.vue')
+      },
+      //数据汇聚  HighSpeedRailQuery
+      {
+        // 高铁数据查询
+        path: '/HighSpeedRailQuery',
+        name: 'HighSpeedRailQuery',
+        component: () => import(/* webpackChunkName: "szforeigners" */ '../views/szforeigners/DataAggregation/HighSpeedRailQuery.vue')
+      },
+      {
+        // 高铁数据查询
+        path: '/HighSpeedRailHandle',
+        name: 'HighSpeedRailHandle',
+        component: () => import(/* webpackChunkName: "szforeigners" */ '../views/szforeigners/DataAggregation/HighSpeedRailHandle.vue')
       },
     ]
   },

@@ -7,6 +7,7 @@
           :isSelect="false"
           :lbBtn="this.$cdata.czxx.bhqs.lbBtn"
           :isTab="false"
+          :isPl="false"
           :tableData="tableData"
           :clearSort="clearSort"
           :expData="cx"

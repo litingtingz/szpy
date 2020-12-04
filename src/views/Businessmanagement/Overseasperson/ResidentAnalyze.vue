@@ -57,7 +57,7 @@
               <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
             </el-select>
           </div>
-          <div @click="chartDiaFun(4)"><Charts @chartAllClick="chartAllClick" :timeRange="timeRange_4" :optData="optData_4" :id="'4'"></Charts></div>
+          <div @click="chartDiaFun(4)"><Charts @chartAllClick="chartAllClick" :key="timeRange_4" :optData="optData_4" :id="'4'"></Charts></div>
         </el-col>
         <!-- 变化趋势分析图 -->
         <!-- <el-col :xl="16" :lg="12" class="pad-15">
@@ -80,7 +80,7 @@
               <el-option v-for="(item,ind) in analysis_3" :key="ind" :label="item.mc" :value="item.dm"></el-option>
             </el-select>
           </div>
-          <div @click="chartDiaFun(3)"><Charts @chartAllClick="chartAllClick" :timeRange="timeRange_3" :optData="optData_3" :id="'3'"></Charts></div>
+          <div @click="chartDiaFun(3)"><Charts @chartAllClick="chartAllClick" :key="timeRange_3" :optData="optData_3" :id="'3'"></Charts></div>
         </el-col>
         <!--  -->
         <el-col :xl="24" :lg="24" class="pad-15">
@@ -414,7 +414,7 @@ export default {
         },
         {
           dm:'personnel_area_type',
-          mc:'境外人员类别'
+          mc:'人员地域类别'
         },
         {
           dm:'age',
@@ -502,6 +502,36 @@ export default {
     //     this.chartFun_1();
     //   }
     // }))
+  },
+  computed: {
+    ScreenChange() {
+      return {left:this.$store.state.leftWid,right:this.$store.state.rightWid};
+    },
+    //还未起到效果
+    clientWidth(){
+      return document.body.clientWidth
+    }
+  },
+  watch:{
+    ScreenChange(newVal,oldVal){
+      console.log('===',newVal,oldVal)
+      this.timeRange_1 = new Date().getTime()
+      this.timeRange_2 = new Date().getTime()
+      this.timeRange_3 = new Date().getTime()
+      this.timeRange_4 = new Date().getTime()
+      this.timeRange_5 = new Date().getTime()
+      this.timeRange_6 = new Date().getTime()
+    },
+    clientWidth(val){
+      console.log('document.body.clientWidth',document.body.clientWidth,val)
+      if(val<1500){
+        this.barGap = '50%'
+      }else{
+        this.barGap = '90%'
+      }
+      this.timeRange_1 = new Date().getTime()
+      this.timeRange_2 = new Date().getTime()
+    }
   },
   methods: {
     hideDialog(){
@@ -731,6 +761,7 @@ export default {
       this.dialogTitle="图表"
       this.isShowDialog = true;
       this.chartType = data
+      // this.barGap = "140%";
       if(data == 1){this.chartFun_1();this.optData_D = this.optData_1;}
       if(data == 2){this.chartFun_2();this.optData_D = this.optData_2;}
       if(data == 3){this.chartFun_3();this.optData_D = this.optData_3;}
@@ -739,7 +770,7 @@ export default {
       if(data == 6){this.chartFun_6();this.optData_D = this.optData_6;}
       this.$nextTick(()=>{
         this.DiaHeight = this.$refs.diacRef.offsetHeight+'px'
-        // this.barGap = "140%";
+        
       })
     },
     chartDiaFun(val){
