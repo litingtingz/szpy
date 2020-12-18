@@ -375,6 +375,8 @@ export default {
           this.receiveFun();
         }else if(py == 'pf'){
           this.handOutFun();
+        }else if(py == 'ht'){
+          this.backOffFun();
         }
       },
       handChangeFun(value){
@@ -388,6 +390,45 @@ export default {
         }else{
           this.checkedList = [];
         }
+      },
+      //左侧列回退
+      backOffFun(){
+        if(this.checkedList.length==0){
+          this.$message({
+            message: '请先选择数据！',
+            duration:13000,
+            showClose: true,
+            type: "warning"
+          });
+          return
+        }
+        this.$confirm('是否回退选中数据？','提示',{
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(()=>{
+            console.log('huitui',this.checkedList)
+            let formData = new FormData();
+            formData.append('serialList',JSON.stringify(this.checkedList))
+            formData.append('dataSources','2')
+            formData.append('userId',this.$store.state.user.userId)
+            formData.append('bmbh',this.$store.state.user.bmbh)
+            this.$api.post(this.$api.aport2 + '/issueData/policestationRollback',formData,r=>{
+              this.$message({
+                message: r.message,
+                duration:8000,
+                showClose: true,
+                type: "success"
+              });
+              this.getTable();
+              this.reloadList();
+            })            
+        }).catch(()=>{
+          this.$message({
+            type: 'info',
+            message: '已取消回退'
+          })
+        })
       },
       receiveFun(){//接收
       if(this.checkedList.length==0){

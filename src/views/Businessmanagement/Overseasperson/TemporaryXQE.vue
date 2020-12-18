@@ -172,6 +172,14 @@
               <template v-else-if="cx.type=='password'">
                 <el-input type="password" v-model="dialogData[cx.dm]" :disabled="cx.dis"></el-input>
               </template>
+              <template v-if="cx.type=='joinBtn'">
+                <el-row type="flex" justify="space-between">
+                  <el-col :span="20"><el-input v-model="dialogData[cx.dm]"></el-input></el-col>
+                  <el-col :span="4" style="text-align: right;">
+                    <el-button type="success" style="line-height: 0.9;" size="mini" @click="joinBtnFnc(dialogData,dialogData[cx.dm],cx.dm)">{{cx.btnmc}}</el-button>
+                  </el-col>
+                </el-row>
+              </template>
               <template v-else-if="cx.type=='select'">
                 <el-select
                   v-model="dialogData[cx.dm]"
@@ -179,8 +187,7 @@
                   v-if="cx.optype"
                   clearable
                   :disabled="cx.dis"
-                  placeholder="请选择"
-                >
+                  placeholder="请选择">
                   <el-option
                     v-for="item in $cdata.options[cx.dm]"
                     :key="item.dm"
@@ -193,10 +200,9 @@
                   filterable
                   v-else
                   clearable
-                  :disabled="cx.dis"
+                  :disabled="cx.dis||dialogData[cx.dm+'dis']"
                   placeholder="请选择"
-                  @change="linkChange(cx,dialogData[cx.dm],dialogData)"
-                >
+                  @change="linkChange(cx,dialogData[cx.dm],dialogData)">
                   <el-option
                     v-for="(item,index) in $store.state[cx.dm]"
                     :key="index"
@@ -371,10 +377,10 @@ export default {
         //     trigger: "blur"
         //   }
         // ],
-        // suboffice: [{ required: true, message: "此项必填", trigger: "blur" }],
-        // policestation: [
-        //   { required: true, message: "此项必填", trigger: "blur" }
-        // ]
+        suboffice: [{ required: true, message: "此项必填", trigger: "blur" }],
+        policestation: [
+          { required: true, message: "此项必填", trigger: "blur" }
+        ]
       },
       isXJ: false,
       newForm: {},
@@ -416,6 +422,10 @@ export default {
           }
         });
       }
+    },
+    //input联合button的点击事件
+    joinBtnFnc(data,value,key){
+      this.$emit('joinBtnFnc',{data:data,value:value,key:key})
     },
     getSrcList(url) {
       return ["data:image/jpg;base64," + url];

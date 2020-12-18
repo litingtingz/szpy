@@ -66,6 +66,7 @@
         :dialogImgData="dialogImgData"
         :cxData="$cdata.lzsb.lzsb.bj"
         ref="temp"
+        @joinBtnFnc="joinBtnFnc"
         @dialogCancel="isShowDialog=false"
         @dialogSave="dialogSave"
         @formLcFnc="lcFnc"
@@ -241,7 +242,6 @@ export default {
       }else{
         this.getTable(true);
       }
-      
     },
     // 获取分页等信息
     pageSizeFnc(data) {
@@ -264,6 +264,33 @@ export default {
       this.$api.post(this.$api.aport3 + "/api/lzsb/getLzsb", this.cx, r => {
         this.tableData = r;
       });
+    },
+    joinBtnFnc(data){
+      this.$api.post(this.$api.aport3 + '/api/lzsb/getPcs',{id:data.data.id},r=>{
+        // console.log(data)
+        // let rr =  {
+        //   "policestation": "320509510000",
+        //   "policestationMc": "江苏省苏州市吴江分局松陵派出所",
+        //   "suboffice": "320509000000",
+        //   "subofficeMc": "江苏省苏州市吴江分局",
+        //   "xzqh": "320509"
+        // }
+        this.dialogData.suboffice = r.suboffice
+        this.dialogData.subofficeMc = r.subofficeMc
+        this.dialogData.policestation = r.policestation
+        this.dialogData.policestationMc = r.policestationMc
+        this.dialogData.xzqh = r.xzqh
+        if(this.dialogData.suboffice){//非空
+          this.dialogData.subofficedis = true
+        }else{
+          this.dialogData.subofficedis = false
+        }
+        if(this.dialogData.policestation){//非空
+          this.dialogData.policestationdis = true
+        }else{
+          this.dialogData.policestationdis = false
+        }
+      })
     },
     // 点击表格行
     rowClick(data) {
@@ -329,6 +356,16 @@ export default {
         this.dialogData = r;
         if(this.dialogData.checklist==undefined){
           this.dialogData.checklist=[];
+        }
+        if(this.dialogData.suboffice){//非空
+          this.dialogData.subofficedis = true
+        }else{
+          this.dialogData.subofficedis = false
+        }
+        if(this.dialogData.policestation){//非空
+          this.dialogData.policestationdis = true
+        }else{
+          this.dialogData.policestationdis = false
         }
         console.log('===',this.dialogData)
         this.$store.dispatch("aGetssdw", { bmbh: r.suboffice, type: "sspcs" });

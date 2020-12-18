@@ -46,7 +46,7 @@
     >
       <el-row :gutter="0" type="flex" align="middle" justify="center">
         <el-col :span="20">
-          <el-col :span="cx.type=='double'?12:(cx.col?cx.col:6)" v-for="(cx,i) in cxData" :key="i">
+          <el-col :span="cx.type=='double'||cx.type=='doubleDate'?12:(cx.col?cx.col:6)" v-for="(cx,i) in cxData" :key="i" v-show="!cx.distype||btnCheckedDb.includes(cx.distype)">
             <el-form-item :label="cx.cm" :prop="cx.dm">
               <template v-if="cx.type=='input'">
                 <el-input v-model="inquire[cx.dm]" :disabled="cx.dis"></el-input>
@@ -131,6 +131,36 @@
                   </div>-->
                 </div>
               </template>
+              <template v-else-if="cx.type=='doubleDate'">
+                <div class="double-box">
+                  <div class="double" @keydown="dateKeyDown(cx.children[0].dm)">
+                    <el-date-picker
+                      v-model="inquire[cx.children[0].dm]"
+                      :type="cx.children[0].type"
+                      placeholder="选择开始时间"
+                      :format="dateObj[cx.children[0].dm]"
+                      @blur="dataHand(cx.children[0].dm)"
+                      @change="dateChange(cx.children[0].dm,inquire[cx.children[0].dm])"
+                      :value-format="cx.children[0].dateType=='dateJ'?'yyyyMMdd':'yyyy-MM-dd'"
+                    ></el-date-picker>
+                  </div>
+                  <div>-</div>
+                  <div class="double" @keydown="dateKeyDown(cx.children[1].dm)">
+                    <el-date-picker
+                      v-model="inquire[cx.children[1].dm]"
+                      :type="cx.children[1].type"
+                      placeholder="选择结束时间"
+                      :format="dateObj[cx.children[1].dm]"
+                      @blur="dataHand(cx.children[1].dm)"
+                      @change="dateChange(cx.children[1].dm,inquire[cx.children[1].dm])"
+                      :value-format="cx.children[0].dateType=='dateJ'?'yyyyMMdd':'yyyy-MM-dd'"
+                    ></el-date-picker>
+                  </div>
+                  <!-- <div class="double" v-for="(c,chi) in cx.children" :key="chi">
+                    <el-date-picker v-model="inquire[c.dm]" :type="c.type" placeholder="选择日期"></el-date-picker>
+                  </div>-->
+                </div>
+              </template>
               <template v-else-if="cx.type=='ageDouble'">
                 <div class="double-box">
                   <div class="double">
@@ -143,24 +173,34 @@
                 </div>
               </template>
               <template v-else-if="cx.type=='button'">
-                
+                <el-button 
+                  v-for="(jt,jts) in $cdata.options[cx.dm]"
+                  class="check-mult"
+                  :key="jts"
+                  :type="(cx.multiple&&btnCheckedDb.includes(jt.dm))||(jt.dm==btnChecked)?'success':'primary'" 
+                  size="mini"
+                  @click="quickView(jt.dm,cx.multiple)">{{jt.mc}}</el-button>
+              </template>
+              <template v-else-if="cx.type=='checkbox'">
+                <el-checkbox  class="inquire-check" v-model="inquire[cx.dm]" :true-label="cx.trueLabel" :false-label="cx.falseLabel" :checked="cx.check">{{cx.mc}}</el-checkbox>
               </template>
             </el-form-item>
           </el-col>
           <el-col v-for="(cc,ind) in cxCheck" :key="ind+'che'" :span="cc.col?cc.col:6">
             <el-checkbox  class="quire-check" v-model="inquire[cc.dm]" :true-label="cc.trueLabel" :false-label="cc.falseLabel" :checked="cc.check">{{cc.mc}}</el-checkbox>
           </el-col>
-          
-          <div class="cx-btn" v-for="(item,inds) in cxButton" :key="inds+'0'">
+          <el-col :span="12">
+            <div class="cx-btn" v-for="(item,inds) in cxButton" :key="inds+'0'">
             <span class="cx-btn-label">{{item.cm}}</span>
             <el-button 
-            v-for="(jt,jts) in $cdata.options[item.dm]"
-            :key="jts"
-            :type="jt.dm==btnChecked?'success':'primary'" 
-            size="mini"
-            @click="quickView(jt.dm)">{{jt.mc}}</el-button>
-          </div>
-          
+              v-for="(jt,jts) in $cdata.options[item.dm]"
+              class="check-mult"
+              :key="jts"
+              :type="(item.multiple&&btnCheckedDb.includes(jt.dm))||(jt.dm==btnChecked)?'success':'primary'" 
+              size="mini"
+              @click="quickView(jt.dm,item.multiple)">{{jt.mc}}</el-button>
+            </div>
+          </el-col>
         </el-col>
         <el-col :span="4" align="center">
           <template v-for="(pb,pbi) in $store.state.plBtn">
@@ -169,7 +209,7 @@
               size="small"
               :type="pb.py=='cx'?'primary':'info'"
               round
-              v-if="cxType!='noCbtn'&&pb.button_type==1"
+              v-if="cxType!='noCbtn'&&!tabCInq&&pb.button_type==1"
               :key="pbi"
               @click="btnClick(pb.py,pb)"
             >{{pb.button_name||pb.menu_name}}</el-button>
@@ -240,6 +280,11 @@ export default {
     cxShow:{
       type: Boolean,
       default: true
+    },
+    //tab控制查询条件
+    tabCInq:{
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -277,7 +322,8 @@ export default {
       QcxObj:{},
       aa:true,
       backstatus:'',//走访状态
-      btnChecked:''
+      btnChecked:'',
+      btnCheckedDb:[],
     };
   },
   watch:{
@@ -320,13 +366,22 @@ export default {
       }
     },
     //查询项 button点击事件
-    quickView(val){
-      if(this.btnChecked == val){
-        this.btnChecked = ''
-      }else{
-        this.btnChecked = val;
+    quickView(val,type){
+      if(type){//多选
+        if(!this.btnCheckedDb.includes(val)){
+          this.btnCheckedDb.push(val)
+        }else{
+          this.btnCheckedDb.splice(this.btnCheckedDb.findIndex(item => item === val), 1)
+        }
+        this.$emit('quickViewMult',{data:this.btnCheckedDb,key:val})
+      }else{//单选
+        if(this.btnChecked == val){
+          this.btnChecked = ''
+        }else{
+          this.btnChecked = val;
+        }
+        this.$emit('quickView',this.btnChecked)
       }
-      this.$emit('quickView',this.btnChecked)
     },
     //快速筛查
     tagClick(value,data,ind){

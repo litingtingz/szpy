@@ -10,9 +10,9 @@
           @click="lbTabFun(lt.dm)"
         >{{lt.mc}}</span>
       </div>
-      <!-- :type="pb.type" -->
-      <!--           :disabled="pb.user_ctrl==1&&disPlBtn" -->
-      <div class="table-btn-box" v-if="isPl">
+      <!-- v-if="isOther" -->
+     
+      <div class="table-btn-box" id="plBtn" v-if="isPl">
         <el-popover
           placement="left"
           trigger="hover"
@@ -40,6 +40,7 @@
           <el-button
             size="mini"
             :type="'primary'"
+            :disabled="LbDisable"
             round
             v-if="pb.button_type==2"
             @click="plBtnFun(pb)"
@@ -47,12 +48,15 @@
           >{{pb.button_name||pb.menu_name}}</el-button>
         </template>
       </div>
+       <div class="table-other-box" :style="{right:otherTab}" v-if="isOther">
+        <el-link :underline="false">待办总数{{SDbCount}}条</el-link>
+      </div>
     </div>
     <el-table
       size="small"
       :ref="refName"
       border
-      highlight-current-row
+      :highlight-current-row="isHighlight"
       header-row-class-name="table-header"
       header-cell-class-name="table-header-cell"
       :data="tableData.list"
@@ -64,9 +68,9 @@
       @selection-change="handleSelectionChange"
       @select="selectPage"
       @select-all="selectPage"
-      @sort-change="sortChange"
-    >
+      @sort-change="sortChange">
       <el-table-column v-if="isSelect" align="center" type="selection" width="50"></el-table-column>
+      <!-- 颜色填充 -->
       <template v-for="(lb,i) in lbData">
         <el-table-column
           align="left"
@@ -81,12 +85,47 @@
               <span style="width:20px;height:20px;display:inline-block;vertical-align: middle;" :style="{backgroundColor:scope.row.gdyssh}"></span>
             </template>
         </el-table-column>
+        <!-- 按钮显示 -->
+        <el-table-column
+          align="left"
+          show-overflow-tooltip
+          :key="i"
+          v-else-if="lb.button"
+          :prop="lb.dm"
+          :label="lb.cm"
+          :width="lb.width"
+          :sortable="'custom'&&isSort">
+            <template slot-scope="scope">
+              <el-button
+              style="width: 100%" 
+              size="mini"  
+              :type="scope.row.crjwyid==btnId||scope.row.valid=='1'?'success':'primary'"
+              :disabled="LbDisable"
+              @click="lbSpecialBtn(scope.row.crjwyid)">{{scope.row[lb.dm]}}</el-button>
+            </template>
+        </el-table-column>
+        <!-- 字体链接显示 -->
+        <el-table-column
+          align="left"
+          show-overflow-tooltip
+          :key="i"
+          v-else-if="lb.textLink"
+          :prop="lb.dm"
+          :label="lb.cm"
+          :width="lb.width"
+          :sortable="'custom'&&isSort">
+            <template slot-scope="scope">
+              <el-link type="primary" @click="lbTextClick(scope.row,scope.column)">{{scope.row[lb.dm]}}</el-link>
+            </template>
+        </el-table-column>
+        <!-- 序号 -->
         <el-table-column
           :key="i"
           type="index"
           :label="lb.cm"
           v-else-if="lb.typeindex">
         </el-table-column>
+        <!-- 图片显示 -->
         <el-table-column
           align="left"
           show-overflow-tooltip
@@ -106,6 +145,7 @@
               </div>
             </template>
         </el-table-column>
+        <!-- 字符串截取 -->
         <el-table-column
           align="left"
           show-overflow-tooltip
@@ -119,6 +159,7 @@
             {{scope.row[lb.dm] | subString}}
           </template>
         </el-table-column>
+        <!-- 常规 -->
         <el-table-column
           align="left"
           show-overflow-tooltip
@@ -219,6 +260,16 @@ export default {
     },
     //内层tab是否展示
     isTab: {
+      type: Boolean,
+      default: false
+    },
+    //表格是否高亮
+    isHighlight:{
+      type: Boolean,
+      default: true
+    },
+    //tab 其他展示项
+    isOther:{
       type: Boolean,
       default: false
     },
@@ -341,7 +392,20 @@ export default {
       type:Object,
       default: () => {}
     },
-    
+    SDbCount:{
+      type:Number,
+      default:0
+    },
+    //禁止表格里的可操作项
+    LbDisable:{
+      type:Boolean,
+      default:false,
+    },
+    //列表按钮 信息回填选中
+    btnIsCheck:{
+      type:String,
+      default:''
+    }
   },
   data() {
     return {
@@ -367,6 +431,8 @@ export default {
       isimgclick: false,
       imglist:[],
       timeClick:null,
+      btnId:'',
+      otherTab:'',
     };
   },
   filters: {
@@ -375,11 +441,28 @@ export default {
       return value.slice(0,10);
     }
   },
+  computed:{
+    otherTabStyle(){
+      let ret = this.plBtn.findIndex((v) => {
+          return v.button_type == '2';
+      });
+      return ret>-1&&document.getElementById('plBtn')?document.getElementById('plBtn').offsetWidth:0
+    }
+  },
   watch: {
     selection(val) {
       this.$nextTick(function() {
         this.toggleSelection(val);
       });
+    },
+    otherTabStyle(val){
+      // console.log('+++===',val)
+      this.$nextTick(()=>{
+        if(val){
+          this.otherTab = document.getElementById('plBtn').offsetWidth+20 + 'px'
+          // console.log('off',this.otherTab)
+        }  
+      })
     },
     lbTab(val) {
       if (val.length > 0) {
@@ -404,7 +487,6 @@ export default {
     },
   },
   mounted() {
-    console.log('========',this.isPl,this.isTab)
     this.$nextTick(function() {
       this.toggleSelection(this.selection);
       if(this.$route.query.page){
@@ -420,6 +502,19 @@ export default {
     },
     getimglist(data){
       return  this.$api.aport6+data;
+    },
+    //列表内可复选按钮点击事件
+    lbSpecialBtn(val){
+      if(this.btnId == val){
+        this.btnId = ''
+      }else{
+        this.btnId = val;
+      }
+      this.$emit('lbSpecialBtnFnc',{data:val})
+    },
+    //列表内可点击文字事件
+    lbTextClick(row,column){
+      this.$emit('lbTextClickFnc',{row:row,column:column})
     },
     //默认当前行高亮
     cRowHighlight(){
@@ -598,7 +693,9 @@ export default {
     position: absolute;
     left: 0;
 }
-
+.table-other-box{
+  position: absolute;
+}
 .table-tab-box span {
     font-size: 12px;
     color: #9ea5bf;

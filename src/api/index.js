@@ -12,15 +12,15 @@ var aport1 = 'permission'//任
 var aport2 = 'datarelease'//石
 // var aport2 = 'http://10.0.31.36:9405'//石本地
 var aport3 = 'lzsb'
-var aport4 = 'yewu'
-// var aport4 = 'http://10.0.30.131:9426'
+// var aport4 = 'yewu'
+var aport4 = 'http://10.0.30.33:9426'
 
 // 苏州市公安局.APP采集系统管理后台 http://192.168.3.100:8001
 var aport5 = "szforeigners"
 // var aport6 = "szforeigners/static"
 // var aport6 = "http://50.73.70.116:1101/szforeigners/static"//采集系统图片资源
-var aport6 = "http://192.168.3.100:8001/static"//采集系统图片资源
-// var aport6 = "http://192.168.3.131:1101/szforeigners/static"
+// var aport6 = "http://192.168.3.100:8001/static"//采集系统图片资源
+var aport6 = "http://192.168.3.131:1101/szforeigners/static"
 // 苏州市公安局.APP采集系统管理后台-上传文件专用
 var aport7 = "http://50.73.70.26:9124"  // 线上
 // var aport7 = "http://192.168.3.100:8001"  // 测试

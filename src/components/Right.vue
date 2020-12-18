@@ -116,7 +116,7 @@ export default {
   font-size: 14px;
 }
 .right-box-content {
-  height: 100%;
+  height:1001px;
   overflow: hidden;
 }
 .right-one-data {
@@ -132,7 +132,8 @@ export default {
   vertical-align: bottom;
 }
 .right-box-one {
-  height: 49.5%;
+  min-height: 49.5%;
+  max-height: 50%;
   border-bottom: 1px solid #888;
 }
 .right-box-two {
@@ -141,7 +142,7 @@ export default {
 .right-open {
   position: absolute;
   left: 0;
-  top: 47%;
+  top: 400px;
 }
 .short-title {
   width: 20px;

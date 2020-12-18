@@ -34,10 +34,15 @@ export default new Vuex.Store({
     plBtn: [],
     breadcrumb: breadData || [],
     nationality: [],
+    crj_nationality:[],
+    gjdq:[],
     gender: [],
     sex: [],
+    xb:[],
     grade: [],
     passportType: [],//证件种类
+    crj_passporttype:[],
+
     suboffice: [],//所属分局
     subBureauCode:[],
     policestation: [],//派出所
@@ -48,7 +53,11 @@ export default new Vuex.Store({
     zfzl: [],
     zsxz: [],
     visaType: [],
+    visatype:[],
+
     rjka: [],
+    crj_io_port:[],
+
     rjsy: [],//停留事由
     qfjg: [],
     turnoutarea: [],//责任区
@@ -67,11 +76,18 @@ export default new Vuex.Store({
     ywlb:[],//业务类别
     //【常住信息维护】
     birthplace:[],//出生地
+
     visa_type:[],//签证种类
+    crj_visa_type:[],
+
     paper_type:[],//证件种类
     degree_code:[],//身份
+
     reside_reason:[],//停留事由
+
     entry_reason:[],//入境事由
+    crj_out_reason:[],
+
     inhabi_state:[],//居住状态类型
     working_state:[],//工作状态类型
     inhabi_residence:[],//居住地所在区县
@@ -80,11 +96,16 @@ export default new Vuex.Store({
     entry_port:[],//入境口岸
     exit_entry_status:[],//出入境状态
     crjzt:[],
+
     zy:[],//职业
+    crj_prof_code:[],
+
     jwrygx:[],//与境外人员关系
     inhabi_police_station:[],//居住地所在派出所
     workplace_police_station:[],//单位所在地派出所
+
     personnel_area_type:[],//境外人员类别
+    crj_person_type:[],
 
     jzd_ssfj:[],
     gzd_ssfj:[],
@@ -159,10 +180,14 @@ export default new Vuex.Store({
     },
     getNation(state, data) {
       state.nationality = data;
+      state.crj_nationality = data;
       state.birthplace = data;
+      state.gjdq = data;
     },
     getGender(state, data) {
       state.gender = data;
+      state.xb = data;
+      state.crj_gender = data;
     },
     getSex(state, data) {
       state.sex = data;
@@ -173,11 +198,14 @@ export default new Vuex.Store({
     getPassport(state, data) {
       state.passportType = data;
       state.paper_type = data;
+      state.crj_passporttype = data;
     },
     getDM(state, data) {
       if (data.type == 'qzzl') {
         state.visaType = data.data
         state.visa_type = data.data
+        state.visatype = data.data
+        state.crj_visa_type = data.data
       } else if (data.type == 'lz_zfzl') {
         state.zfzl = data.data
       } else if (data.type == 'lz_zsxz') {
@@ -192,9 +220,12 @@ export default new Vuex.Store({
         state.policestation = data.data
       } else if (data.type == "bjjgka") {
         state.rjka = data.data
+        state.crj_io_port = data.data
       } else if (data.type == "wgr_sqsy") {
         state.rjsy = data.data
         state.entry_reason = data.data//入境事由
+        state.crj_out_reason = data.data
+
       } else if(data.type == "jltlsy"){
         state.reside_reason = data.data//居留事由
       }else if (data.type == "spqfd") {
@@ -222,8 +253,10 @@ export default new Vuex.Store({
         state.workplace_police_station = data.data//单位所在地派出所
       }else if(data.type == 'dm_rydylbb'){
         state.personnel_area_type = data.data//境外人员类别
+        state.crj_person_type = data.data
       }else if(data.type == 'dm_zyb'){
         state.zy = data.data
+        state.crj_prof_code = data.data
       }else if(data.type == 'dm_jwrygxb'){
         state.jwrygx = data.data
       }

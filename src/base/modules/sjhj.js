@@ -1,72 +1,53 @@
 const gtsjcx = {
   cx: [
     {
-      cm: '英文姓名',
+      cm: '姓名',
       type: 'input',
-      dm: 'ename',
-    },
-    {
-      cm: '中文姓名',
-      type: 'input',
-      dm: 'name',
+      dm: 'xm',
     },
     {
       cm: '性别',
       type: 'select',
-      dm: 'gender',
+      dm: 'xb',
     },
     {
       cm: '国家地区',
       type: 'select',
-      dm: 'nationality',
+      dm: 'gjdq',
     },
-    
-    // {
-    //   cm: '证件种类',
-    //   type: 'select',
-    //   dm: 'paper_type'
-    // },
     {
       cm: '证件号码',
       type: 'input',
-      dm: 'paperno',
+      dm: 'zjhm',
     },
     {
       cm: '出生日期',
-      type: 'double',
+      type: 'doubleDate',
       dm: 'csTime',
       children: [
         {
           cm: '开始时间',
           type: 'date',
-          dm: 'birthday_begin',
+          dm: 'birthstart',
+          dateType:'dateJ'
         },
         {
           cm: '结束时间',
           type: 'date',
-          dm: 'birthday_end',
+          dm: 'birthend',
+          dateType:'dateJ'
         },
       ],
     },
     {
       cm: '签证种类',
       type: 'select',
-      dm: 'visa_type',
+      dm: 'visatype',
     },
-    // {
-    //   cm: '签证号码',
-    //   type: 'input',
-    //   dm: 'visa_no',
-    // },
     {
       cm: '出发站',
-      type: 'select',
-      dm: 'visa_type',
-    },
-    {
-      cm: '到达站',
-      type: 'select',
-      dm: 'visa_type',
+      type: 'input',
+      dm: 'cfzmc',
     },
     {
       cm: '发车时间段',
@@ -76,14 +57,52 @@ const gtsjcx = {
         {
           cm: '开始时间',
           type: 'date',
-          dm: 'begin'
+          dm: 'fcsjstart'
         },
         {
           cm: '结束时间',
           type: 'date',
-          dm: 'end'
+          dm: 'fcsjend'
         },
       ],
+    },
+    {
+      cm: '到达站',
+      type: 'input',
+      dm: 'ddzmc',
+    },
+    {
+      cm: '乘车次数',
+      type: 'ageDouble',
+      dm: 'age',
+      children: [
+          {
+              cm: '开始次数',
+              type: 'number',
+              dm: 'cccsstart'
+          },
+          {
+              cm: '结束次数',
+              type: 'number',
+              dm: 'cccsend'
+          },
+      ],
+    },
+    {
+      cm: '关联查询',
+      type: 'button',
+      dm: 'gtglcx',
+      multiple:true,
+    },
+    {
+      cm:'',
+      mc: '是否有效数据',
+      type: 'checkbox',
+      dm: 'sfglcrj',
+      trueLabel:'1',
+      falseLabel:'0',
+      check:true,
+      col:18
     },
     {
       cm: '常住类别',
@@ -91,602 +110,594 @@ const gtsjcx = {
       dm: 'resident_type',
       optype:true,
       disdm:true,
+      distype:'cz'
     },
     {
-      cm: '人员地域类别',
+      cm: '停留有效期至',
+      type: 'datePicker',
+      dm: 'tlyxqz',
+      distype:'cz'
+    },
+    {
+      cm: '是否有效人员',
       type: 'select',
-      dm: 'personnel_area_type',
-      mult:true,
+      dm: 'sfyxry',
+      optype:true,
+      distype:'cz'
+    },
+    {
+      cm: '住宿时间段',
+      type: 'double',
+      dm: 'tlTime',
+      distype:'lz',
+      children: [
+        {
+          cm: '开始时间',
+          type: 'date',
+          dm: 'zssjstart'
+        },
+        {
+          cm: '结束时间',
+          type: 'date',
+          dm: 'zssjend'
+        },
+      ],
+    },
+    {
+      cm: '投宿于',
+      type: 'select',
+      dm: 'tsy',
+      optype:true,
+      distype:'lz'
+    },
+    {
+      cm: '',
+      type: '',
+      dm: '',
+      distype:'lz'
+    },
+  ],
+  cxCheck:[
+    // {
+    //   mc: '是否有效数据',
+    //   type: 'checkbox',
+    //   dm: 'sfglcrj',
+    //   trueLabel:'1',
+    //   falseLabel:'0',
+    //   check:true,
+    //   col:12
+    // },
+  ],
+  cxButton:[
+    // {
+    //   cm: '关联查询',
+    //   type: 'button',
+    //   dm: 'gtglcx',
+    //   multiple:true,
+    // },
+  ],
+  facx: [],
+  lb: [
+    {
+      cm:'订票姓名',
+      dm:'gt_name'
+    },
+    {
+      cm:'性别',
+      dm:'crj_gender_desc'
+    },
+    {
+      cm: '出入境记录姓名',
+      dm: 'crj_name'
+    },
+    {
+      cm: '国家地区',
+      dm: 'crj_nationality_desc',
+    },  
+    {
+      cm: '证件号码',
+      dm: 'gt_passportno',
+    },
+    {
+      cm: '签证种类',
+      dm: 'crj_visa_type_desc',
+    },
+    {
+      cm: '车次编号',
+      dm: 'gt_train_number',
+    },
+    {
+      cm: '车厢编号',
+      dm: 'gt_car_number',
+    },
+    {
+      cm: '座位编号',
+      dm: 'gt_seat_number',
+    },
+    {
+      cm: '发车时间',
+      dm: 'departure_date_gt',
+    },
+    {
+      cm: '出发站',
+      dm: 'gt_station_name',
+    },
+    {
+      cm: '到达站',
+      dm: 'gt_arrival_station_name',
+    },
+    {
+      cm: '常住次数',
+      dm: 'czcs',
+      textLink:true
+    },
+    {
+      cm: '临住次数',
+      dm: 'lzcs',
+      textLink:true
+    },
+    {
+      cm: '处理类型',
+      dm: 'clry',
+    }
+  ],
+  lbBtn: [],
+  lbTabEdit:[
+    {
+        "mc": '省厅下发',
+        "dm": '0',
+    },
+    {
+        "mc": '核查走访',
+        "dm": '1',
+    },
+    {
+        "mc": '实有常住',
+        "dm": '',
+    },
+  ],
+  lzxxTableEdit:[
+    {
+      cm:'英文姓名',
+      dm:'ywxm'
+    },
+    {
+      cm: '中文姓名',
+      dm: 'zwxm'
+    },
+    {
+      cm: '性别',
+      dm: 'xb_desc'
+    },
+    {
+      cm: '出生日期',
+      dm: 'csrq',
+    },
+    {
+      cm: '国家地区',
+      dm: 'gjdq_desc',
+    },  
+    {
+      cm: '证件号码',
+      dm: 'zjhm',
+    },
+    {
+      cm: '证件种类',
+      dm: 'zjzl_desc',
+    },
+    {
+      cm: '所属分局',
+      dm: 'bggxdw_desc',
+    },
+    {
+      cm: '住宿地址',
+      dm: 'lsdwdz',
+    },
+    {
+      cm: '住宿日期',
+      dm: 'zsrq_lz',
+    },
+  ],
+  czxxTableEdit:[
+    {
+      cm:'人员编号', 
+      dm:'personnel_id'
+    },
+    {
+      cm:'英文姓名',
+      dm:'ename'
+    },
+    {
+      cm: '中文姓名',
+      dm: 'name'
+    },
+    {
+      cm: '性别',
+      dm: 'gender_desc'
+    },
+    {
+      cm: '出生日期',
+      dm: 'birthday',
+      subS:true,//列表数据截取
+    },
+    {
+      cm: '国家地区',
+      dm: 'nationality_desc',
+    },  
+    {
+      cm: '证件号码',
+      dm: 'paperno',
+    },
+    {
+      cm: '证件种类',
+      dm: 'paper_type_desc',
+    },
+    {
+      cm: '常住类别',
+      dm: 'resident_type_desc',
+    },
+    {
+      cm: '停留有效期',
+      dm: 'localize_period',
+      subS:true,//列表数据截取
+    },
+  ],
+  inLbBtn:[
+    {
+      "button_name": "详情",
+      "button_type": 'ck',
+    },
+  ],
+}
+const gtsjrgcl = {
+  cx: [
+    {
+      cm: '国家地区',
+      type: 'select',
+      dm: 'gjdq',
+    },
+    {
+      cm: '证件号码',
+      type: 'input',
+      dm: 'zjhm',
+    },
+    {
+      cm: '处理时间段',
+      type: 'double',
+      dm: 'csTime',
+      children: [
+        {
+          cm: '开始时间',
+          type: 'date',
+          dm: 'clsjstart',
+        },
+        {
+          cm: '结束时间',
+          type: 'date',
+          dm: 'clsjend',
+        },
+      ],
+    },
+    {
+      cm: '处理状态',
+      type: 'select',
+      dm: 'cljg',
+      optype:true,
+    },
+    {
+      cm: '车次号',
+      type: 'input',
+      dm: 'ccbh',
+    },
+    {
+      cm: '处理人',
+      type: 'input',
+      dm: 'clry',
     },
   ],
   cxCheck:[],
   facx: [],
-  lb: [
+  lbTab:[
     {
-      cm:'业务编号',
-      dm:'business_number'
+        "mc": '未接收',
+        "dm": '0',
     },
     {
-      cm: '中文姓名',
-      dm: 'name'
+        "mc": '已接收',
+        "dm": '1',
     },
     {
-      cm: '英文姓名',
-      dm: 'ename'
+        "mc": '已处理',
+        "dm": '2',
     },
+  ],
+  lb1: [
     {
-      cm: '性别',
-      dm: 'gender_desc'
+      cm:'姓名',
+      dm:'gt_name'
     },
-    {
-      cm: '出生日期',
-      dm: 'birthday',
-      subS:true,//列表数据截取
-    },
-    {
-      cm: '国家地区',
-      dm: 'nationality_desc',
-    },  
     {
       cm: '证件号码',
-      dm: 'paperno',
+      dm: 'gt_passportno',
     },
     {
-      cm: '证件种类',
-      dm: 'paper_type_desc',
+      cm: '出发站名称',
+      dm: 'gt_station_name',
     },
     {
-      cm: '签证种类',
-      dm: 'visa_type_desc',
+      cm: '到达站名称',
+      dm: 'gt_arrival_station_name',
     },
     {
-      cm: '停留有效期',
-      dm: 'localize_period',
-      subS:true,//列表数据截取
+      cm: '发车日期',
+      dm: 'gt_departure_date',
+    },
+  ],
+  lb3:[
+    {
+      cm:'姓名',
+      dm:'gt_name'
+    },
+    {
+      cm: '证件号码',
+      dm: 'gt_passportno',
+    },
+    {
+      cm: '出发站名称',
+      dm: 'gt_station_name',
+    },
+    {
+      cm: '到达站名称',
+      dm: 'gt_arrival_station_name',
+    },
+    {
+      cm: '发车日期',
+      dm: 'gt_departure_date',
+    },
+    {
+      cm: '车次号',
+      dm: 'gt_train_number',
+    },
+    {
+      cm: '处理状态',
+      dm: 'cljg',
+    },
+    {
+      cm: '处理人',
+      dm: 'clry',
+    },
+    {
+      cm: '处理时间',
+      dm: 'clsj',
     },
   ],
   lbBtn: [
     {
-      "button_name": "编辑",
-      "button_type": 'edit',
-      "serial": "201",
+      "button_name": "详情",
+      "button_type": 'detail',
     },
   ],
-  lbTabEdit:[
+  jsDia:[
     {
-        "mc": '常住人员基本信息',
-        "dm": '1',
-    },
-    {
-        "mc": '居住地信息',
-        "dm": '2',
-    },
-    {
-        "mc": '工作地/学校信息',
-        "dm": '3',
+      cm: '接收条数',
+      type: 'inputNumber',
+      dm: 'jsts',
     },
   ],
-  jbxxTableEdit:[
+  clDia:[
     {
-      cm:'业务编号',
-      dm:'business_number'
-    },
-    // {
-    //   cm:'人员编号',
-    //   dm:'personnel_id'
-    // },
-    {
-      cm: '中文姓名',
-      dm: 'name'
+      title:'高铁信息',
+      type:'line',
+      col:24
     },
     {
-      cm: '英文姓名',
-      dm: 'ename'
+      cm: '姓名',
+      type: 'input',
+      dm: 'gt_name',
     },
     {
-      cm: '性别',
-      dm: 'gender_desc'
+      cm: '证件号码',
+      type: 'joinBtn',
+      dm: 'gt_passportno',
+      btnmc:'核查'
     },
     {
-      cm: '出生日期',
-      dm: 'birthday',
-      subS:true,//列表数据截取
+      cm: '发车日期',
+      type: 'datePicker',
+      dm: 'gt_departure_date',
+      dis:true,
+    },
+    {
+      cm: '出发站名称',
+      type: 'select',
+      dm: 'gt_station_name',
+      dis:true,
+    },
+    {
+      cm: '到达站名称',
+      type: 'select',
+      dm: 'gt_arrival_station_name',
+      dis:true,
+    },
+    {
+      cm: '是否有效',
+      type: 'select',
+      dm: 'gt_valid',
+      optype:true,
+      dis:true,
+    },
+    {
+      cm: '车次编号',
+      type: 'input',
+      dm: 'gt_train_number',
+      dis:true,
+    },
+    {
+      cm: '车厢编号',
+      type: 'input',
+      dm: 'gt_car_number',
+      dis:true,
+    },
+    {
+      cm: '座位编号',
+      type: 'input',
+      dm: 'gt_seat_numbe',
+      dis:true,
+    },
+  ],
+  inLb:[
+    {
+      cm: '姓名',
+      dm: 'crj_name',
+      button:true
     },
     {
       cm: '国家地区',
-      dm: 'nationality_desc',
-    },  
+      dm: 'crj_nationality_desc',
+    },
+  ],
+  inXzDia:[
+    {
+      cm: '姓名',
+      type: 'input',
+      dm: 'crj_name',
+    },
+    {
+      cm: '姓名拼音',
+      type: 'input',
+      dm: 'crj_namepy',
+    },
+    {
+      cm: '国籍',
+      type: 'select',
+      dm: 'crj_nationality',
+    },
+    {
+      cm: '性别',
+      type: 'select',
+      dm: 'crj_gender',
+      // dis:true,
+    },
+    {
+      cm: '出生日期',
+      type: 'datePicker',
+      dm: 'crj_birthday',
+    },
     {
       cm: '证件号码',
-      dm: 'paperno',
+      type: 'input',
+      dm: 'crj_passportno',
     },
     {
       cm: '证件种类',
-      dm: 'paper_type_desc',
+      type: 'select',
+      dm: 'crj_passporttype',
+      // dis:true,
+    },
+    {
+      cm: '前往地',
+      type: 'input',
+      dm: 'crj_destination',//////
+      // dis:true,
+    },
+    {
+      cm: '发证日期',
+      type: 'datePicker',
+      dm: 'crj_grant_cert_date',
+      // dis:true,
+    },
+    {
+      cm: '发证审批机关',
+      type: 'input',
+      dm: 'crj_grant_cert_org',//////
+      // dis:true,
+    },
+    {
+      cm: '入库时间',
+      type: 'datePicker',
+      dm: 'crj_in_time',
+      // dis:true,
+    },
+    {
+      cm: '检查员号',
+      type: 'input',
+      dm: 'crj_inspectorid',
+    },
+    {
+      cm: '出入境日期',
+      type: 'datePicker',
+      dm: 'crj_io_date',
+      // dis:true,
+    },
+    {
+      cm: '出入口岸',
+      type: 'select',
+      dm: 'crj_io_port',/////
+      // dis:true,
+    },
+    {
+      cm: '出入境事由',
+      type: 'select',
+      dm: 'crj_out_reason',/////
+      // dis:true,
+    },
+    {
+      cm: '人员类别',
+      type: 'select',
+      dm: 'crj_person_type',
+      // dis:true,
+    },
+    {
+      cm: '职业',
+      type: 'select',
+      dm: 'crj_prof_code',
+      // dis:true,
+    },
+    {
+      cm: '旅游团号',
+      type: 'input',
+      dm: 'crj_tour_groupno',
+    },
+    {
+      cm: '交通方式',
+      type: 'select',
+      dm: 'crj_traffic_mode',/////
+      // dis:true,
+    },
+    {
+      cm: '交通工具',
+      type: 'input',
+      dm: 'crj_traffic_tool',//////
+      // dis:true,
     },
     {
       cm: '签证种类',
-      dm: 'visa_type_desc',
-    },
-    {
-      cm: '停留有效期',
-      dm: 'localize_period',
-      subS:true,//列表数据截取
+      type: 'select',
+      dm: 'crj_visa_type',
+      // dis:true,
     },
   ],
-  jbxxEdit:{
-    'a':[
-      {
-          title:'基本信息',
-          type:'line',
-          col:24
-      },
-      {
-        cm:'业务编号',
-        type:'input',
-        dm:'business_number'
-      },
-      {
-        cm:'人员编号',
-        type:'input',
-        dm:'personnel_id'
-      },
-      {
-          cm: '国家(地区)',
-          type: 'select',
-          dm: 'nationality',
-          weight:true
-      },
-      {
-          cm: '证件种类',
-          type: 'select',
-          dm: 'paper_type',
-          weight:true
-      },
-      {
-          cm: '证件号码',
-          type: 'input',
-          dm: 'paperno',
-          weight:true
-      },
-      {
-          cm: '英文姓',
-          type: 'input',
-          dm: 'surnameen'
-      },
-      {
-          cm: '英文名',
-          type: 'input',
-          dm: 'firstnameen'
-      },
-      {
-          cm: '中文姓名',
-          type: 'input',
-          dm: 'name'
-      },
-      {
-          cm: '性别',
-          type: 'select',
-          dm: 'gender',
-      },
-      {
-          cm: '出生日期',
-          type: 'datePicker',
-          dm: 'birthday',
-      },
-      // {
-      //   cm: '人员地域类别',
-      //   type: 'select',
-      //   dm: 'personnel_area_type',
-      // },
-      {
-        cm: '身份',
-        type: 'select',
-        dm: 'degree_code',
-      },
-      {
-        cm: '出生地',
-        type: 'select',
-        dm: 'birthplace',
-      },
-      {
-          cm: '联系电话',
-          type: 'input',
-          dm: 'reside_contact_tel'
-      },
-      {
-          cm: '紧急情况联系人',
-          type: 'input',
-          dm: 'emergency_contact'
-      },
-      
-      
-    ],
-    'b':[
-      // {
-      //     cm: '有效次数',
-      //     type: 'input',
-      //     dm: 'effective_times'
-      // },
-      {
-          cm: '紧急情况联系电话',
-          type: 'input',
-          dm: 'emergency_contact_tel'
-      },
-      {
-          title:'证件信息',
-          type:'line',
-          col:24
-      },
-      {
-          cm: '签发日期',
-          type: 'datePicker',
-          dm: 'issue_date'
-      },
-      {
-          cm: '证件有效期至',
-          type: 'datePicker',
-          dm: 'expired_day'
-      },
-      {
-          cm: '证件内人数',
-          type: 'input',
-          dm: 'qty_of_party'
-      },
-      {
-          cm: '签证种类',
-          type: 'select',
-          dm: 'visa_type'
-      },
-      {
-          cm: '签证号码',
-          type: 'input',
-          dm: 'visa_no'
-      },
-      {
-          cm: '签证签发日期',
-          type: 'datePicker',
-          dm: 'reside_permit_assign_day'
-      },
-      {
-          cm: '签发地',
-          type: 'select',
-          dm: 'assignment_org',
-      },
-      // {
-      //     cm: '签注有效期至',
-      //     type: 'datePicker',
-      //     dm: 'reside_permit_expired_day'
-      // },
-      {
-          cm: '停留有效期',
-          type: 'datePicker',
-          dm: 'localize_period'
-      },
-      {
-          cm: '居留事由',
-          type: 'select',
-          dm: 'reside_reason'
-      },
-      {
-          cm: '身份证号',
-          type: 'input',
-          dm: 'idno'
-      },
-      
-      {
-          cm: '登记日期',
-          type: 'datePicker',
-          dm: 'registration_time'
-      },
-      
-      // {
-      //     cm: '永久居留标识',
-      //     type: 'input',
-      //     dm: 'permanent_residence_sign'
-      // },
-      {
-          title:'出入境信息',
-          type:'line',
-          col:24
-      },
-      {
-          cm: '入境日期',
-          type: 'datePicker',
-          dm: 'entry_date'
-      },
-      {
-          cm: '入境事由',
-          type: 'select',
-          dm: 'entry_reason'
-      },
-      {
-          cm: '入境口岸',
-          type: 'select',
-          dm: 'entry_port'
-      },
-      {
-          cm: '出入境状态',
-          type: 'select',
-          dm: 'exit_entry_status',
-      },
-      {
-          // title:'出入境信息',
-          type:'line',
-          col:24
-      },
-      {
-          cm: '常住人员类型',
-          type: 'select',
-          dm: 'resident_type',
-          optype:true
-      },
-      {
-          cm: '常住有效状态',
-          type: 'select',
-          dm: 'valid_state',
-          optype:true
-      },
-      {
-          cm: '省厅下发时间',
-          type: 'datePicker',
-          dm: 'prov_issue_time'
-      },
-      {
-          cm: '更新人',
-          type: 'input',
-          dm: 'update_person',
-          dis: true
-      },
-      {
-          cm: '更新时间',
-          type: 'datetimePicker',
-          dm: 'update_time',
-          dis: true
-      },
-      {
-          cm: '更新单位',
-          type: 'input',
-          dm: 'update_unit',
-          dis: true
-      }
-    ],
-  },
-  jzdTableEdit:[
+  inPlBtn:[
     {
-      cm: '居住地详细地址',
-      dm: 'inhabi_detail_addr',
-    },
-    {
-      cm: '居住状态类型',
-      dm: 'inhabi_state_desc'
-    },
-    {
-      cm: '走访反馈状态',
-      dm: 'backstatus_desc'
-    },
-    {
-      cm: '居住地所在派出所',
-      dm: 'inhabi_police_station_desc'
-    },
-    
-    // {
-    //   cm: '房主姓名',
-    //   dm: 'gender_desc'
-    // },
-    // {
-    //   cm: '是否有效',
-    //   dm: 'csrq',
-    // },
-  ],
-  jzdFormEdit:[
-    {
-      mRow:24,
-      labelWid:'137px'
-    },
-    // {
-    //   cm: '居住地业务编号',
-    //   type: 'input',
-    //   dm: 'inhabi_businessno',
-    //   col:8
-    // },
-    // {
-    //   cm: '居住地城市',
-    //   type: 'select',
-    //   dm: 'inhabi_city',
-    //   col:8
-    // },
-    {
-      cm: '居住初始状态产生时间',
-      type: 'datePicker',
-      dm: 'inhabi_ori_state_time',
-      col:8
-    },
-    {
-      cm: '居住地所在派出所',
-      type: 'select',
-      dm: 'inhabi_police_station',
-      col:8
-    },
-    {
-      cm: '居住地所在区县',
-      type: 'select',
-      dm: 'inhabi_residence',
-      col:8
-    },
-    {
-      cm: '所属责任区',
-      type: 'select',
-      dm: 'turnoutarea',
-      col:8,
-      optype:true,
-    },
-    {
-      cm: '居住状态类型',
-      type: 'select',
-      dm: 'inhabi_state',
-      col:8
-    },
-    {
-      cm: '走访反馈状态',
-      type: 'select',
-      dm: 'backstatus',
-      col:8
-    },
-    {
-      cm: '居住地详细地址',
-      type: 'input',
-      dm: 'inhabi_detail_addr',
-      col:16
-    },
-    {
-        cm: '迁入时间',
-        type: 'datePicker',
-        dm: 'move_in_time',
-        col:8
-    },
-    {
-      cm: '迁出时间',
-      type: 'datePicker',
-      dm: 'move_out_time',
-      col:8
-  },
-    // {
-    //   cm: '登记人',
-    //   type: 'input',
-    //   dm: 'sprMc',
-    //   dis: true,
-    //   col:8
-    // },
-    // {
-    //     cm: '登记时间',
-    //     type: 'datePicker',
-    //     dm: 'sprdwMc',
-    //     dis: true,
-    //     col:8
-    // },
-    // {
-    //     cm: '登记单位',
-    //     type: 'input',
-    //     dm: 'spsj',
-    //     dis: true,
-    //     col:8
-    // }
-  ],
-  gzdTableEdit:[
-    {
-      cm: '工作单位名称',
-      dm: 'workplace_name'
-    },
-    {
-      cm: '单位地址',
-      dm: 'workplace_address'
-    },
-    {
-      cm: '工作状态类型',
-      dm: 'working_state_desc'
+      "menu_name": "新增",
+      "button_type": 2,
+      'py':'xz'
     },
   ],
-  gzdFormEdit:[
+  inLbBtn:[
     {
-      mRow:24,
-      labelWid:'137px'
-    },
+      "button_name": "编辑",
+      "button_type": 'edit',
+    }
+  ],
+  inLbCkBtn:[
     {
-      cm: '工作任职起始时间',
-      type: 'datePicker',
-      dm: 'working_begin_time',
-      col:8
-    },
-    {
-      cm: '工作任职终止时间',
-      type: 'datePicker',
-      dm: 'working_end_time',
-      col:8
-    },
-    {
-      cm: '工作状态类型',
-      type: 'select',
-      dm: 'working_state',
-      col:8
-    },
-    // {
-    //   cm: '工作地业务编号',
-    //   type: 'input',
-    //   dm: 'workplace_businessno',
-    //   col:8
-    // },
-    // {
-    //   cm: '工作地城市',
-    //   type: 'select',
-    //   dm: 'workplace_city',
-    //   col:8
-    // },
-    {
-      cm: '单位所在地派出所',
-      type: 'select',
-      dm: 'workplace_police_station',
-      col:8
-    },
-    {
-      cm: '工作单位名称',
-      type: 'input',
-      dm: 'workplace_name',
-      col:8
-    },
-    // {
-    //   cm: '工作单位组织机构',
-    //   type: 'select',
-    //   dm: 'workplace_org_code',
-    //   col:8
-    // },
-    {
-      cm: '单位所在区县',
-      type: 'select',
-      dm: 'workplace_residence',
-      col:8
-    },
-    {
-      cm: '单位地址',
-      type: 'input',
-      dm: 'workplace_address',
-      col:16
-    },
-    // {
-    //   cm: '职务',
-    //   type: 'select',
-    //   dm: 'work_duty',
-    //   col:8
-    // },
-    {
-      cm: '备注',
-      type: 'input',
-      dm: 'remarks',
-      col:16
-    },
-    // {
-    //   cm: '登记人',
-    //   type: 'input',
-    //   dm: 'sprMc',
-    //   dis: true,
-    //   col:8
-    // },
-    // {
-    //     cm: '登记时间',
-    //     type: 'datePicker',
-    //     dm: 'sprdwMc',
-    //     dis: true,
-    //     col:8
-    // },
-    // {
-    //     cm: '登记单位',
-    //     type: 'input',
-    //     dm: 'spsj',
-    //     dis: true,
-    //     col:8
-    // }
+      "button_name": "详情",
+      "button_type": 'ck',
+    }
   ],
 }
 export default{
-  gtsjcx
+  gtsjcx,
+  gtsjrgcl
 }

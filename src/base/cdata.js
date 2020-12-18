@@ -217,6 +217,16 @@ const options = {
             mc:'天',
         },
     ],
+    gtglcx:[
+        {
+            dm:'cz',
+            mc:'常住'
+        },
+        {
+            dm:'lz',
+            mc:'临住'
+        },
+    ],
     turnoutarea: [],
     checklist:[
         {
@@ -326,6 +336,16 @@ const options = {
             dm:'1'
         },
    ],
+   gt_valid:[
+    {
+        mc:'无效',
+        dm:'0'
+    },
+    {
+        mc:'有效',
+        dm:'1'
+    },
+   ],
    isDelete:[
         {
             mc:'无效数据',
@@ -369,6 +389,26 @@ const options = {
         mc:'其它',
         dm:'4'
     },
+   ],
+   cljg:[
+    {
+        mc:'无效',
+        dm:'0'
+    },
+    {
+        mc:'入库',
+        dm:'1'
+    },
+   ],
+   tsy:[
+    {
+        mc:'社会面',
+        dm:'0'
+    },
+    {
+        mc:'宾馆',
+        dm:'1'
+    },  
    ],
    inhabi_police_station:[],//居住地所在派出所
    workplace_police_station:[],//单位所在地派出所

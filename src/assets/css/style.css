@@ -344,8 +344,12 @@
     vertical-align: sub;
     height: 36px;
 }
-
-.quire-check .el-checkbox__label {
+.inquire-check{
+    vertical-align: sub;
+    height: 25px;
+    margin-left: -39px;
+}
+.quire-check .el-checkbox__label,.inquire-check .el-checkbox__label{
     font-weight: bold;
     font-size: 12px!important;
     color: #000;
@@ -1073,4 +1077,20 @@
     width: 100px;
     height: 100px;
 }
-
+.link-box{
+    position: absolute;
+    top: 24px;
+    z-index: 1000;
+}
+.colum-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.colum-btn .el-button+.el-button{
+    margin:10px 0 0;
+}
+.check-mult:not(:first-child){
+    margin-left: 1px!important;
+}

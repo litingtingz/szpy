@@ -23,6 +23,14 @@
               <template v-if="cx.type=='joinInput'">
                 <el-input v-model="dialogData[cx.dm]" :disabled="joinFlag"></el-input>
               </template>
+              <template v-if="cx.type=='joinBtn'">
+                <el-row type="flex" justify="space-between">
+                  <el-col :span="17"><el-input v-model="dialogData[cx.dm]"></el-input></el-col>
+                  <el-col :span="6" style="text-align: right;">
+                    <el-button type="success" style="line-height: 0.9;" size="mini" @click="joinBtnFnc(dialogData,dialogData[cx.dm],cx.dm)">{{cx.btnmc}}</el-button>
+                  </el-col>
+                </el-row>
+              </template>
               <template v-if="cx.type=='inpColor'">
                 <el-row type="flex" justify="start">
                   <el-col :span="23"><el-input v-model="dialogData[cx.dm]"></el-input></el-col>
@@ -33,15 +41,6 @@
               </template>
               <template v-if="cx.type=='block'">
                 <colorPicker v-model="dialogData[cx.dm]"/>
-                <!-- <el-select v-model="dialogData[cx.dm]" placeholder="请选择" popper-class="color-block" class="color-inp" @change="colorChange(dialogData[cx.dm],0)">
-                  <el-option
-                    v-for="(item,its) in colorArr"
-                    :key="its"
-                    :label="item"
-                    :value="item">
-                    <span style="width:20px;height:20px;display: inline-block;" :style="{backgroundColor:item}"></span>
-                  </el-option>
-                </el-select> -->
               </template>
               <template v-if="cx.type=='inpUnit'">
                 <el-row type="flex" justify="start">
@@ -700,7 +699,6 @@ export default {
         ],
       }
     }
-    
     if(this.diaCus == 'address'){
       console.log('******',this.dialogData.userInforList)
       if(!this.dialogData.userInforList||this.dialogData.userInforList.length==0){
@@ -716,7 +714,6 @@ export default {
         this.userInforList=this.dialogData.userInforList
       }
     }
-    
   },
   methods: {
     //穿梭框的自定义搜索
@@ -739,13 +736,17 @@ export default {
       //   // console.log('----',this.userInforList)
       // }
       this.$fnc.compressImg(file.raw).then(data =>{
-        this.userInforList[key][item] = [{url:data,type:file.raw.type}];
+        this.userInforList[key][item] = [{url:data,type:file.raw.type,updataPhotoStatus:true}];
       })
     },
     //删除照片
     handleRemove(item,key,file,fileList){
       this.userInforList[key][item] = [];
       console.log('shanchu',file,fileList)
+    },
+    //input联合button的点击事件
+    joinBtnFnc(data,value,key){
+      this.$emit('joinBtnFnc',{data:data,value:value,key:key})
     },
     expFun(){},
     Upload(data){

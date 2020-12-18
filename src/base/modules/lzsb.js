@@ -414,7 +414,7 @@ const lzsb = {
                 poupDm:'subofficeMc',
                 col:16,
                 poup:true,//冒泡
-                dis:true,//禁止编辑
+                // dis:true,//禁止编辑
                 disdm:true,//下拉选只显示名称，隐藏代码项
             },
             
@@ -431,7 +431,7 @@ const lzsb = {
                 poupDm:'policestationMc',
                 col:16,
                 poup:true,
-                dis:true,
+                // dis:true,
                 disdm:true,
             },
 
@@ -443,10 +443,12 @@ const lzsb = {
             },
             {
                 cm: '住宿地址',
-                type: 'input',
+                type: 'joinBtn',
+                // type: 'input',
                 col: 16,
                 dm: 'zsdz',
                 dis:true,
+                btnmc:'标准化地址'
             },
             
             {
