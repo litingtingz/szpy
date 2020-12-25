@@ -96,7 +96,7 @@ const gtsjcx = {
     },
     {
       cm:'',
-      mc: '是否有效数据',
+      mc: '有效数据',
       type: 'checkbox',
       dm: 'sfglcrj',
       trueLabel:'1',
@@ -563,14 +563,14 @@ const gtsjrgcl = {
       dm: 'crj_name',
     },
     {
-      cm: '姓名拼音',
-      type: 'input',
-      dm: 'crj_namepy',
-    },
-    {
       cm: '国籍',
       type: 'select',
       dm: 'crj_nationality',
+    },
+    {
+      cm: '姓名拼音',
+      type: 'input',
+      dm: 'crj_namepy',
     },
     {
       cm: '性别',
@@ -597,7 +597,7 @@ const gtsjrgcl = {
     {
       cm: '前往地',
       type: 'input',
-      dm: 'crj_destination',//////
+      dm: 'crj_destination',
       // dis:true,
     },
     {
@@ -609,7 +609,7 @@ const gtsjrgcl = {
     {
       cm: '发证审批机关',
       type: 'input',
-      dm: 'crj_grant_cert_org',//////
+      dm: 'crj_grant_cert_org',
       // dis:true,
     },
     {
@@ -632,13 +632,13 @@ const gtsjrgcl = {
     {
       cm: '出入口岸',
       type: 'select',
-      dm: 'crj_io_port',/////
+      dm: 'crj_io_port',
       // dis:true,
     },
     {
       cm: '出入境事由',
       type: 'select',
-      dm: 'crj_out_reason',/////
+      dm: 'crj_out_reason',
       // dis:true,
     },
     {
@@ -661,13 +661,13 @@ const gtsjrgcl = {
     {
       cm: '交通方式',
       type: 'select',
-      dm: 'crj_traffic_mode',/////
+      dm: 'crj_traffic_mode',
       // dis:true,
     },
     {
       cm: '交通工具',
       type: 'input',
-      dm: 'crj_traffic_tool',//////
+      dm: 'crj_traffic_tool',
       // dis:true,
     },
     {

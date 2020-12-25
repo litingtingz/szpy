@@ -142,7 +142,6 @@ export default {
 		}
   },
   mounted(){
-    
     this.$store.dispatch("aGetDM", "xzqh");
     this.$store.dispatch('aGetDMPro', "dm_jwrysf");//身份
     this.$store.dispatch('aGetDMPro', "dm_jzztlx");//居住状态类型
@@ -151,11 +150,12 @@ export default {
     this.$store.dispatch('aGetDMPro', "dm_bjjgkab");//入境口岸
     this.$store.dispatch('aGetDMPro', "dm_crjbs");//出入境状态
     this.$store.dispatch('aGetDMPro', "dm_pcswlb");//居住地所在派出所
-    this.$store.dispatch('aGetDM', "wgr_sqsy");//停留事由&&入境事由
 
     this.$store.dispatch("aGetNation");//国家地区&出生地
     this.$store.dispatch("aGetGender");//性别
-    this.$store.dispatch("aGetDMPro",'dm_rydylbb');//人员地域类别
+    this.$store.dispatch("aGetDMPro",'dm_crjrylbb');//出入境人员地域类别
+    this.$store.dispatch("aGetDMPro",'dm_crjsyb');//出入境事由
+    this.$store.dispatch("aGetDMPro",'dm_crjjtfsb');//出入境交通方式
     this.$store.dispatch("aGetDMPro",'dm_zyb');//职业
     this.$store.dispatch("aGetDM", "qzzl");
     this.$store.dispatch("aGetPassport");//性别
@@ -168,6 +168,19 @@ export default {
     this.plBtn = this.plBtn.filter(item => ['cl'].indexOf(item.py) == -1);
     this.getDbCount();
     this.getTable(true);
+  },
+  watch:{
+    $route:{
+      handler(val){
+        if(val.query.turn == 'HighSpeedRailHandle'){
+          this.$nextTick(()=>{
+            this.tabFnc(val.query.page)
+          })
+        }
+      },
+      deep:true,
+      immediate: true
+    }
   },
 	methods:{
     getDbCount(){

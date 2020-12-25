@@ -82,6 +82,11 @@ const routes = [
         component: () => import(/* webpackChunkName: "Businessmanagement" */ '../views/Businessmanagement/Overseasperson/Specialcheck.vue')
       },
       {
+        path: '/ResidenceNotReported',
+        name: 'ResidenceNotReported',
+        component: () => import(/* webpackChunkName: "Businessmanagement" */ '../views/Businessmanagement/Overseasperson/ResidenceNotReported.vue')
+      },
+      {
         path: '/Temporary',
         name: 'Temporary',
         component: () => import(/* webpackChunkName: "Businessmanagement" */ '../views/Businessmanagement/Overseasperson/Temporary.vue')

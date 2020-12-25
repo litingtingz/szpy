@@ -318,6 +318,205 @@ const zxhc = {
         },
     ],
 }
+//未报临住提醒
+const wblztx={
+    cx: [
+        {
+            cm: '中文姓名',
+            type: 'input',
+            dm: 'name'
+        },
+        {
+            cm: '英文姓名',
+            type: 'input',
+            dm: 'givenName'
+        },
+        {
+            cm: '性别',
+            type: 'select',
+            dm: 'gender',
+        },
+        {
+            cm: '国家地区',
+            type: 'select',
+            dm: 'nationality'
+        },
+        {
+            cm: '出生日期',
+            type: 'double',
+            dm: 'csTime',
+            children: [
+                {
+                    cm: '出生开始时间',
+                    type: 'date',
+                    dm: 'birthdayStart'
+                },
+                {
+                    cm: '出生结束时间',
+                    type: 'date',
+                    dm: 'birthdayEnd'
+                }
+            ]
+        },
+        {
+            cm: '证件种类',
+            type: 'select',
+            dm: 'passportType'
+        },
+        {
+            cm: '证件号码',
+            type: 'input',
+            dm: 'passportno'
+        },
+        {
+            cm: '申报时间',
+            type: 'double',
+            dm: 'sbTime',
+            children: [
+                {
+                    cm: '申报开始时间',
+                    type: 'date',
+                    dm: 'createtimeStart'
+                },
+                {
+                    cm: '申报结束时间',
+                    type: 'date',
+                    dm: 'policestation_backtimeEnd'
+                },
+            ],
+        },
+        {
+            cm: '所属分局',
+            type: 'select',
+            dm: 'suboffice'
+        },
+        {
+            cm: '所属派出所',
+            type: 'select',
+            dm: 'policestation'
+        },
+    ],
+    lb: [
+        {
+            cm: '中文姓名',
+            dm: 'name'
+        },
+        {
+            cm: '英文姓名',
+            dm: 'givenName'
+        },
+        {
+            cm: '性别',
+            dm: 'gender_desc',
+            width:'50'
+        },
+        {
+            cm: '出生日期',
+            dm: 'birthday',
+            width:'85'
+        },
+        {
+            cm: '国家地区',
+            dm: 'nationality_desc',
+            width:'70'
+        },
+        {
+            cm: '证件种类',
+            dm: 'passportType_desc'
+        },
+        {
+            cm: '证件号码',
+            dm: 'passportno'
+        },
+        {
+            cm: '住宿地址',
+            dm: 'address',
+            width:'280'
+        },
+        {
+            cm: '停留事由',
+            dm: 'stopmatter',
+        },
+        {
+            cm: '所属分局',
+            dm: 'suboffice_desc',
+            width:'280'
+        },
+        {
+            cm: '所属派出所',
+            dm: 'policestation_desc',
+            width:'280'
+        },
+        {
+            cm: '申报时间',
+            dm: 'createtime'
+        },
+    ],
+    xzDia:[
+        {
+            cm: '中文姓名',
+            type: 'input',
+            dm: 'name',
+        },
+        {
+            cm: '英文姓名',
+            type: 'input',
+            dm: 'givenName',
+        },
+        {
+            cm: '性别',
+            type: 'select',
+            dm: 'gender',
+        },
+        {
+            cm: '出生日期',
+            type: 'datePicker',
+            dm: 'birthday',
+        },
+        {
+            cm: '国家地区',
+            type: 'select',
+            dm: 'nationality',
+        },
+        {
+            cm: '证件种类',
+            type: 'select',
+            dm: 'passportType',
+        },
+        {
+            cm: '证件号码',
+            type: 'input',
+            dm: 'passportno',
+        },
+        {
+            cm: '住宿地址',
+            type: 'input',
+            dm: 'address',
+            col:16
+        },
+        {
+            cm: '手机号码',
+            type: 'input',
+            dm: 'phone',
+        },
+        {
+            cm: '停留事由',
+            type: 'input',
+            dm: 'stopmatter',
+            col:16
+        },
+        {
+            cm: '所属分局',
+            type: 'select',
+            dm: 'suboffice',
+        },
+        {
+            cm: '所属派出所',
+            type: 'select',
+            dm: 'policestation',
+        },
+    ],
+}
 //地址线索排查
 const dzxspc = {
     cx: [
@@ -3619,6 +3818,7 @@ function zxhcLbbtn(dataType,page){
 }
 export default {
     zxhc,
+    wblztx,
     dzxspc,
     zrqzf,
     zxhcgl,

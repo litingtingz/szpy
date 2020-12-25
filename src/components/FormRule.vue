@@ -6,7 +6,7 @@
       :rules="rules"
       size="mini"
       ref="form"
-      :label-width="'137px'"
+      :label-width="labelWidth"
       class="form-ruleForm"
       :disabled="dialogType=='ck'||editAllJz">
       <el-row :gutter="30" type="flex" align="middle" justify="center">
@@ -181,12 +181,27 @@ export default {
       type:String,
       default:''
     },
+    labelWidth:{
+      type:String,
+      default:'137px'
+    }
   },
   data(){
     return{
-      rules:this.dialogType!='ck'?{
+      rules:(this.rulsName=='gthd'&&this.dialogType!='ck')?{
         crj_name: [{ required: true, message: "此项必填", trigger: "blur" }],
         crj_nationality: [{ required: true, message: "此项必填", trigger: "blur" }],
+      }:(this.rulsName=='wblztx'&&this.dialogType=='xz')?{
+        givenName: [{ required: true, message: "此项必填", trigger: "blur" }],
+        gender: [{ required: true, message: "此项必填", trigger: "blur" }],
+        birthday: [{ required: true, message: "此项必填", trigger: "blur" }],
+        nationality: [{ required: true, message: "此项必填", trigger: "blur" }],
+        passportType: [{ required: true, message: "此项必填", trigger: "blur" }],
+        passportno: [{ required: true, message: "此项必填", trigger: "blur" }],
+        phone: [{ required: true, message: "此项必填", trigger: "blur" }],
+        address: [{ required: true, message: "此项必填", trigger: "blur" }],
+        suboffice: [{ required: true, message: "此项必填", trigger: "blur" }],
+        policestation: [{ required: true, message: "此项必填", trigger: "blur" }],
       }:{},
     }
   },
@@ -229,5 +244,30 @@ export default {
 }
 </script>
 <style scoped>
-
+.form {
+  padding: 15px 15px 50x;
+  border-bottom: 1px solid #295287;
+  margin-bottom: 20px;
+  color: #e1e8ee;
+}
+.cx-btn {
+  margin-bottom: 18px;
+}
+.double-box {
+  display: flex;
+  justify-content: space-between;
+}
+.double {
+  width: 48%;
+}
+.color-part{
+  border-top: 1px solid #eee;
+  padding: 10px 15px 5px 15px!important;
+}
+.transfer{
+    display: flex;
+    justify-content: center;
+    width: 563px;
+    /* text-align: center; */
+}
 </style>

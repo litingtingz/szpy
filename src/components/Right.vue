@@ -95,7 +95,7 @@ export default {
         zrqList:this.$store.state.user.zrqList,
       };
       this.$api.post(
-        this.$api.aport2 + "/pendingData/pendingDataStatistics",
+        this.$api.aport8 + "/pendingData/pendingDataStatistics",
         p,
         r => {
           this.dbData = r;

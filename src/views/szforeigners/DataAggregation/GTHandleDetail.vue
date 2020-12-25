@@ -174,6 +174,7 @@
       :top="'8vh'">
       <FormRule
       :cxData="labelData"
+      :rulsName="'gthd'"
       ref="gthandForm"
       :dialogType="dialogTypeRule"
       :dialogData="dialogDataRule"

@@ -33,12 +33,15 @@ export default new Vuex.Store({
     chilrenNav: [],
     plBtn: [],
     breadcrumb: breadData || [],
+
     nationality: [],
     crj_nationality:[],
     gjdq:[],
+
     gender: [],
     sex: [],
     xb:[],
+
     grade: [],
     passportType: [],//证件种类
     crj_passporttype:[],
@@ -110,6 +113,8 @@ export default new Vuex.Store({
     jzd_ssfj:[],
     gzd_ssfj:[],
     countryCode:[], // APP采集系统管理后台 国家地区
+
+    crj_traffic_mode:[],//出入境交通方式
   },
   mutations: {
     getFirst(state,data){
@@ -224,8 +229,6 @@ export default new Vuex.Store({
       } else if (data.type == "wgr_sqsy") {
         state.rjsy = data.data
         state.entry_reason = data.data//入境事由
-        state.crj_out_reason = data.data
-
       } else if(data.type == "jltlsy"){
         state.reside_reason = data.data//居留事由
       }else if (data.type == "spqfd") {
@@ -253,12 +256,17 @@ export default new Vuex.Store({
         state.workplace_police_station = data.data//单位所在地派出所
       }else if(data.type == 'dm_rydylbb'){
         state.personnel_area_type = data.data//境外人员类别
-        state.crj_person_type = data.data
       }else if(data.type == 'dm_zyb'){
         state.zy = data.data
         state.crj_prof_code = data.data
       }else if(data.type == 'dm_jwrygxb'){
         state.jwrygx = data.data
+      }else if(data.type == 'dm_crjrylbb'){
+        state.crj_person_type = data.data
+      }else if(data.type == 'dm_crjsyb'){
+        state.crj_out_reason = data.data
+      }else if(data.type == 'dm_crjjtfsb'){
+        state.crj_traffic_mode = data.data
       }
     },
     getXzqh(state,data){//只包含苏州
