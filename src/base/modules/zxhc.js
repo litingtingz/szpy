@@ -381,7 +381,7 @@ const wblztx={
                 {
                     cm: '申报结束时间',
                     type: 'date',
-                    dm: 'policestation_backtimeEnd'
+                    dm: 'createtimeEnd'
                 },
             ],
         },
@@ -500,20 +500,21 @@ const wblztx={
             dm: 'phone',
         },
         {
-            cm: '停留事由',
-            type: 'input',
-            dm: 'stopmatter',
-            col:16
-        },
-        {
             cm: '所属分局',
             type: 'select',
             dm: 'suboffice',
+            col:16
+        },
+        {
+            cm: '停留事由',
+            type: 'select',
+            dm: 'stopmatter',
         },
         {
             cm: '所属派出所',
             type: 'select',
             dm: 'policestation',
+            col:16
         },
     ],
 }

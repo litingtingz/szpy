@@ -15,6 +15,7 @@
           <Table
             :lbData="lbData"
             :isSelect="false"
+            :isEdit="false"
             :plBtn="$store.state.plBtn"
             :tableData="tableData"
             :clearSort="clearSort"
@@ -32,7 +33,7 @@
       </el-row>
     </div>
     <!-- 弹窗 -->
-    <Dialog :isShowDialog="isShowDialog" :title="dialogTitle" @hideDialog="isShowDialog=false">
+    <Dialog :width="'1100px'" :isShowDialog="isShowDialog" :title="dialogTitle" @hideDialog="isShowDialog=false">
       <Form
         :cxData="labelData"
         :dialogType="dialogType"
@@ -82,6 +83,7 @@ export default {
     };
   },
   mounted() {
+    this.$store.dispatch('aGetDM','jltlsy')//停留事由
     this.getSpInit();
   },
   methods: {
@@ -205,7 +207,7 @@ export default {
       p.bmbh = this.$store.state.user.bmbh
       this.$api.post(this.$api.aport2 + "/wblztx/addWblztxData", p, r => {
         this.$message({
-          message: r,
+          message: r.message,
           showClose: true,
           duration:8000,
           type: "success"

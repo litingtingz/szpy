@@ -306,7 +306,6 @@ export default {
     },
     //input联合button的点击事件
     joinBtnFnc(data,value,key){
-      console.log('hecha',data,value,key)
       let p={
         gtwyid:data.gtwyid,
         zjhm:value
@@ -314,20 +313,6 @@ export default {
       this.$api.post(this.$api.aport4 + '/gtrg/HeCha',p,r=>{
         console.log(r)
         this.getTable(true)
-        // if(r.code == '0'){
-        //   this.$message({
-        //     message: "没有出入境信息，请手动处理",
-        //     duration:13000,
-        //     showClose: true,
-        //     type: "warning"
-        //   });
-        // }else if(r.code == '1'){
-        //   this.isSfyx = '1'
-        //   this.getTable(true)
-        // }else if(r.code == '2'){
-        //   this.isSfyx = '0'
-        //   this.getTable(true)
-        // }
       })
       this.$emit('joinBtnFnc',{data:data,value:value,key:key})
     },
@@ -375,12 +360,13 @@ export default {
     },
     //批量按钮
     plFnc(data){
-      console.log(data)
       this.dialogTitleRule = data.menu_name
       this.dialogTypeRule = data.py
       if(this.dialogTypeRule == 'xz'){
         this.labelData = this.$cdata.sjhj.gtsjrgcl.inXzDia;
-        this.dialogDataRule = {}
+        this.dialogDataRule = {
+          crj_passportno:this.dialogData.gt_passportno
+        }
       }
       this.isShowDialog=true
       this.$refs.gthandForm.clearValid();
@@ -390,20 +376,21 @@ export default {
       this.dialogTitleRule = data.btn.button_name,
       this.dialogTypeRule = data.btn.button_type
       this.labelData = this.$cdata.sjhj.gtsjrgcl.inXzDia
-      // this.dialogDataRule = Object.assign({},data.data)
       if(!data.double){
         this.editId = data.data.crjwyid
-        // console.log('==',data.data.crjwyid)
         let p={
           crjwyid:data.data.crjwyid,
           gtwyid:this.dialogData.gtwyid
         }
         this.$api.post(this.$api.aport4+'/gtrg/getCrjxxEnity',p,r=>{
           this.dialogDataRule = r
+          if(!this.dialogDataRule.crj_passportno&&this.page == '1'){
+            this.$set(this.dialogDataRule,'crj_passportno',this.dialogData.gt_passportno)
+          }
+          // this.dialogDataRule.crj_passportno = this.dialogData.gt_passportno
           this.isShowDialog = true
           this.$refs.gthandForm.clearValid();
         })
-        
       }
     },
     //单击行

@@ -358,14 +358,21 @@ const lzsb = {
                 dm: 'rjsy',
                 dis:true,
             },
+            
+        ],
+        "b": [
+            {
+                cm: '职业',
+                type: 'select',
+                dm: 'zy',
+                dis:true,
+            },
             {
                 cm: '在华工作机构名称',
                 type: 'input',
                 dm: 'gzjg',
                 dis:true,
             },
-        ],
-        "b": [
             // {
             //     cm: '职业',
             //     type: 'select',
@@ -382,18 +389,7 @@ const lzsb = {
             //     type: 'input',
             //     dm: 'jddw',
             // },
-            {
-                cm: '登记人',
-                type: 'input',
-                dm: 'djr',
-                dis:true,
-            },
-            {
-                cm: '登记单位',
-                type: 'input',
-                dm: 'djdw',
-                dis:true,
-            },
+            
             {
                 cm: '住宿日期',
                 type: 'datePicker',
@@ -465,38 +461,6 @@ const lzsb = {
                 dis:true,
             },
             {
-                cm: '上报时间',
-                type: 'datetimePicker',
-                dm: 'sbsj',
-                dis:true,
-            },
-            {
-                cm: '住所性质',
-                type: 'select',
-                dm: 'zsxz',
-                dis:true,
-            },
-            {
-                cm: '住房种类',
-                type: 'select',
-                dm: 'zfzl',
-                dis:true,
-            },
-            {
-                cm: '出入境状态',
-                type: 'select',
-                dm: 'crjzt',
-                dis:true,
-            },
-            {
-                cm: '数据比对结果',
-                type: 'input',
-                col: 16,
-                dm: 'yq_hcjg',
-                dis:true,
-            },
-            
-            {
                 cm: '房主姓名',
                 type: 'input',
                 dm: 'fzxm',
@@ -515,23 +479,60 @@ const lzsb = {
                 dis:true,
             },
             {
-                cm: '证件有效期至',
-                type: 'datePicker',
-                dm: 'zjyxqz',
-                dis:true,
-            },
-            {
-                cm: '职业',
-                type: 'select',
-                dm: 'zy',
-                dis:true,
-            },
-            {
                 cm: '与境外人员关系',
                 type: 'select',
                 dm: 'jwrygx',
                 dis:true,
             },
+            {
+                cm: '住所性质',
+                type: 'select',
+                dm: 'zsxz',
+                dis:true,
+            },
+            {
+                cm: '住房种类',
+                type: 'select',
+                dm: 'zfzl',
+                dis:true,
+            },
+            {
+                cm: '上报时间',
+                type: 'datetimePicker',
+                dm: 'sbsj',
+                dis:true,
+            },
+            {
+                cm: '出入境状态',
+                type: 'select',
+                dm: 'crjzt',
+                dis:true,
+            },
+            {
+                cm: '登记人',
+                type: 'input',
+                dm: 'djr',
+                dis:true,
+            },
+            {
+                cm: '登记单位',
+                type: 'input',
+                dm: 'djdw',
+                dis:true,
+            },
+            {
+                cm: '数据比对结果',
+                type: 'input',
+                col: 16,
+                dm: 'yq_hcjg',
+                dis:true,
+            },
+            // {
+            //     cm: '证件有效期至',
+            //     type: 'datePicker',
+            //     dm: 'zjyxqz',
+            //     dis:true,
+            // },
             {
                 cm: '备注',
                 type: 'textarea',
@@ -555,6 +556,7 @@ const lzsb = {
                 cshow: true,
                 dis:true,
             },
+            
             {
                 cm: '审核人',
                 type: 'input',

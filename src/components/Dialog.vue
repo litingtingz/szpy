@@ -43,9 +43,7 @@ closed	Dialog 关闭动画结束时的回调	—
     :before-close="handleClose"
     center
     :top="top"
-    
-    ref="dialog"
-  >
+    ref="dialog">
     <slot></slot>
   </el-dialog>
 </template>

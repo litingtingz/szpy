@@ -87,6 +87,7 @@ export default new Vuex.Store({
     degree_code:[],//身份
 
     reside_reason:[],//停留事由
+    stopmatter:[],
 
     entry_reason:[],//入境事由
     crj_out_reason:[],
@@ -231,6 +232,7 @@ export default new Vuex.Store({
         state.entry_reason = data.data//入境事由
       } else if(data.type == "jltlsy"){
         state.reside_reason = data.data//居留事由
+        state.stopmatter = data.data
       }else if (data.type == "spqfd") {
         state.qfjg = data.data
       } else {

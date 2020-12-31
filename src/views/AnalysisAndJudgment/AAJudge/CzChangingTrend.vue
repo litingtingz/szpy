@@ -14,7 +14,7 @@
       <div class="tab-top-item tabImgActive_1 hand">常住变化趋势</div>
     </div>
     <div class="page-box">
-      <div style="padding:20px 20px 0">
+      <div style="padding:20px 0px 0 20px">
         <p class="trend-title">计算维度</p>
         <div class="trend-radio">
           <el-radio-group v-model="analysisTypeCx" @change="calcuFun()">
@@ -312,9 +312,14 @@ export default {
         grid: {
           x: 45,
           y: 40,
-          x2: 30
+          x2: 70
         },
-        legend: {data: legend},
+        color:['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#FCAC62', '#F86948', '#30BFDA','#AA30DF','#30BFDA', '#0FACFA','#749f83'],
+        // color:['#FCAC62','#F86948', '#AA30DF', '#30BFDA', '#0FACFA','#749f83',  '#ca8622', '#bda29a','#6e7074', '#1ACCE8', '#c4ccd3'],
+        legend: {
+          data: legend,
+          icon:'pin'
+        },
         xAxis: {
           type: "category",
           data: xdata,
