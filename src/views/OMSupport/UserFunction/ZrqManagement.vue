@@ -3,8 +3,7 @@
     <Inquire :cxData="$cdata.qxgl.zrqgl.cx" :pd="cx.pd" :cxPara="cx" @cxFnc="cxFnc" @lcFnc="lcFnc"></Inquire>
     <div class="t-tab-top">
       <div class="tab-top-item hand">
-        <img src="../../../assets/images/main/tab_2_pre.png" alt />
-        <span>责任区</span>
+        <div class="tab-top-item tabImgActive_1 hand">责任区</div>
       </div>
     </div>
     <div class="page-box">

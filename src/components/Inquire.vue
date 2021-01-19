@@ -4,34 +4,20 @@
       <div v-for="(item,ind) in facxData" :key="ind" class="inline-block mr-5">
         <div v-for="(tags,inds) in checkArr[ind]" :key="inds" class="inline-block mr-5">
           <template v-if="!linkFlag[ind]">
-            <el-tag 
-              size="medium"
-              effect="dark"
-              :type="item.color"
-              class="hand mr-5"
-              :style="[{backgroundColor:backstatus==tags.dm?item.checkC:''},{borderColor:backstatus==tags.dm?item.checkC:''}]"
-              @click="tagClick(tags,item,ind)"
-            >{{tags.mc}}</el-tag>
+            <div class="el-sign item">
+              <el-tag 
+                size="medium"
+                effect="dark"
+                :type="item.color"
+                class="hand mr-5"
+                :style="[{backgroundColor:backstatus==tags.dm?item.checkC:''},{borderColor:backstatus==tags.dm?item.checkC:''}]"
+                @click="tagClick(tags,item,ind)"
+              >{{tags.mc}}</el-tag>
+              <i class="el-sign_content" :class="backstatus==tags.dm?'el-icon-success':''"></i>
+            </div>
           </template>
         </div>
       </div>
-
-
-      <!-- <el-dropdown v-for="(fa,fai) in facxData" :key="fai" @command="commandfnc" class="mr-10">
-        <el-button type="primary" size='mini'>
-          {{JSON.stringify(checkObj[fai]) == "{}"?fa.cm:checkObj[fai].mc}}<i class="el-icon-arrow-down el-icon--right"></i>
-        </el-button>
-        <el-dropdown-menu slot="dropdown" v-if="fa.type=='select'">
-          <el-dropdown-item v-for="(item,ind) in $store.state[fa.dm]" :key="ind" :command="item.mc+'-'+item.dm+'-'+fa.dm+'-'+fai">{{item.mc}}</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown> -->
-      <!-- <template v-for="(item,ind) in $store.state[fa.dm]">
-        <el-tag 
-        type="warning"
-        :key="ind"
-        v-if="item.dm==checkObj[fai]"
-        >{{item.mc}}</el-tag>
-      </template> -->
     </div>
     <el-form
       :model="inquire"
@@ -42,14 +28,33 @@
       label-width="100px"
       class="inquire-ruleForm"
       v-else
-      key="2"
-    >
+      key="2">
+      <!-- :lg="cx.type=='double'||cx.type=='doubleDate'?12:(cx.col?cx.col:6)" :xs="cx.type=='double'||cx.type=='doubleDate'||cx.type=='button'?12:(cx.col?cx.col:6)"  -->
       <el-row :gutter="0" type="flex" align="middle" justify="center">
         <el-col :span="20">
-          <el-col :span="cx.type=='double'||cx.type=='doubleDate'?12:(cx.col?cx.col:6)" v-for="(cx,i) in cxData" :key="i" v-show="!cx.distype||btnCheckedDb.includes(cx.distype)">
-            <el-form-item :label="cx.cm" :prop="cx.dm">
+          <el-col 
+            v-for="(cx,i) in cxData" :key="i" v-show="!cx.distype||btnCheckedDb.includes(cx.distype)" 
+            :style="{'height':cx.type=='checkbox'||cx.type=='button' ? '36px':''}"
+            :span="cx.type=='double'||cx.type=='doubleDate'?12:(cx.col?cx.col:6)"
+            :class="{'pd-button':cx.type=='button'&&cx.dm=='gtsz','pd-check':cx.type=='checkbox'&&cx.dm=='sfglcrj'}">
+            <el-form-item :label="cx.cm" :prop="cx.dm" :class="{'inquire-input-check':cx.type=='inputCheck'}">
               <template v-if="cx.type=='input'">
                 <el-input v-model="inquire[cx.dm]" :disabled="cx.dis"></el-input>
+              </template>
+              <template v-if="cx.type=='inputCheck'">
+                <el-input v-model="inquire[cx.dm]" :disabled="cx.dis" class="mr-5"></el-input>
+                <el-tooltip class="item" effect="dark" content="选中模糊查询" placement="top-start">
+                  <el-checkbox v-model="inquire[cx.dmlike]" :true-label="cx.trueLabel" :false-label="cx.falseLabel" :checked="cx.check"></el-checkbox>
+                </el-tooltip>
+              </template>
+              <template v-if="cx.type=='cascader'">
+                <el-cascader
+                   v-model="inquire[cx.dm]"
+                  :options="$cdata.options[cx.dm]"
+                  @change="cascaderFnc(inquire[cx.dm],cx.dm)"
+                  :props="{ multiple: true, }"
+                  collapse-tags
+                  clearable></el-cascader>
               </template>
               <template v-else-if="cx.type=='select'">
                 <el-select
@@ -173,13 +178,14 @@
                 </div>
               </template>
               <template v-else-if="cx.type=='button'">
-                <el-button 
-                  v-for="(jt,jts) in $cdata.options[cx.dm]"
-                  class="check-mult"
-                  :key="jts"
-                  :type="(cx.multiple&&btnCheckedDb.includes(jt.dm))||(jt.dm==btnChecked)?'success':'primary'" 
-                  size="mini"
-                  @click="quickView(jt.dm,cx.multiple)">{{jt.mc}}</el-button>
+                <div class="el-sign item" v-for="(jt,jts) in $cdata.options[cx.dm]" :key="jts">
+                  <el-button 
+                    class="check-mult"
+                    :type="(cx.multiple&&btnCheckedDb.includes(jt.dm))||(jt.dm==btnChecked)?'success':'primary'" 
+                    size="mini"
+                    @click="quickView(jt.dm,cx.multiple,cx.dm)">{{jt.mc}}</el-button>
+                    <i class="el-sign_content" :class="(cx.multiple&&btnCheckedDb.includes(jt.dm))||(jt.dm==btnChecked)?'el-icon-success':''"></i>
+                </div>
               </template>
               <template v-else-if="cx.type=='checkbox'">
                 <el-checkbox  class="inquire-check" v-model="inquire[cx.dm]" :true-label="cx.trueLabel" :false-label="cx.falseLabel" :checked="cx.check">{{cx.mc}}</el-checkbox>
@@ -190,15 +196,17 @@
             <el-checkbox  class="quire-check" v-model="inquire[cc.dm]" :true-label="cc.trueLabel" :false-label="cc.falseLabel" :checked="cc.check">{{cc.mc}}</el-checkbox>
           </el-col>
           <el-col :span="12">
+            <!--  -->
             <div class="cx-btn" v-for="(item,inds) in cxButton" :key="inds+'0'">
-            <span class="cx-btn-label">{{item.cm}}</span>
-            <el-button 
-              v-for="(jt,jts) in $cdata.options[item.dm]"
-              class="check-mult"
-              :key="jts"
-              :type="(item.multiple&&btnCheckedDb.includes(jt.dm))||(jt.dm==btnChecked)?'success':'primary'" 
-              size="mini"
-              @click="quickView(jt.dm,item.multiple)">{{jt.mc}}</el-button>
+              <span class="cx-btn-label">{{item.cm}}</span>
+              <div class="el-sign item" v-for="(jt,jts) in $cdata.options[item.dm]" :key="jts">
+                <el-button 
+                  class="check-mult"
+                  :type="(item.multiple&&btnCheckedDb.includes(jt.dm))||(jt.dm==btnChecked)?'success':'primary'" 
+                  size="mini"
+                  @click="quickView(jt.dm,item.multiple,item.dm)">{{jt.mc}}</el-button>
+                <i class="el-sign_content" :class="(item.multiple&&btnCheckedDb.includes(jt.dm))||(jt.dm==btnChecked)?'el-icon-success':''"></i>
+              </div>
             </div>
           </el-col>
         </el-col>
@@ -357,6 +365,10 @@ export default {
     dateChange(key,value){
       this.$emit('dateChangeFun',{key:key,value:value})
     },
+    //级联事件
+    cascaderFnc(data,key){
+      this.$emit('cascaderFnc',{data:data,key:key})
+    },
     //查询项 按钮事件
     btnClick(py,pb) {
       if (py == "cx") {
@@ -366,21 +378,21 @@ export default {
       }
     },
     //查询项 button点击事件
-    quickView(val,type){
+    quickView(val,type,item){
       if(type){//多选
         if(!this.btnCheckedDb.includes(val)){
           this.btnCheckedDb.push(val)
         }else{
           this.btnCheckedDb.splice(this.btnCheckedDb.findIndex(item => item === val), 1)
         }
-        this.$emit('quickViewMult',{data:this.btnCheckedDb,key:val})
+        this.$emit('quickViewMult',{data:this.btnCheckedDb,key:val,item:item})
       }else{//单选
         if(this.btnChecked == val){
           this.btnChecked = ''
         }else{
           this.btnChecked = val;
         }
-        this.$emit('quickView',this.btnChecked)
+        this.$emit('quickView',{data:this.btnChecked,item:item})
       }
     },
     //快速筛查
@@ -425,20 +437,6 @@ export default {
       // console.log('flag==',ind,this.flag[ind],this.checkArr[ind],this.QcxObj)
       this.$emit('tagClickFnc',{value:value,data:data,para:this.QcxObj})
     },
-    // tagClick(value,data,ind){
-    //   this.checkArr[data.dm] = JSON.parse(JSON.stringify(this.$store.state[data.dm]))
-    //   if(data.dm=='datatype'){
-    //     this.checkArr['backstatus'] = JSON.parse(JSON.stringify(this.$store.state['backstatus']))
-    //   }
-    //   this.flag[data.dm] = !this.flag[data.dm]
-    //   if(this.flag[data.dm]){
-    //     this.checkArr[data.dm] = this.$store.state[data.dm]
-    //   }else{
-    //     this.checkArr[data.dm] = Object.assign([],[value]) 
-    //   }
-    //   console.log('flag==',ind,this.flag[data.dm],this.checkArr[data.dm])
-    //   this.$emit('tagClickFnc',{value:value,data:data})
-    // },
     //暂时废弃
     commandfnc(command){
       this.$nextTick(()=>{
@@ -484,6 +482,9 @@ export default {
       let mrz = {};
       Object.assign(mrz, this.mrz);
       this.inquire = mrz;
+      this.btnChecked='';
+      this.btnCheckedDb=[];
+      this.$emit("cxFnc", this.inquire);
       // console.log(this.inquire, this.mrz);
       // this.$emit("getFirstPd", this.mrz);
       // this.$refs[formName].resetFields();

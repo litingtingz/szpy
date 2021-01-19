@@ -346,6 +346,16 @@ const options = {
         dm:'1'
     },
    ],
+   sfyxry:[
+    {
+        mc:'无效',
+        dm:'0'
+    },
+    {
+        mc:'有效',
+        dm:'1'
+    },
+   ],
    isDelete:[
         {
             mc:'无效数据',
@@ -356,6 +366,37 @@ const options = {
             dm:'1'
         },
    ],
+   gtsz:[{
+        value: '0',
+        label: '苏州',
+        children: [{
+            value: 'gt_is_station',
+            label: '出发站',
+            }, {
+            value: 'gt_is_arrived',
+            label: '到达站',
+            }]
+    },{
+        value: '1',
+        label: '省内',
+        children: [{
+            value: 'gt_is_station',
+            label: '出发站',
+            }, {
+            value: 'gt_is_arrived',
+            label: '到达站',
+            }]
+    },{
+        value: '2',
+        label: '省外',
+        children: [{
+            value: 'gt_is_station',
+            label: '出发站',
+            }, {
+            value: 'gt_is_arrived',
+            label: '到达站',
+            }]
+    }],
     //数据查询
       checkStatus:[
         {
@@ -410,6 +451,20 @@ const options = {
         dm:'1'
     },  
    ],
+//    gtsz:[
+//     {
+//         mc:'苏州',
+//         dm:'0'
+//     },
+//     {
+//         mc:'省内',
+//         dm:'1'
+//     },
+//     {
+//         mc:'省外',
+//         dm:'2'
+//     },  
+//    ],
    inhabi_police_station:[],//居住地所在派出所
    workplace_police_station:[],//单位所在地派出所
    customCountry:[],//自定义国家

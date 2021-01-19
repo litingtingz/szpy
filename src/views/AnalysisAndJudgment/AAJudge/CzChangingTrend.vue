@@ -205,7 +205,8 @@ export default {
       }
     },
     quickView(data){
-      this.cx.timeUnit = data;
+      this.cx[data.item] = data.data
+      // this.cx.timeUnit = data;
       this.getChart();
     },
     btnClick(data){

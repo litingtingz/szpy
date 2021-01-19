@@ -2898,7 +2898,7 @@ function innerBtn(data,page,datatype,backstatus,statusName,dzpc){
             }
         }else if(data == '2'){//未走访
             if(page=='1'){//市局未处理
-                if((datatype == '3'||datatype == '4'||datatype == '5')||(backstatus!='无效地址'&&backstatus)){//下发状态是专项核查系列 不要回退按钮
+                if((datatype == '1'||datatype == '3'||datatype == '4'||datatype == '5')){//下发状态是专项核查系列 不要回退按钮
                     zxhc.dbBtn = [
                         {
                             "button_name": "下发",

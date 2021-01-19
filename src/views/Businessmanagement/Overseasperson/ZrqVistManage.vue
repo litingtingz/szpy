@@ -16,7 +16,6 @@
                     <div class="custom-tip" v-show="pcsQuery==$store.state.user.bmbh">请选择派出所
                       <div class="custom-arrow"></div>
                     </div>
-                    <!-- <el-tooltip content="请选择派出所"  :popper-class="$store.state.leftWid=='auto'?'zrq-pop':'zrq-pop-left'" placement="bottom-start" :value="pcsQuery==$store.state.user.bmbh" :manual="true" :offset="50"> -->
                     <el-select v-model="pcsQuery" filterable placeholder="请选择" size="mini" @change="reloadList()">
                       <el-option
                         v-for="item in pcsArr"
@@ -25,17 +24,13 @@
                         :value="item.dm">
                       </el-option>
                     </el-select>
-                    <!-- </el-tooltip> -->
                 </div>
-                
                 <div class="base-flex mb-12">
-                    <div class="text-tip">待接收</div>
-                    <!-- <div class="num-tip">共<span class="red">{{handData.length}}</span>条待接收信息</div> -->
+                    <div class="text-tip">待接收</div>            
                     <div class="num-tip">共<span class="red">{{leftTotal}}</span>条待接收信息</div>
                 </div>
                 <div class="base-flex pb-5 border-b">
-                    <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                    <!-- <div class="query-record"><i class="el-icon-time"></i>搜索记录</div> -->
+                    <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>                   
                 </div>
            </div>
            <div class="left-content" ref="tree">
@@ -73,31 +68,23 @@
            </div>
            <div class="page-btn-box">
              <template v-for="(pb,pbi) in $store.state.plBtn">
-             <el-button
-              class="cx-btn"
-              size="small"
-              :type="pb.py=='js'?'primary':'success'"
-              round
-              v-if="pb.button_type==3"
-              :key="pbi"
-              @click="btnClick(pb.py)"
-            >{{pb.button_name||pb.menu_name}}</el-button>
-          </template>
-               <!-- <el-button size="mini" type="primary" round @click="receiveFun">接收</el-button>
-               <el-button size="mini" type="info" round @click="handOutFun">派发</el-button> -->
+              <el-button
+                class="cx-btn"
+                size="small"
+                :type="pb.py=='js'?'primary':'success'"
+                round
+                v-if="pb.button_type==3"
+                :key="pbi"
+                @click="btnClick(pb.py)"
+              >{{pb.button_name||pb.menu_name}}</el-button>
+            </template>
            </div>
       </el-aside>
       <el-main style="padding:0">
         <Inquire :cxData="cxData" :pd="cx.pd" :cxPara="cx" @cxFnc="cxFnc" @lcFnc="lcFnc"></Inquire>
             <div class="t-tab-top">
-            <div class="tab-top-item hand" @click="tabTopClick1">
-                <img :src="clzt==1?tabImgActive_1:tabImg_1" alt />
-                <span>未走访</span>
-            </div>
-            <div class="tab-top-item hand ml--33" @click="tabTopClick2">
-                <img :src="clzt==2?tabImgActive_2:tabImg_2" alt />
-                <span class="t-leftT">已走访</span>
-            </div>
+              <div class="tab-top-item hand" :class="clzt==1?'tabImgActive_1':'tabImg_1'" @click="tabTopClick1">未走访</div>
+              <div class="tab-top-item hand" :class="clzt==2?'tabImgActive_2':'tabImg_2'" @click="tabTopClick2">已走访</div>
             </div>
             <div class="page-box">
             <Table

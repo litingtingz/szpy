@@ -45,9 +45,21 @@ const gtsjcx = {
       dm: 'visatype',
     },
     {
-      cm: '出发站',
-      type: 'input',
-      dm: 'cfzmc',
+      cm: '乘车次数',
+      type: 'ageDouble',
+      dm: 'age',
+      children: [
+          {
+              cm: '开始次数',
+              type: 'number',
+              dm: 'cccsstart'
+          },
+          {
+              cm: '结束次数',
+              type: 'number',
+              dm: 'cccsend'
+          },
+      ],
     },
     {
       cm: '发车时间段',
@@ -68,25 +80,32 @@ const gtsjcx = {
     },
     {
       cm: '到达站',
-      type: 'input',
+      type: 'inputCheck',
       dm: 'ddzmc',
+      dmlike:'ddzmh',
+      trueLabel:'1',
+      falseLabel:'0',
+      check:false,
     },
     {
-      cm: '乘车次数',
-      type: 'ageDouble',
-      dm: 'age',
-      children: [
-          {
-              cm: '开始次数',
-              type: 'number',
-              dm: 'cccsstart'
-          },
-          {
-              cm: '结束次数',
-              type: 'number',
-              dm: 'cccsend'
-          },
-      ],
+      cm: '出发站',
+      type: 'inputCheck',
+      dm: 'cfzmc',
+      dmlike:'cfzmh',
+      trueLabel:'1',
+      falseLabel:'0',
+      check:false,
+    },
+    // {
+    //   cm: '行车范围',
+    //   type: 'button',
+    //   dm: 'gtsz',
+    // },
+    {
+      cm: '行车范围',
+      type: 'cascader',
+      optype:true,
+      dm: 'gtsz',
     },
     {
       cm: '关联查询',
@@ -102,7 +121,7 @@ const gtsjcx = {
       trueLabel:'1',
       falseLabel:'0',
       check:true,
-      col:18
+      col:12
     },
     {
       cm: '常住类别',
@@ -157,25 +176,8 @@ const gtsjcx = {
       distype:'lz'
     },
   ],
-  cxCheck:[
-    // {
-    //   mc: '是否有效数据',
-    //   type: 'checkbox',
-    //   dm: 'sfglcrj',
-    //   trueLabel:'1',
-    //   falseLabel:'0',
-    //   check:true,
-    //   col:12
-    // },
-  ],
-  cxButton:[
-    // {
-    //   cm: '关联查询',
-    //   type: 'button',
-    //   dm: 'gtglcx',
-    //   multiple:true,
-    // },
-  ],
+  cxCheck:[],
+  cxButton:[],
   facx: [],
   lb: [
     {
@@ -271,7 +273,7 @@ const gtsjcx = {
     },
     {
       cm: '出生日期',
-      dm: 'csrq',
+      dm: 'birth',
     },
     {
       cm: '国家地区',
@@ -541,7 +543,7 @@ const gtsjrgcl = {
     {
       cm: '座位编号',
       type: 'input',
-      dm: 'gt_seat_numbe',
+      dm: 'gt_seat_number',
       dis:true,
     },
   ],

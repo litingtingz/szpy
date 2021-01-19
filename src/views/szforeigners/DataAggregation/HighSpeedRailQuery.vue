@@ -9,7 +9,9 @@
 		:cxPara="cx"
 		@cxFnc="cxFnc" 
     @lcFnc="lcFnc" 
+    @cascaderFnc="cascaderFnc"
     @quickViewMult="quickViewMult"
+    @quickView="quickView"
 		@queryShowFnc="queryShowFnc"></Inquire>
 		<div class="t-tab-top">
       <div class="tab-top-item tabImgActive_1 hand">高铁数据查询列表</div>
@@ -85,11 +87,15 @@ export default {
 			//业务数据
 			cx: {
         pd: {
-          sfgl : '0'
+          sfgl : '0',
+          cfzmh: '0',
+          ddzmh: '0',
+          gtsz:[],
         },
         pageSize: 15,
         pageNum: 1,
       },
+      gtszOld:[],
       cxQ:{//快速查询
         pd: {},
         pageSize: 15,
@@ -147,13 +153,43 @@ export default {
         this.getTable(true)
       }
     },
-    // detailDia(val){
-    //   this.pageRef = val;
-    //   this.dialogTitle = val=='lz'?'临住信息':'常住信息'
-    //   this.dialogType = val;
-    //   this.timer=new Date().getTime();
-    //   this.isShowDialog = true;
-    // },
+    cascaderFnc(data){
+      // 是否与上次的类型相同
+      let changeFlag = false
+      let changeItem = []
+      let checkArr = []
+      if(this.gtszOld.length==0){
+        this.cx.pd[data.key] = data.data
+      }else{
+        data.data.forEach((item)=>{
+          if(item[0]!==this.gtszOld[0][0]){
+            changeFlag = true;
+            changeItem.push(item)
+          }
+        })
+      }
+      //一级菜单切换，确保单选
+      if(changeFlag){
+        this.cx.pd[data.key] = changeItem;
+      }
+      //给后台组值
+      this.cx.pd[data.key].forEach((item)=>{
+        this.cx.pd[item[1]] = item[0]
+        checkArr.push(item[1])
+      })
+      if(!checkArr.includes('gt_is_station')){
+        this.cx.pd.gt_is_station = ''
+      }
+      if(!checkArr.includes('gt_is_arrived')){
+        this.cx.pd.gt_is_arrived = ''
+      }
+      this.gtszOld = this.cx.pd[data.key]
+    },
+    //查询条件 单选按钮
+    quickView(data){
+      this.cx.pd[data.item] = data.data
+    },
+    //查询条件多选按钮
     quickViewMult(data){
       if(!data.data.includes(data.key)){
         this.cxData.forEach((item) => {
@@ -176,7 +212,6 @@ export default {
       this.getTable(true)
     },
     lbTextClickFnc(data){
-      console.log('====',data)
       if(data.column.property == 'czcs'){
         this.pageRef = 'cz'
         this.dialogTitle = '常住信息'

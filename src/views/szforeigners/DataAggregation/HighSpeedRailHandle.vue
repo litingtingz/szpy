@@ -15,9 +15,6 @@
       <div class="tab-top-item tabImgActive_1 hand">高铁数据人工处理列表</div>
     </div>
 		<div class="page-box">
-      <!-- <div class="link-box">
-        <el-link size="mini" :type="'primary'" round @click="detailDia('lz')">待办总数{{'100'}}条</el-link>
-      </div> -->
       <Table
         :lbData="lbData"
         :page="tabPage"

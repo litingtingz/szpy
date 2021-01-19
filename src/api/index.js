@@ -13,7 +13,7 @@ var aport2 = 'datarelease'//石
 // var aport2 = 'http://10.0.31.36:9405'//石本地
 var aport3 = 'lzsb'
 var aport4 = 'yewu'
-// var aport4 = 'http://10.0.30.229:9426'
+// var aport4 = 'http://10.0.30.120:9426'
 
 var aport8 = 'hint'
 // var aport8 = 'http://10.0.30.140:9432'

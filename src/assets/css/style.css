@@ -4,10 +4,16 @@
     }
 }
 
-@media(max-width: 1400px) {
+@media(max-width: 1600px) {
     #big-img-box {
         top: 72%!important;
         height: 540px!important;
+    }
+    .pd-button.el-col-6{
+        width: 50%;
+    }
+    .pd-check.el-col-12{
+        width: 25%;
     }
 }
 
@@ -124,7 +130,10 @@
     display: flex;
     align-items: center;
 }
-
+.flex-between{
+    display: flex;
+    justify-content: space-between;
+}
 /* 元素样式 */
 
 .dia-tab-box {
@@ -192,26 +201,30 @@
     font-size: 14px;
 }
 
-.tabImgActive_1 {
+.tabImg_1 {
     background: url(../images/main/tab_2_pre.png) no-repeat;
-    background-size: 100% 100%;
-    padding: 3px 50px 0px 25px;
+    background-size: 100% 90%;
+    padding: 7px 50px 0px 25px;
+    background-position-y: bottom;
+    font-size: 12px;
 }
 
-.tabImg_1 {
+.tabImgActive_1 {
     background: url(../images/main/tab_2.png) no-repeat;
     background-size: 100% 100%;
     padding: 3px 50px 0px 25px;
 }
 
-.tabImgActive_2 {
+.tabImg_2 {
     background: url(../images/main/tab_1_pre.png) no-repeat;
-    background-size: 100% 100%;
-    padding: 3px 50px 0px 35px;
+    background-size: 100% 90%;
+    padding: 7px 50px 0px 35px;
     margin-left: -30px;
+    background-position-y: bottom;
+    font-size: 12px;
 }
 
-.tabImg_2 {
+.tabImgActive_2 {
     background: url(../images/main/tab_1.png) no-repeat;
     background-size: 100% 100%;
     padding: 3px 50px 0px 35px;
@@ -345,7 +358,7 @@
     height: 36px;
 }
 .inquire-check{
-    vertical-align: sub;
+    vertical-align: baseline;
     height: 25px;
     margin-left: -39px;
 }
@@ -1091,6 +1104,27 @@
 .colum-btn .el-button+.el-button{
     margin:10px 0 0;
 }
+.check-mult{
+    padding: 7px 10px!important;
+}
 .check-mult:not(:first-child){
-    margin-left: 1px!important;
+    margin-left: 5px!important;
+}
+.inquire-input-check .el-form-item__content{
+    display: flex;
+    justify-content: space-between;
+}
+.el-sign{
+    position: relative;
+    vertical-align: middle;
+    display: inline-block;
+}
+.el-sign.item{
+    margin-right: 5px;
+}
+.el-sign_content{
+    position: absolute;
+    top: -6px;
+    right: -4px;
+    color: #f56c6c;
 }

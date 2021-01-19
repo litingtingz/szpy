@@ -120,8 +120,9 @@ th {
 .inquire-ruleForm .el-col-8,.inquire-ruleForm .el-col-16{
   height: 38px;
 }
-.el-input.is-disabled .el-input__inner {
-  /* color: #656262!important; */
+.el-input.is-disabled .el-input__inner,
+.el-textarea.is-disabled .el-textarea__inner,
+.el-tag.el-tag--info{
   color: #000!important;
 }
 .el-radio__input.is-disabled+span.el-radio__label{
@@ -132,6 +133,10 @@ th {
 }
 .el-form-item--mini .el-form-item__content, .el-form-item--mini .el-form-item__label {
   line-height: 26px!important;
+}
+.el-checkbox__input.is-disabled.is-checked .el-checkbox__inner{
+  background-color: #535860;
+  border-color: #666b78;
 }
 /* .el-input,.el-select{
   height: 28px!important;
@@ -186,7 +191,8 @@ th {
 }
 .el-date-editor.el-input, 
 .el-date-editor.el-input__inner,
-.el-select  {
+.el-select,
+.el-cascader  {
     width: 100%!important;
 }
 .el-table--small td, .el-table--small th{
@@ -268,6 +274,9 @@ input[type="number"]{
 }
 .el-icon-circle-close:before {
     color: #000;
+}
+.check-mult .el-icon-circle-close:before{
+  color: #fff;
 }
 .el-form-item__label{
   /* color: #666666!important; */

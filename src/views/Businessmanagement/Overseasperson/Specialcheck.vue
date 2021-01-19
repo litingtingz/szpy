@@ -12,16 +12,8 @@
       @queryShowFnc="queryShowFnc"
       @commandfnc="commandfnc"></Inquire>
     <div class="t-tab-top">
-      <div class="tab-top-item hand" :class="clzt==1?'tabImgActive_1':'tabImg_1'" @click="tabTopClick1">
-        未走访
-        <!-- <img :src="clzt==1?tabImgActive_1:tabImg_1" alt />
-        <span>未走访</span> -->
-      </div>
-      <div class="tab-top-item hand" :class="clzt==2?'tabImgActive_2':'tabImg_2'" @click="tabTopClick2">
-        已走访
-        <!-- <img :src="clzt==2?tabImgActive_2:tabImg_2" alt />
-        <span class="t-leftT">已走访</span> -->
-      </div>
+      <div class="tab-top-item hand" :class="clzt==1?'tabImgActive_1':'tabImg_1'" @click="tabTopClick1">未走访</div>
+      <div class="tab-top-item hand" :class="clzt==2?'tabImgActive_2':'tabImg_2'" @click="tabTopClick2">已走访</div>
     </div>
     <div class="page-box">
       <Table

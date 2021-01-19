@@ -12,8 +12,7 @@
     @commandfnc="commandfnc"></Inquire>
 		<div class="t-tab-top">
       <div class="tab-top-item hand">
-        <img :src="tabImgActive_1" alt />
-        <span>时间管理</span>
+        <div class="tab-top-item tabImgActive_1 hand">时间管理</div>
       </div>
     </div>
 		<div class="page-box">
