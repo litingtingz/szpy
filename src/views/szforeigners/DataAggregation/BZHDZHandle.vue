@@ -11,7 +11,7 @@
     @lcFnc="lcFnc" 
 		@queryShowFnc="queryShowFnc"></Inquire>
 		<div class="t-tab-top">
-      <div class="tab-top-item tabImgActive_1 hand">交通数据人工处理列表</div>
+      <div class="tab-top-item tabImgActive_1 hand">标准化地址人工处理列表</div>
     </div>
 		<div class="page-box">
       <Table
@@ -21,16 +21,16 @@
         :isTab="true"
         :isOther="isOther"
         :SDbCount="SDbCount"
+        :ColIsShow="ColIsShow"
         :isEdit="isEdit"
         :lbTab="lbTab"
         :lbBtn="lbBtn"
         :plBtn="plBtn"
         :tableData="tableData"
-        :refName="''"
         :selection="selection"
         :clearSort="clearSort"
         :expData="cx"
-        :expUrl="$api.aport4+'/jt/exportJtData'"
+        :expUrl="$api.aport4+'/bzhdz/exportBzhdzData'"
         @tabFnc="tabFnc"
         @plFnc="plFnc"
         @pageSizeFnc="pageSizeFnc"
@@ -48,7 +48,7 @@
       <Form
       v-if="dialogType=='js'"
       :dialogType="dialogType"
-      :cxData="$cdata.sjhj.gtsjrgcl.jsDia"
+      :cxData="$cdata.sjhj.bzhdzcl.jsDia"
       :dialogData="dialogData"
        @dialogCancel="isShowDialog=false"
        @dialogSave="dialogSave"></Form>
@@ -56,7 +56,7 @@
       v-else
       :key="timer"
       :dialogType="dialogType"
-      :cxData="$cdata.sjhj.gtsjrgcl.clDia"
+      :cxData="$cdata.sjhj.bzhdzcl.clDia"
       :dialogData="dialogData"
       :multipleArr="multipleArr"
       :pageRef="pageRef"
@@ -73,7 +73,7 @@
 import Inquire from "@/components/Inquire.vue";
 import Table from "@/components/Table.vue";
 import Dialog from "@/components/Dialog.vue";
-import DetailTable from "./GTHandleDetail.vue"
+import DetailTable from "./BZHDZHandleDetail.vue"
 import Form from "@/components/Form.vue";
 export default {
 	components: {
@@ -87,23 +87,24 @@ export default {
 		return{
 			//数据展示
 			//查询项
-      cxData: this.$cdata.sjhj.gtsjrgcl.cxa,
-      cxCheck:this.$cdata.sjhj.gtsjrgcl.cxCheck,
-      facxData: this.$cdata.sjhj.gtsjrgcl.facx,//快速查询项
+      cxData:this.$cdata.sjhj.bzhdzcl.cxa,
+      cxCheck:this.$cdata.sjhj.bzhdzcl.cxCheck,
+      facxData: this.$cdata.sjhj.bzhdzcl.facx,//快速查询项
       cxShow:true,//默认收起
       timeRange:0,
+
       //列表
       tabPage:'0',
-      isOther:true,
+      isOther:false,
       isSelect:false,
+      ColIsShow:false,
       isEdit:false,//tab控制列表操作项
-      lbTab:this.$cdata.sjhj.gtsjrgcl.lbTab,
-			lbData: this.$cdata.sjhj.gtsjrgcl.lb1,
-      lbBtn: this.$cdata.sjhj.gtsjrgcl.lbBtn,
+      lbTab:this.$cdata.sjhj.bzhdzcl.lbTab,
+			lbData: this.$cdata.sjhj.bzhdzcl.lb,
+      lbBtn: this.$cdata.sjhj.bzhdzcl.lbBtn,
       plBtn: this.$store.state.plBtn,
       SDbCount:0,
       selection: [],
-      multipleSelection:[],
       multipleArr:[],
 			//业务数据
 			cx: {
@@ -113,11 +114,6 @@ export default {
           receiver:this.$store.state.user.bmbh,
           jb:this.$store.state.user.jb
         },
-        pageSize: 15,
-        pageNum: 1,
-      },
-      cxDetail: {
-        pd: {},
         pageSize: 15,
         pageNum: 1,
       },
@@ -144,33 +140,14 @@ export default {
 		}
   },
   mounted(){
-    this.$store.dispatch("aGetDM", "xzqh");
-    this.$store.dispatch('aGetDMPro', "dm_jwrysf");//身份
-    this.$store.dispatch('aGetDMPro', "dm_jzztlx");//居住状态类型
-    this.$store.dispatch('aGetDMPro', "dm_gzztlx");//工作状态类型
-    this.$store.dispatch('aGetDMPro', "dm_spqfdb");//签发地
-    this.$store.dispatch('aGetDMPro', "dm_bjjgkab");//入境口岸
-    this.$store.dispatch('aGetDMPro', "dm_crjbs");//出入境状态
-    this.$store.dispatch('aGetDMPro', "dm_pcswlb");//居住地所在派出所
-
     this.$store.dispatch("aGetNation");//国家地区&出生地
-    this.$store.dispatch("aGetGender");//性别
-    this.$store.dispatch("aGetDMPro",'dm_crjrylbb');//出入境人员地域类别
-    this.$store.dispatch("aGetDMPro",'dm_crjsyb');//出入境事由
-    this.$store.dispatch("aGetDMPro",'dm_crjjtfsb');//出入境交通方式
-    this.$store.dispatch("aGetDMPro",'dm_zyb');//职业
     this.$store.dispatch("aGetDM", "qzzl");
-    this.$store.dispatch("aGetPassport");//性别
-    this.$store.dispatch('aGetDM', "bjjgka");//
-    
-
-    this.$store.dispatch("aGetBackstatus",'1')//走访反馈状态
     this.$cdata.aGetArea()
     this.$cdata.jzdZrq()
     this.plBtn = this.plBtn.filter(item => ['cl'].indexOf(item.py) == -1);
-    this.$nextTick(()=>{
-      this.getTable(true);
-    })
+    // this.getDbCount();
+    this.getTable(true);
+    this.getSpInit();
   },
   watch:{
     $route:{
@@ -186,6 +163,24 @@ export default {
     }
   },
 	methods:{
+    // getDbCount(){
+    //   this.$api.post(this.$api.aport4+'/gtrg/getBbCount',{},r=>{
+    //     this.SDbCount=r;
+    //   })
+    // },
+    getSpInit(){
+      this.$cdata.qxgl.getSjBm(this.$store.state.user.bmbh).then(data => {
+        this.$store.dispatch("aGetssdw", {
+          bmbh: "320500000000",
+          type: "ssfj"
+        });
+        if (this.$store.state.user.jb == 2) {
+          this.$store.dispatch("aGetssdw", { bmbh: data.bmbh, type: "sspcs" });
+        } else if (this.$store.state.user.jb == 3) {
+          this.$store.dispatch("aGetssdw", { bmbh: data.fj, type: "sspcs" });
+        }
+      });
+    },
 		cxFnc(data) {//只有已处理有查询按钮
       this.cx.pd = data;
       this.cx.pageNum = 1;
@@ -194,26 +189,26 @@ export default {
     tabFnc(data) {
       this.tabPage = data;
       this.plBtn = this.$store.state.plBtn
-      if(this.tabPage == '2'){
-        this.cxData = this.$cdata.sjhj.gtsjrgcl.cx
+      if(this.tabPage == '2' || this.tabPage == '3'){//已完成&&未标准化
+        this.cxData = this.$cdata.sjhj.bzhdzcl.cxb
         this.isEdit = false;
         this.isOther = false;
         this.isSelect = false;
-        this.lbData = this.$cdata.sjhj.gtsjrgcl.lb3
+        this.ColIsShow = true;
         this.plBtn = this.plBtn.filter(item => ['cl','js'].indexOf(item.py) == -1);
-      }else if(this.tabPage == '1'){
-        this.cxData = this.$cdata.sjhj.gtsjrgcl.cxa;
+      }else if(this.tabPage == '1'){//已接收
+        this.cxData = this.$cdata.sjhj.bzhdzcl.cxa;
         this.isEdit = true;
         this.isOther = false;
         this.isSelect = true;
-        this.lbData = this.$cdata.sjhj.gtsjrgcl.lb1
+        this.ColIsShow = false;
         this.plBtn = this.plBtn.filter(item => ['js'].indexOf(item.py) == -1);
       }else{
-        this.cxData = this.$cdata.sjhj.gtsjrgcl.cxa;
+        this.cxData = this.$cdata.sjhj.bzhdzcl.cxa;
         this.isEdit = false;
-        this.isOther = true;
+        this.isOther = false;
         this.isSelect = false;
-        this.lbData = this.$cdata.sjhj.gtsjrgcl.lb1
+        this.ColIsShow = false;
         this.plBtn = this.plBtn.filter(item => ['cl'].indexOf(item.py) == -1);
       }
       this.cx.pageNum = 1;
@@ -225,7 +220,13 @@ export default {
       console.log('data==',data)
     },
     //下拉框联动
-    lcFnc(){},
+    lcFnc(data){
+      if(data.key.dm == "inhabi_police_station"){
+        this.$cdata.JoinZrq(data.data).then((data) =>{
+          this.$store.state.turnoutarea = data
+        })
+      }
+    },
 		//查询条件转换查询
     queryShowFnc(flag){
       if(!flag&&this.facxData.length!=0){//快速查询
@@ -256,11 +257,12 @@ export default {
 		// 查询列表数据
     getTable(flag,pdQ) {
       if(flag){this.clearSort = new Date().getTime();delete this.cx.order;delete this.cx.direction }
-      let url = '/jt/getJtxxList'
+      let url = '/bzhdz/getBzhdzList'
       this.cx.pd.db = this.tabPage
+      delete this.cx.pd.source;
+      delete this.cx.pd.source_uuid;
       this.$api.post(this.$api.aport4 + url, pdQ||this.cx, r => {
-        this.tableData = r;
-        this.SDbCount = r.total;
+				this.tableData = r;
       });
     },
     dialogHandleCancel(){
@@ -276,11 +278,12 @@ export default {
         this.diaPage=0;
         return
       }
-      this.cxDetail.pd.gtwyid = this.multipleArr[this.diaPage].gtwyid;
-      this.cxDetail.pd.type = 'jbxx';
-      this.$api.post(this.$api.aport4+'/jt/getJtxxList',this.cxDetail,r=>{
+      this.cx.pd.source=this.multipleArr[this.diaPage].source;
+      this.cx.pd.source_uuid=this.multipleArr[this.diaPage].source_uuid;
+      this.$api.post(this.$api.aport4+'/bzhdz/getBzhdzList',this.cx,r=>{
         this.dialogData = r.list[0];
         this.timer = new Date().getTime();
+        
       })
     },
 		//批量按钮
@@ -291,7 +294,7 @@ export default {
         this.dialogData={};
         this.isShowDialog = true
       }else if(data.py == 'cl'){
-        if(this.multipleSelection.length==0){
+        if(this.multipleArr.length==0){
           this.$message({
             message: "请先选择数据！",
             duration:13000,
@@ -300,9 +303,9 @@ export default {
           });
           return false;
         }
-        this.cxDetail.pd.gtwyid = this.multipleArr[0].gtwyid;
-        this.cxDetail.pd.type = 'jbxx';
-        this.$api.post(this.$api.aport4+'/jt/getJtxxList',this.cxDetail,r=>{
+        this.cx.pd.source=this.multipleArr[0].source;
+        this.cx.pd.source_uuid=this.multipleArr[0].source_uuid;
+        this.$api.post(this.$api.aport4+'/bzhdz/getBzhdzList',this.cx,r=>{
           this.dialogData = r.list[0];
           this.timer = new Date().getTime();
           this.isShowDialog = true;
@@ -325,9 +328,9 @@ export default {
         }
       }
       if(this.dialogType == 'detail'||this.dialogType == 'ck'){
-        this.cxDetail.pd.gtwyid = data.data.gtwyid;
-        this.cxDetail.pd.type = 'jbxx';
-        this.$api.post(this.$api.aport4+'/jt/getJtxxList',this.cxDetail,r=>{
+        this.cx.pd.source=data.data.source;
+        this.cx.pd.source_uuid=data.data.source_uuid
+        this.$api.post(this.$api.aport4+'/bzhdz/getBzhdzList',this.cx,r=>{
           this.dialogData = r.list[0];
           this.timer = new Date().getTime();
           this.isShowDialog = true;
@@ -342,11 +345,10 @@ export default {
     //接收保存
     recieveSave(data){
       let p=data.data
-      p.typejt=this.cx.pd.type
       p.received_personnel = this.$store.state.user.xm
       p.received_number = this.$store.state.user.userId
       p.receiver = this.$store.state.user.bmbh
-      this.$api.post(this.$api.aport4 + '/jt/JsDbxx',p,r=>{
+      this.$api.post(this.$api.aport4 + '/bzhdz/JsDbxx',p,r=>{
         this.$message({
           message: r.message,
           duration:8000,
@@ -355,15 +357,12 @@ export default {
         });
         this.isShowDialog = false;
         this.getTable(true);
+        // this.getDbCount();
       })
     },
 		//表格复选框选择
 		SelectionChange(data){
-      this.multipleSelection = data;
-      this.multipleArr = [];
-      this.multipleSelection.forEach((item)=>{
-        this.multipleArr=this.multipleArr.concat([{gtwyid:item.gtwyid,type:item.type}])
-      })
+      this.multipleArr = data;
     },
 		//点击行
 		rowClick(data){

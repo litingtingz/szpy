@@ -48,8 +48,12 @@ export default new Vuex.Store({
 
     suboffice: [],//所属分局
     subBureauCode:[],
+    police_bureau:[],
+
     policestation: [],//派出所
+    police_station:[],
     policeStationCode:[],
+
     xzqh: [],
     shzt: [],//审核状态
     rylb: [],
@@ -308,11 +312,13 @@ export default new Vuex.Store({
       state.jzd_ssfj = data
       state.gzd_ssfj = data
       state.subBureauCode = data
+      state.police_bureau = data
     },
     getsspcs(state, data) {
       state.sspcs = data
       state.policestation = data
       state.policeStationCode=data
+      state.police_station=data
     },
     getpcsPro(state, data){
       if(data.ptype == 'jzd'){

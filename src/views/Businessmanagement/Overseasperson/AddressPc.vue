@@ -50,6 +50,7 @@
     <Dialog :isShowDialog="isShowDialog" :title="dialogTitle" @hideDialog="isShowDialog=false" 
     :top="dialogType=='edit'||dialogType=='ck'?'3vh':'15vh'" :class="{'hczf-dia':dialogType == 'edit'}">
       <Form
+        v-if="dialogType!='dr'"
         :key="timeRange"
         :cxData="labelData"
         :dialogType="dialogType"
@@ -72,18 +73,19 @@
         class="hczf-wid"
       ></Form>
       <Timeline 
-      v-if="dialogType == 'edit'"
-      :cxData="timeData"
-      style="width:34%"></Timeline>
+        v-if="dialogType == 'edit'"
+        :cxData="timeData"
+        style="width:34%"></Timeline>
       <BatchIm
-      ref="batchIm"
-      :uploadCom="'address'"
-      v-else-if="dialogType=='dr'"
-      :url="$api.aport2 + '/issueDataAddress/readExcel'"
-      :urlErr="$api.aport2 + '/issueDataAddress/exportErrData'"
-      :dataType="'4'"
-      @expFun="expFun"
-      @dialogCancel="isShowDialog=false"></BatchIm>
+        ref="batchIm"
+        :uploadCom="'address'"
+        v-if="dialogType=='dr'"
+        :url="$api.aport2 + '/issueDataAddress/readExcel'"
+        :urlErr="$api.aport2 + '/issueDataAddress/exportErrData'"
+        :dataType="'4'"
+        @expFun="expFun"
+        @dialogCancel="isShowDialog=false"></BatchIm>
+      
     </Dialog>
     <Dialog :isShowDialog="innerVisible" :title="indialogTitle" @hideDialog="innerVisible=false">
       <Form
@@ -332,9 +334,10 @@ export default {
       this.$cdata.zxhc.lbTabShow_DZ(this.$store.state.user.jb).then(data => {
         this.lbTab = data.lbTab;
         this.page = this.lbTab[0].dm;
+        this.queryShowFnc(this.cxShow);
       });
       this.plBtn = this.$store.state.plBtn;
-      this.queryShowFnc(this.cxShow);
+      
     },
     tabTopClick2() {
       this.clzt = 2;
@@ -342,11 +345,12 @@ export default {
       this.cxQ.pageNum = 1;
       this.$cdata.zxhc.lbTabShow_DZ(this.$store.state.user.jb).then(data => {
         this.lbTab = data.lbTab1;
-        this.page = this.lbTab1[0].dm;
+        this.page = this.lbTab[0].dm;
+        this.queryShowFnc(this.cxShow);
       });
       this.plBtn = this.$store.state.plBtn;
       this.plBtn = this.plBtn.filter(item => ['xf','xz','dr','sb'].indexOf(item.py) == -1);
-      this.queryShowFnc(this.cxShow);
+      
     },
     //列表tab切换  data==page 从1开始 控制按钮是否出现 v-for 和 v-if不能同时使用
     tabFnc(data) {
@@ -414,7 +418,6 @@ export default {
         }
         if(val == 'zfzt_1' || val == 'zfzt_3'){//无效地址 和 无境外人员 不可编辑走访信息
           this.joinZf = true;
-          console.log('this.joinZf',this.joinZf)
         }else{
           this.joinZf = false;
         }

@@ -289,6 +289,23 @@ export default {
         }
       });
     },
+    plBtnTabTnc(val){
+      this.plBtn = this.$store.state.plBtn;
+      if (this.clzt == 1) {
+        //未处理
+        if (val == "1") {
+          this.plBtn = this.plBtn.filter(item => ['sb'].indexOf(item.py) == -1);
+        } else if(val == "2"){  
+          this.plBtn = this.plBtn.filter(item => ['sb'].indexOf(item.py) == -1);
+        }else if (val == "5") {   
+          this.plBtn = this.plBtn.filter(item => ['xf'].indexOf(item.py) == -1);
+        } else if (val == "3") {   
+          this.plBtn = this.plBtn.filter(item => ['sb','xf'].indexOf(item.py) == -1);
+        }
+      }else if(this.clzt == 2){
+        this.plBtn = this.plBtn.filter(item => ['sb','xf'].indexOf(item.py) == -1);
+      }
+    },
     //时间轴
     getTimeData(serial){
       this.$api.post(this.$api.aport2+'/issueDataZfjl/getIssueDataZfjlList',{serial:serial},r=>{
@@ -347,11 +364,9 @@ export default {
       this.$cdata.zxhc.lbTabShow(this.$store.state.user.jb).then(data => {
         this.lbTab = data.lbTab;
         this.page = this.lbTab[0].dm;
+        this.plBtnTabTnc(this.page);
       });
-      this.plBtn = this.$store.state.plBtn;
-      this.plBtn = this.plBtn.filter(item => ['sb'].indexOf(item.py) == -1);
       this.queryShowFnc(this.cxShow);
-      // this.getTable(true);
     },
     tabTopClick2() {
       this.clzt = 2;
@@ -360,11 +375,11 @@ export default {
       this.$cdata.zxhc.lbTabShow(this.$store.state.user.jb).then(data => {
         this.lbTab = data.lbTab1;
         this.page = this.lbTab[0].dm;
+        this.plBtnTabTnc(this.page);
       });
-      this.plBtn = this.$store.state.plBtn;
-      this.plBtn = this.plBtn.filter(item => ['sb','xf'].indexOf(item.py) == -1);
+      // this.plBtn = this.$store.state.plBtn;
+      // this.plBtn = this.plBtn.filter(item => ['sb','xf'].indexOf(item.py) == -1);
       this.queryShowFnc(this.cxShow);
-      // this.getTable(true);
     },
     //列表tab切换  data==page 从1开始 控制按钮是否出现 v-for 和 v-if不能同时使用
     tabFnc(data) {

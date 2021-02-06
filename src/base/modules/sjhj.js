@@ -145,6 +145,16 @@ const gtsjcx = {
       distype:'cz'
     },
     {
+      cm:'',
+      mc: '无常住数据',
+      type: 'checkbox',
+      dm: 'lackcz',
+      trueLabel:'1',
+      falseLabel:'',
+      check:false,
+      distype:'cz'
+    },
+    {
       cm: '住宿时间段',
       type: 'double',
       dm: 'tlTime',
@@ -170,9 +180,13 @@ const gtsjcx = {
       distype:'lz'
     },
     {
-      cm: '',
-      type: '',
-      dm: '',
+      cm:'',
+      mc: '无临住数据',
+      type: 'checkbox',
+      dm: 'lacklz',
+      trueLabel:'1',
+      falseLabel:'',
+      check:false,
       distype:'lz'
     },
   ],
@@ -356,12 +370,12 @@ const gtsjrgcl = {
     {
       cm: '国家地区',
       type: 'select',
-      dm: 'gjdq',
+      dm: 'nationality',
     },
     {
       cm: '证件号码',
       type: 'input',
-      dm: 'zjhm',
+      dm: 'passportno',
     },
     {
       cm: '处理时间段',
@@ -383,18 +397,32 @@ const gtsjrgcl = {
     {
       cm: '处理状态',
       type: 'select',
-      dm: 'cljg',
+      dm: 'result',
       optype:true,
     },
     {
-      cm: '车次号',
+      cm: '用户ID',
       type: 'input',
-      dm: 'ccbh',
+      dm: 'userid',
     },
     {
       cm: '处理人',
       type: 'input',
       dm: 'clry',
+    },
+    {
+      cm: '数据来源',
+      type: 'select',
+      dm: 'type',
+      optype:true
+    },
+  ],
+  cxa:[
+    {
+      cm: '数据来源',
+      type: 'select',
+      dm: 'type',
+      optype:true,
     },
   ],
   cxCheck:[],
@@ -416,61 +444,77 @@ const gtsjrgcl = {
   lb1: [
     {
       cm:'姓名',
-      dm:'gt_name'
+      dm:'name'
+    },
+    {
+      cm: '性别',
+      dm: 'gender_desc',
+    },
+    {
+      cm: '国家地区',
+      dm: 'nationality_desc',
+    },
+    {
+      cm: '证件种类',
+      dm: 'passporttype_desc',
     },
     {
       cm: '证件号码',
-      dm: 'gt_passportno',
+      dm: 'passportno',
     },
     {
-      cm: '出发站名称',
-      dm: 'gt_station_name',
+      cm: '出生日期',
+      dm: 'birthday',
     },
     {
-      cm: '到达站名称',
-      dm: 'gt_arrival_station_name',
-    },
-    {
-      cm: '发车日期',
-      dm: 'gt_departure_date',
+      cm: '数据来源',
+      dm: 'type_desc',
     },
   ],
   lb3:[
     {
       cm:'姓名',
-      dm:'gt_name'
+      dm:'name'
+    },
+    {
+      cm: '性别',
+      dm: 'gender_desc',
+    },
+    {
+      cm: '国家地区',
+      dm: 'nationality_desc',
+    },
+    {
+      cm: '证件种类',
+      dm: 'passporttype_desc',
     },
     {
       cm: '证件号码',
-      dm: 'gt_passportno',
+      dm: 'passportno',
     },
     {
-      cm: '出发站名称',
-      dm: 'gt_station_name',
+      cm: '出生日期',
+      dm: 'birthday',
     },
     {
-      cm: '到达站名称',
-      dm: 'gt_arrival_station_name',
+      cm: '数据来源',
+      dm: 'type_desc',
     },
     {
-      cm: '发车日期',
-      dm: 'gt_departure_date',
-    },
-    {
-      cm: '车次号',
-      dm: 'gt_train_number',
-    },
-    {
-      cm: '处理状态',
-      dm: 'cljg',
+      cm: '处理结果',
+      dm: 'result_desc',
     },
     {
       cm: '处理人',
-      dm: 'clry',
+      dm: 'received_personnel',
+    },
+    {
+      cm: '用户ID',
+      dm: 'received_number',
     },
     {
       cm: '处理时间',
-      dm: 'clsj',
+      dm: 'handling_time_desc',
     },
   ],
   lbBtn: [
@@ -488,62 +532,50 @@ const gtsjrgcl = {
   ],
   clDia:[
     {
-      title:'高铁信息',
+      title:'基本信息',
       type:'line',
       col:24
     },
     {
       cm: '姓名',
       type: 'input',
-      dm: 'gt_name',
+      dm: 'name',
     },
     {
       cm: '证件号码',
       type: 'joinBtn',
-      dm: 'gt_passportno',
+      dm: 'passportno',
       btnmc:'核查'
     },
     {
-      cm: '发车日期',
+      cm: '性别',
+      type: 'input',
+      dm: 'gender_desc',
+      dis:true,
+    },
+    {
+      cm: '国家地区',
+      type: 'input',
+      dm: 'nationality_desc',
+      dis:true,
+    },
+    {
+      cm: '出生日期',
       type: 'datePicker',
-      dm: 'gt_departure_date',
+      dm: 'birthday_desc',
       dis:true,
     },
     {
-      cm: '出发站名称',
-      type: 'select',
-      dm: 'gt_station_name',
+      cm: '证件种类',
+      type: 'input',
+      dm: 'passporttype_desc',
       dis:true,
     },
     {
-      cm: '到达站名称',
-      type: 'select',
-      dm: 'gt_arrival_station_name',
-      dis:true,
-    },
-    {
-      cm: '是否有效',
-      type: 'select',
-      dm: 'gt_valid',
+      cm: '数据来源',
+      type: 'input',
+      dm: 'type_desc',
       optype:true,
-      dis:true,
-    },
-    {
-      cm: '车次编号',
-      type: 'input',
-      dm: 'gt_train_number',
-      dis:true,
-    },
-    {
-      cm: '车厢编号',
-      type: 'input',
-      dm: 'gt_car_number',
-      dis:true,
-    },
-    {
-      cm: '座位编号',
-      type: 'input',
-      dm: 'gt_seat_number',
       dis:true,
     },
   ],
@@ -551,7 +583,8 @@ const gtsjrgcl = {
     {
       cm: '姓名',
       dm: 'crj_name',
-      button:true
+      only:'serial',
+      btnCommon:true,
     },
     {
       cm: '国家地区',
@@ -584,6 +617,7 @@ const gtsjrgcl = {
       cm: '出生日期',
       type: 'datePicker',
       dm: 'crj_birthday',
+      dateType:'dateJ'
     },
     {
       cm: '证件号码',
@@ -604,7 +638,7 @@ const gtsjrgcl = {
     },
     {
       cm: '发证日期',
-      type: 'datePicker',
+      type: 'input',
       dm: 'crj_grant_cert_date',
       // dis:true,
     },
@@ -615,8 +649,8 @@ const gtsjrgcl = {
       // dis:true,
     },
     {
-      cm: '入库时间',
-      type: 'datePicker',
+      cm: '出境登记卡号',
+      type: 'input',
       dm: 'crj_in_time',
       // dis:true,
     },
@@ -629,6 +663,7 @@ const gtsjrgcl = {
       cm: '出入境日期',
       type: 'datePicker',
       dm: 'crj_io_date',
+      dateType:'dateJ'
       // dis:true,
     },
     {
@@ -644,7 +679,7 @@ const gtsjrgcl = {
       // dis:true,
     },
     {
-      cm: '人员类别',
+      cm: '出入境类别',
       type: 'select',
       dm: 'crj_person_type',
       // dis:true,
@@ -699,7 +734,309 @@ const gtsjrgcl = {
     }
   ],
 }
+const bzhdzcl = {
+  cxa: [
+    {
+      cm: '详细地址',
+      type: 'input',
+      dm: 'address',
+    },
+  ],
+  cxb:[
+    {
+      cm: '详细地址',
+      type: 'input',
+      dm: 'address',
+    },
+    {
+      cm: '处理人',
+      type: 'input',
+      dm: 'clry',
+    },
+    {
+      cm: '用户id',
+      type: 'input',
+      dm: 'userid',
+    },
+  ],
+  cxCheck:[],
+  facx: [],
+  lbTab:[
+    {
+        "mc": '未接收',
+        "dm": '0',
+    },
+    {
+        "mc": '已接收',
+        "dm": '1',
+    },
+    {
+        "mc": '已完成',
+        "dm": '2',
+    },
+    {
+        "mc": '未标准化',
+        "dm": '3',
+    },
+  ],
+  lb: [
+    {
+      cm:'住宿地址',
+      dm:'standard_address'
+    },
+    {
+      cm: '姓名',
+      dm: 'name',
+    },
+    {
+      cm: '国家地区',
+      dm: 'nationality_desc',
+    },
+    {
+      cm: '证件号码',
+      dm: 'paperno',
+    },
+    {
+      cm: '所属分局',
+      dm: 'police_bureau_desc',
+    },
+    {
+      cm: '所属派出所',
+      dm: 'police_station_desc',
+    },
+    {
+      cm: '数据来源',
+      dm: 'source_desc',
+    },
+    {
+      cm: '处理人',
+      dm: 'received_personnel',
+      isShow:true
+    },
+    {
+      cm: '用户id',
+      dm: 'received_number',
+      isShow:true
+    },
+    {
+      cm: '处理时间',
+      dm: 'handling_time_desc',
+      isShow:true
+    },
+  ],
+  lbBtn: [
+    {
+      "button_name": "详情",
+      "button_type": 'detail',
+    },
+  ],
+  jsDia:[
+    {
+      cm: '接收条数',
+      type: 'inputNumber',
+      dm: 'jsts',
+    },
+  ],
+  clDia:[
+    {
+      title:'高铁信息',
+      type:'line',
+      col:24
+    },
+    {
+      cm: '姓名',
+      type: 'input',
+      dm: 'name',
+      dis:true,
+    },
+    {
+      cm: '国籍',
+      type: 'select',
+      dm: 'nationality',
+      dis:true,
+    },
+    {
+      cm: '证件号码',
+      type: 'input',
+      dm: 'paperno',
+      dis:true,
+    },
+    {
+      cm: '住宿地址',
+      type: 'joinBtn',
+      dm: 'standard_address',
+      btnmc:'核查'
+    },
+    {
+      cm: '所属分局',
+      type: 'input',
+      dm: 'police_bureau_desc',
+      dis:true,
+    },
+    {
+      cm: '所属派出所',
+      type: 'input',
+      dm: 'police_station_desc',
+      dis:true,
+    },
+    {
+      cm: '数据来源',
+      type: 'input',
+      dm: 'source_desc',
+      dis:true,
+    },
+  ],
+  inLb:[
+    {
+      cm: '标准化地址',
+      dm: 'standard_address',
+      only:'serial',
+      btnCommon:true
+    },
+  ],
+  inXzDia:[
+    // {
+    //   cm: '姓名',
+    //   type: 'input',
+    //   dm: 'crj_name',
+    // },
+    // {
+    //   cm: '国籍',
+    //   type: 'select',
+    //   dm: 'crj_nationality',
+    // },
+    // {
+    //   cm: '姓名拼音',
+    //   type: 'input',
+    //   dm: 'crj_namepy',
+    // },
+    // {
+    //   cm: '性别',
+    //   type: 'select',
+    //   dm: 'crj_gender',
+    //   // dis:true,
+    // },
+    // {
+    //   cm: '出生日期',
+    //   type: 'datePicker',
+    //   dm: 'crj_birthday',
+    // },
+    // {
+    //   cm: '证件号码',
+    //   type: 'input',
+    //   dm: 'crj_passportno',
+    // },
+    // {
+    //   cm: '证件种类',
+    //   type: 'select',
+    //   dm: 'crj_passporttype',
+    //   // dis:true,
+    // },
+    // {
+    //   cm: '前往地',
+    //   type: 'input',
+    //   dm: 'crj_destination',
+    //   // dis:true,
+    // },
+    // {
+    //   cm: '发证日期',
+    //   type: 'datePicker',
+    //   dm: 'crj_grant_cert_date',
+    //   // dis:true,
+    // },
+    // {
+    //   cm: '发证审批机关',
+    //   type: 'input',
+    //   dm: 'crj_grant_cert_org',
+    //   // dis:true,
+    // },
+    // {
+    //   cm: '入库时间',
+    //   type: 'datePicker',
+    //   dm: 'crj_in_time',
+    //   // dis:true,
+    // },
+    // {
+    //   cm: '检查员号',
+    //   type: 'input',
+    //   dm: 'crj_inspectorid',
+    // },
+    // {
+    //   cm: '出入境日期',
+    //   type: 'datePicker',
+    //   dm: 'crj_io_date',
+    //   // dis:true,
+    // },
+    // {
+    //   cm: '出入口岸',
+    //   type: 'select',
+    //   dm: 'crj_io_port',
+    //   // dis:true,
+    // },
+    // {
+    //   cm: '出入境事由',
+    //   type: 'select',
+    //   dm: 'crj_out_reason',
+    //   // dis:true,
+    // },
+    // {
+    //   cm: '人员类别',
+    //   type: 'select',
+    //   dm: 'crj_person_type',
+    //   // dis:true,
+    // },
+    // {
+    //   cm: '职业',
+    //   type: 'select',
+    //   dm: 'crj_prof_code',
+    //   // dis:true,
+    // },
+    // {
+    //   cm: '旅游团号',
+    //   type: 'input',
+    //   dm: 'crj_tour_groupno',
+    // },
+    // {
+    //   cm: '交通方式',
+    //   type: 'select',
+    //   dm: 'crj_traffic_mode',
+    //   // dis:true,
+    // },
+    // {
+    //   cm: '交通工具',
+    //   type: 'input',
+    //   dm: 'crj_traffic_tool',
+    //   // dis:true,
+    // },
+    // {
+    //   cm: '签证种类',
+    //   type: 'select',
+    //   dm: 'crj_visa_type',
+    //   // dis:true,
+    // },
+  ],
+  inPlBtn:[
+    // {
+    //   "menu_name": "新增",
+    //   "button_type": 2,
+    //   'py':'xz'
+    // },
+  ],
+  inLbBtn:[
+    // {
+    //   "button_name": "编辑",
+    //   "button_type": 'edit',
+    // }
+  ],
+  inLbCkBtn:[
+    // {
+    //   "button_name": "详情",
+    //   "button_type": 'ck',
+    // }
+  ],
+}
 export default{
   gtsjcx,
-  gtsjrgcl
+  gtsjrgcl,
+  bzhdzcl
 }

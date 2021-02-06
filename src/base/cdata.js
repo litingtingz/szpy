@@ -431,7 +431,7 @@ const options = {
         dm:'4'
     },
    ],
-   cljg:[
+   result:[
     {
         mc:'无效',
         dm:'0'
@@ -450,6 +450,20 @@ const options = {
         mc:'宾馆',
         dm:'1'
     },  
+   ],
+   type:[
+    {
+        mc:'高铁',
+        dm:'GT'
+    },
+    {
+        mc:'客运',
+        dm:'LK'
+    },  
+    {
+        mc:'机动车',
+        dm:'JDC'
+    }
    ],
 //    gtsz:[
 //     {

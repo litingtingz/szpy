@@ -185,10 +185,16 @@ const routes = [
         component: () => import(/* webpackChunkName: "szforeigners" */ '../views/szforeigners/DataAggregation/HighSpeedRailQuery.vue')
       },
       {
-        // 高铁数据查询
+        // 高铁数据人工处理
         path: '/HighSpeedRailHandle',
         name: 'HighSpeedRailHandle',
         component: () => import(/* webpackChunkName: "szforeigners" */ '../views/szforeigners/DataAggregation/HighSpeedRailHandle.vue')
+      },
+      {
+        // 标准化地址人工处理
+        path: '/BZHDZHandle',
+        name: 'BZHDZHandle',
+        component: () => import(/* webpackChunkName: "szforeigners" */ '../views/szforeigners/DataAggregation/BZHDZHandle.vue')
       },
     ]
   },

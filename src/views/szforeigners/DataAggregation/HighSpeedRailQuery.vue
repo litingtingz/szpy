@@ -32,7 +32,7 @@
         :pageSizeArr="pageSizeArr"
         :clearSort="clearSort"
         :expData="cx"
-        :expUrl="$api.aport2+''"
+        :expUrl="$api.aport4+'/gtrg/exportGtData'"
         @plFnc="plFnc"
         @pageSizeFnc="pageSizeFnc"
         @pageNumFnc="pageNumFnc"
@@ -91,6 +91,8 @@ export default {
           cfzmh: '0',
           ddzmh: '0',
           gtsz:[],
+          lacklz:'',
+          lackcz:'',
         },
         pageSize: 15,
         pageNum: 1,
@@ -209,7 +211,7 @@ export default {
       }else{
         this.cx.pd.sfgl = '0'
       }
-      this.getTable(true)
+      // this.getTable(true)
     },
     lbTextClickFnc(data){
       if(data.column.property == 'czcs'){

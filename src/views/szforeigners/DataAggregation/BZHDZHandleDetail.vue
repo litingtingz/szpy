@@ -132,14 +132,15 @@
       </el-row>
     </el-form>
     <div class="detail-table">
-      <span class="divider-text">{{'出入境信息'}}</span><el-divider></el-divider>
+      <span class="divider-text">{{'标准化地址信息'}}</span><el-divider></el-divider>
       <el-row type="flex">
         <el-col :span="20">
           <Table
           class="gt-table"
-          :lbData="$cdata.sjhj.gtsjrgcl.inLb"
+          :lbData="$cdata.sjhj.bzhdzcl.inLb"
           :isSelect="false"
-          :plBtn="$cdata.sjhj.gtsjrgcl.inPlBtn"
+          :isEdit="false"
+          :plBtn="$cdata.sjhj.bzhdzcl.inPlBtn"
           :lbBtn="lbBtn"
           :isHighlight="false"
           :btnIsCheck="btnIsCheck"
@@ -154,11 +155,9 @@
           :tableData="tableData"
         ></Table>
         </el-col>
-        <el-col :span="4" class="colum-btn">
-          <!-- <div> -->
-            <el-button :disabled="dialogType=='ck'" v-if="dialogType!='ck'||(dialogType=='ck'&&dialogData.result=='1')" size="mini" :type="'success'" round @click="handleFun('1')">入库</el-button>
-            <el-button :disabled="dialogType=='ck'" v-if="dialogType!='ck'||(dialogType=='ck'&&dialogData.result=='0')" size="mini" :type="'primary'" round @click="handleFun('0')">无效</el-button>
-          <!-- </div> -->
+        <el-col :span="4" class="colum-btn"> 
+          <el-button :disabled="dialogType=='ck'" v-if="dialogType!='ck'||(page=='2')" size="mini" :type="'success'" round @click="handleFun('1')">入库</el-button>
+          <el-button :disabled="dialogType=='ck'||page=='3'" v-if="dialogType!='ck'" size="mini" :type="'primary'" round @click="handleFun('0')">未标准化</el-button>
         </el-col>
     </el-row>
     </div>
@@ -235,8 +234,11 @@ export default {
       rules:{},
       isJoinZf:false,
       btnIsCheck:'',
+      isSfyx:'',
       cx: {
-        pd: {},
+        pd: {
+          
+        },
         pageSize: 10,
         pageNum: 1,
       },
@@ -256,6 +258,7 @@ export default {
       dialogDataRule:{},
       labelData:[],
       isShowDialog:false,
+      editId:'',
       checkEditId:'',
       tableBtnCheckObj:{},
     };
@@ -266,13 +269,7 @@ export default {
     },
   },
   mounted() {
-    if(this.page == '2'){
-      this.btnIsCheck = this.dialogData.crjwyid
-    }else{
-      this.btnIsCheck = ''
-    }
-    if(this.page == '1'){this.lbBtn = this.$cdata.sjhj.gtsjrgcl.inLbBtn;this.getTable(true)}
-    if(this.page == '2'){this.lbBtn = this.$cdata.sjhj.gtsjrgcl.inLbCkBtn;this.getTable(true)}
+    this.getTable(true)
   },
   methods: {
     //此详情页无用
@@ -306,7 +303,6 @@ export default {
     joinBtnFnc(data,value,key){
       let p={
         gtwyid:data.gtwyid,
-        type:data.type,
         zjhm:value
       }
       this.$api.post(this.$api.aport4 + '/gtrg/HeCha',p,r=>{
@@ -323,14 +319,15 @@ export default {
         this.editSave(data.data);
       }
     },
+    //废
     xzSave(data){
       let p=data;
       p.received_personnel = this.$store.state.user.xm
       p.received_number = this.$store.state.user.userId
       p.receiver = this.$store.state.user.bmbh
       p.gtwyid = this.dialogData.gtwyid
-      p.type = this.dialogData.type
-      this.$api.post(this.$api.aport4 + '/jt/AddCrjxx',p,r=>{
+      p.crjwyid = this.crjwyid
+      this.$api.post(this.$api.aport4 + '/gtrg/AddCrjxx',p,r=>{
         this.$message({
           message: r.message,
           duration: 8000,
@@ -341,9 +338,12 @@ export default {
         this.isShowDialog = false
       })
     },
+    //废
     editSave(data){
       let p=data;
-      this.$api.post(this.$api.aport4 + '/jt/UpdateCrjxx',p,r=>{
+      p.gtwyid = this.dialogData.gtwyid
+      p.crjwyid = this.editId
+      this.$api.post(this.$api.aport4 + '/gtrg/UpdateCrjxx',p,r=>{
         this.$message({
           message: r.message,
           duration: 8000,
@@ -353,14 +353,13 @@ export default {
         this.getTable(true)
         this.isShowDialog = false
       })
-      console.log('edit',p)
     },
-    //批量按钮
+    //批量按钮//废
     plFnc(data){
       this.dialogTitleRule = data.menu_name
       this.dialogTypeRule = data.py
       if(this.dialogTypeRule == 'xz'){
-        this.labelData = this.$cdata.sjhj.gtsjrgcl.inXzDia;
+        this.labelData = this.$cdata.sjhj.bzhdzcl.inXzDia;
         this.dialogDataRule = {
           crj_passportno:this.dialogData.gt_passportno
         }
@@ -368,21 +367,23 @@ export default {
       this.isShowDialog=true
       this.$refs.gthandForm.clearValid();
     },
-    //列表内按钮
+    //列表内按钮//废
     blFnc(data){
       this.dialogTitleRule = data.btn.button_name,
       this.dialogTypeRule = data.btn.button_type
-      this.labelData = this.$cdata.sjhj.gtsjrgcl.inXzDia
+      this.labelData = this.$cdata.sjhj.bzhdzcl.inXzDia
       if(!data.double){
+        this.editId = data.data.crjwyid
         let p={
-          serial:data.data.serial,
+          crjwyid:data.data.crjwyid,
+          gtwyid:this.dialogData.gtwyid
         }
-        this.$api.post(this.$api.aport4+'/jt/getCrjxxEnity',p,r=>{
+        this.$api.post(this.$api.aport4+'/gtrg/getCrjxxEnity',p,r=>{
           this.dialogDataRule = r
-          this.$set(this.dialogDataRule,'serial',data.data.serial)
           if(!this.dialogDataRule.crj_passportno&&this.page == '1'){
             this.$set(this.dialogDataRule,'crj_passportno',this.dialogData.gt_passportno)
           }
+          // this.dialogDataRule.crj_passportno = this.dialogData.gt_passportno
           this.isShowDialog = true
           this.$refs.gthandForm.clearValid();
         })
@@ -394,7 +395,7 @@ export default {
     // },
     lbSpecialBtnFncCommon(data){
       this.tableBtnCheckObj = data.data;
-      this.checkEditId = data.val;
+      this.checkEditId = data.val
     },
     sortChange(data){
       this.cx.order = data.prop;
@@ -413,9 +414,9 @@ export default {
     // 查询用户列表
     getTable(flag) {
       if(flag){this.clearSort = new Date().getTime();delete this.cx.order;delete this.cx.direction }
-      this.cx.pd.gtwyid = this.dialogData.gtwyid
-      this.cx.pd.type = 'crjxx';
-      this.$api.post(this.$api.aport4 + "/jt/getJtxxList", this.cx, r => {
+      this.cx.pd.source=this.dialogData.source;
+      this.cx.pd.source_uuid=this.dialogData.source_uuid
+      this.$api.post(this.$api.aport4 + "/bzhdz/getBzhdzList", this.cx, r => {
         this.tableData = r;
       });
     },
@@ -423,18 +424,22 @@ export default {
     handleFun(val){
       let p={
         cljg:val,
-        gtwyid:this.dialogData.gtwyid,
-        type:this.dialogData.type
+        source:this.dialogData.source,
+        source_uuid:this.dialogData.source_uuid,
+        serial:this.tableBtnCheckObj.serial,
+        bzhdz:this.tableBtnCheckObj.standard_address,
+        received_personnel:this.$store.state.user.xm,
+        received_number:this.$store.state.user.userId,
+        receiver:this.$store.state.user.bmbh,
+        rklx:this.page=='1'?'0':'1'
       }
       if(this.tableData.list.length!=0&&!this.checkEditId&&val=='1'){
-        this.$confirm('您未选择出入境信息，确定处理吗？','提示',{
+        this.$confirm('您未选择标准化地址，确定处理吗？','提示',{
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(()=>{
-          p.serial=this.dialogData.serial
-          p.iscrj='0'//未选择出入境
-          this.$api.post(this.$api.aport4+'/jt/Bcxx',p,r=>{
+          this.$api.post(this.$api.aport4+'/bzhdz/Bcxx',p,r=>{
             console.log(r)
             this.$message({
               message: '处理成功',
@@ -455,9 +460,7 @@ export default {
           })
         })
       }else{
-        p.serial = val=='0'?this.dialogData.serial:this.tableBtnCheckObj.serial
-        p.iscrj = (val=='0'||this.tableData.list.length==0)?'0':'1'//选择无效或者出入境表格无数据为0
-        this.$api.post(this.$api.aport4+'/jt/Bcxx',p,r=>{
+        this.$api.post(this.$api.aport4+'/bzhdz/Bcxx',p,r=>{
           console.log(r)
           this.$message({
             message: '处理成功',

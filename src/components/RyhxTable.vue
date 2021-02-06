@@ -50,7 +50,7 @@
           :prop="lb.dm"
           :label="lb.cm"
           :width="lb.width"
-          :sortable="'custom'&&isSort">
+          :sortable="isSort">
             <template slot-scope="scope">
               <span style="width:20px;height:20px;display:inline-block;vertical-align: middle;" :style="{backgroundColor:scope.row.gdyssh}"></span>
             </template>
@@ -63,7 +63,7 @@
           :prop="lb.dm"
           :label="lb.cm"
           :width="lb.width"
-          :sortable="'custom'&&isSort"
+          :sortable="isSort"
         ></el-table-column>
       </template>
       <el-table-column :width="czWidth" align="center" label="操作" v-if="isEdit">
@@ -160,9 +160,10 @@ export default {
       type: Boolean,
       default: true
     },
+    //表格是否排序
     isSort: {
-      type: Boolean,
-      default: false
+      type: [String, Boolean],
+      default: 'custom'
     },
     pageSizeArr: {
       type: Array,

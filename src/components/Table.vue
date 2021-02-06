@@ -10,8 +10,6 @@
           @click="lbTabFun(lt.dm)"
         >{{lt.mc}}</span>
       </div>
-      <!-- v-if="isOther" -->
-     
       <div class="table-btn-box" id="plBtn" v-if="isPl">
         <el-popover
           placement="left"
@@ -80,7 +78,7 @@
           :prop="lb.dm"
           :label="lb.cm"
           :width="lb.width"
-          :sortable="'custom'&&isSort">
+          :sortable="isSort">
             <template slot-scope="scope">
               <span style="width:20px;height:20px;display:inline-block;vertical-align: middle;" :style="{backgroundColor:scope.row.gdyssh}"></span>
             </template>
@@ -94,7 +92,7 @@
           :prop="lb.dm"
           :label="lb.cm"
           :width="lb.width"
-          :sortable="'custom'&&isSort">
+          :sortable="isSort">
             <template slot-scope="scope">
               <el-button
               style="width: 100%" 
@@ -102,6 +100,25 @@
               :type="scope.row.crjwyid==btnId||scope.row.valid=='1'?'success':'primary'"
               :disabled="LbDisable"
               @click="lbSpecialBtn(scope.row.crjwyid)">{{scope.row[lb.dm]}}</el-button>
+            </template>
+        </el-table-column>
+         <!-- 按钮显示(通用) -->
+        <el-table-column
+          align="left"
+          show-overflow-tooltip
+          :key="i"
+          v-else-if="lb.btnCommon"
+          :prop="lb.dm"
+          :label="lb.cm"
+          :width="lb.width"
+          :sortable="isSort">
+            <template slot-scope="scope">
+              <el-button
+              style="width: 100%" 
+              size="mini"  
+              :type="scope.row[lb.only]==btnId||scope.row.valid=='1'?'success':'primary'"
+              :disabled="LbDisable"
+              @click="lbSpecialBtnCommon(scope.row,lb.dm,scope.row[lb.only])">{{scope.row[lb.dm]}}</el-button>
             </template>
         </el-table-column>
         <!-- 字体链接显示 -->
@@ -113,7 +130,7 @@
           :prop="lb.dm"
           :label="lb.cm"
           :width="lb.width"
-          :sortable="'custom'&&isSort">
+          :sortable="isSort">
             <template slot-scope="scope">
               <el-link type="primary" @click="lbTextClick(scope.row,scope.column)">{{scope.row[lb.dm]}}</el-link>
             </template>
@@ -134,7 +151,7 @@
           :prop="lb.dm"
           :label="lb.cm"
           :width="lb.width"
-          :sortable="'custom'&&isSort">
+          :sortable="isSort">
             <template slot-scope="scope">
              <div style="cursor:pointer;position: relative;"> 
                <img 
@@ -154,21 +171,31 @@
           :prop="lb.dm"
           :label="lb.cm"
           :width="lb.width"
-          :sortable="'custom'&&isSort">
+          :sortable="isSort">
           <template slot-scope="scope">
             {{scope.row[lb.dm] | subString}}
           </template>
         </el-table-column>
-        <!-- 常规 -->
         <el-table-column
           align="left"
           show-overflow-tooltip
-          v-else
+          v-else-if="lb.isShow&&ColIsShow"
           :key="i"
           :prop="lb.dm"
           :label="lb.cm"
           :width="lb.width"
-          :sortable="'custom'&&isSort"
+          :sortable="isSort"
+        ></el-table-column>
+        <!-- 常规 -->
+        <el-table-column
+          align="left"
+          show-overflow-tooltip
+          v-else-if="!lb.isShow"
+          :key="i"
+          :prop="lb.dm"
+          :label="lb.cm"
+          :width="lb.width"
+          :sortable="isSort"
         ></el-table-column>
       </template>
       <el-table-column :width="czWidth" align="center" label="操作" v-if="isEdit">
@@ -310,8 +337,8 @@ export default {
     },
     //表格是否排序
     isSort: {
-      type: Boolean,
-      default: true
+      type: [String, Boolean],
+      default: 'custom'
     },
     //表格分页 每页展示条数分组
     pageSizeArr: {
@@ -405,6 +432,11 @@ export default {
     btnIsCheck:{
       type:String,
       default:''
+    },
+    //列表某一列显示&隐藏 与数据源的参数一并判断
+    ColIsShow:{
+      type:Boolean,
+      default:false,
     }
   },
   data() {
@@ -512,6 +544,14 @@ export default {
       }
       this.$emit('lbSpecialBtnFnc',{data:val})
     },
+    lbSpecialBtnCommon(data,key,value){
+      if(this.btnId == value){
+        this.btnId = ''
+      }else{
+        this.btnId = value
+      }
+      this.$emit('lbSpecialBtnFncCommon',{data:data,key:key,val:this.btnId})
+    },
     //列表内可点击文字事件
     lbTextClick(row,column){
       this.$emit('lbTextClickFnc',{row:row,column:column})
@@ -613,13 +653,12 @@ export default {
       }
       if(val.py == 'dc'){//导出
         let expName = this.$store.state.breadcrumb[this.$store.state.breadcrumb.length-1].menu_name;
-        // console.log('expName',expName)
         this.expD = Object.assign({},this.expData)
         this.expD.menu_name = this.$store.state.breadcrumb[this.$store.state.breadcrumb.length-1].menu_name;
         this.expD.btn_name = val.menu_name;
         this.expD.user = this.$store.state.user;
         if(this.expD.pd){this.expD.pd.listName = this.lbData;}
-        this.expD.pageSize = 2000;
+        this.expD.pageSize = 10000;
         if(this.tableData.list.length==0){
           this.$message({
             message: "无可导出数据！",
@@ -629,32 +668,61 @@ export default {
           });
           return false;
         }
-        if(this.tableData.total<=2000){//导出条数小于2000条
-          this.expD.pageNum = 1
-          this.$api.post(this.expUrl,this.expD,'','','blob',this.expType,expName)
-        }else{
-          for(var i=1;i<=Math.ceil(this.tableData.total/2000);i++){
-            this.expD.pageNum = i
-              await this.$confirm('将导出'+i+'个文件，将导出 '+(i)*2000 +' 条，是否继续导出?','提示',{
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-              }).then(() => {
-                this.$api.post(this.expUrl,this.expD,'','','blob',this.expType,expName)
-              }).catch(() => {
-                this.$message({
-                  type: 'info',
-                  message: '已取消导出'
-                })
-                this.confirmFlag = false
-              })
-              if(!this.confirmFlag){
-                this.confirmFlag = true
-                return false
-              }
-          }
+        if(this.tableData.total>10000){//导出条数大于10000条
+          this.$message({
+            message: "导出数据不能大于10000条！",
+            showClose: true,
+            duration:13000,
+            type: "warning"
+          });
+          return false;
         }
+        this.expD.pageNum = 1
+        this.$api.post(this.expUrl,this.expD,'','','blob',this.expType,expName)
       }
+      // if(val.py == 'dc'){//导出
+      //   let expName = this.$store.state.breadcrumb[this.$store.state.breadcrumb.length-1].menu_name;
+      //   this.expD = Object.assign({},this.expData)
+      //   this.expD.menu_name = this.$store.state.breadcrumb[this.$store.state.breadcrumb.length-1].menu_name;
+      //   this.expD.btn_name = val.menu_name;
+      //   this.expD.user = this.$store.state.user;
+      //   if(this.expD.pd){this.expD.pd.listName = this.lbData;}
+      //   this.expD.pageSize = 2000;
+      //   if(this.tableData.list.length==0){
+      //     this.$message({
+      //       message: "无可导出数据！",
+      //       showClose: true,
+      //       duration:13000,
+      //       type: "warning"
+      //     });
+      //     return false;
+      //   }
+      //   if(this.tableData.total<=2000){//导出条数小于2000条
+      //     this.expD.pageNum = 1
+      //     this.$api.post(this.expUrl,this.expD,'','','blob',this.expType,expName)
+      //   }else{
+      //     for(var i=1;i<=Math.ceil(this.tableData.total/2000);i++){
+      //       this.expD.pageNum = i
+      //         await this.$confirm('将导出'+i+'个文件，将导出 '+(i)*2000 +' 条，是否继续导出?','提示',{
+      //           confirmButtonText: '确定',
+      //           cancelButtonText: '取消',
+      //           type: 'warning'
+      //         }).then(async() => {
+      //           await this.$api.post(this.expUrl,this.expD,'','','blob',this.expType,expName)
+      //         }).catch(() => {
+      //           this.$message({
+      //             type: 'info',
+      //             message: '已取消导出'
+      //           })
+      //           this.confirmFlag = false
+      //         })
+      //         if(!this.confirmFlag){
+      //           this.confirmFlag = true
+      //           return false
+      //         }
+      //     }
+      //   }
+      // }
       this.$emit("plFnc", val);
     },
     // 简表保存
@@ -667,8 +735,10 @@ export default {
           }
         })
       });
-      this.$emit('transSaveFnc',this.jbArr);
-      this.pointData=this.jbArr;
+      if(this.jbArr.length!=0){
+        this.pointData=this.jbArr;
+        this.$emit('transSaveFnc',this.jbArr);
+      }
       this.isShowDialog = false;
     },
     sortChange(column){

@@ -5,15 +5,15 @@ var root = 'http://192.168.3.131:1101/'//测试
 // var root = 'http://50.73.70.116:1101/'//公安正式环境
 
 // var root = 'http://10.0.30.43:1101'//石本地
-// var root = 'http://10.0.30.122:1101/'//任本地
+// var root = 'http://10.0.30.173:1101/'//任本地
 // 
 var aport1 = 'permission'//任
-// var aport1 = 'http://10.0.30.140:9404'
+// var aport1 = 'http://10.0.30.173:9404'
 var aport2 = 'datarelease'//石
-// var aport2 = 'http://10.0.31.36:9405'//石本地
+// var aport2 = 'http://10.0.30.233:9405'//石本地
 var aport3 = 'lzsb'
 var aport4 = 'yewu'
-// var aport4 = 'http://10.0.30.120:9426'
+// var aport4 = 'http://10.0.30.145:9426'
 
 var aport8 = 'hint'
 // var aport8 = 'http://10.0.30.140:9432'
@@ -110,12 +110,20 @@ function apiAxios(method, url, params, success, failure, isDownload,type,name) {
   })
     .then(function (res) {
       if (res.status == 200) {
+        console.log("isDownload", isDownload,name)
         if (loadingInstance1) {
           loadingInstance1.close();
         }
-        console.log("isDownload", isDownload,name)
         if (isDownload) {
+          // return new Promise((resolve) => {
+          //   console.log('=====',res.data,type)
+          //   if(res.data){
+          //     success(res.data)
+          //     resolve(res.data)
+          //   }
+          // });
           let url = window.URL.createObjectURL(new Blob([res.data]));
+          console.log('url===',url)
           // 生成一个a标签
           let link = document.createElement("a");
           link.style.display = "none";
@@ -141,17 +149,9 @@ function apiAxios(method, url, params, success, failure, isDownload,type,name) {
           if (failure) {
             failure(res.data.data)
           } else {
-
             if (res.data.message) {
-
               if (res.data.message == "登录过期，请重新登录") {
                 logout()
-                // MessageBox.confirm('登录过期，请重新登录!', '提示', {
-                //   confirmButtonText: '确定',
-                //   type: 'warning'
-                // }).then(() => {
-                //   logout()
-                // })
               } else {
                 Message({
                   message: res.data.message,
