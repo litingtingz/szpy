@@ -18,7 +18,7 @@
                 <el-input v-if="!cx.hc_con||(cx.dm=='datasources_desc'&&page==cx.hc_con)||(cx.dm=='phone'&&dialogData['datatype']==cx.hc_con)" v-model="dialogData[cx.dm]" :disabled="cx.dis" :maxlength="cx.max"></el-input>
               </template>
               <template v-if="cx.type=='inputNumber'">
-                <el-input v-model="dialogData[cx.dm]" :disabled="cx.dis"  type="number"></el-input>
+                <el-input v-model="dialogData[cx.dm]" :disabled="cx.dis"  type="number" @input="dialogData[cx.dm]=dialogData[cx.dm].replace(/([^0-9])+/g,'')"></el-input>
               </template>
               <template v-if="cx.type=='joinInput'">
                 <el-input v-model="dialogData[cx.dm]" :disabled="joinFlag"></el-input>

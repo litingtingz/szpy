@@ -870,7 +870,7 @@ export default {
       }
       let arr=[];
       for(var i in p){
-        for(var j=0;j<this.currentCus.length;j++){
+        for(let j=0;j<this.currentCus.length;j++){
           if(i == this.currentCus[j].serial){
             arr.push(p[i])
           }
@@ -885,6 +885,45 @@ export default {
           type: "success"
         });
         this.multipleSelection[this.diaPage-1] = Object.assign({},this.dialogData)
+
+        // this.diaPage++
+        // if(this.diaPage > this.multipleSelection.length){
+        //   this.isShowDialog = false;
+        //   this.getTable()
+        //   this.diaPage=1;
+        //   return
+        // }
+        // //专项核查自定义
+        // if(this.multipleSelection[this.diaPage-1].datatype == '3'){//专项核查自定义 插入自定义
+        //   if(this.multipleSelection[this.diaPage-1].issueDataFeedbackList){//存在自定义项
+        //     this.$cdata.zxhc.handShow(this.$store.state.user.jb).then(data => {//根据级别控制弹窗编辑项禁止与否
+        //       data.splice(15,0,{'issueDataFeedbackList':JSON.parse(this.multipleSelection[this.diaPage-1].issueDataFeedbackList)},{cm: '反馈总时长',type: 'inpUnit', dm: 'issue_time',unit:'hour',dis:true})
+        //       this.labelData = data;
+        //     });
+        //     let cusArr = JSON.parse(this.multipleSelection[this.diaPage-1].issueDataFeedbackList)
+        //     this.currentCus = JSON.parse(this.multipleSelection[this.diaPage-1].issueDataFeedbackList)
+        //     for(var j=0;j<cusArr.length;j++){
+        //       this.multipleSelection[this.diaPage-1][cusArr[j].serial] = {
+        //         serial:cusArr[j].serial,
+        //       }
+        //       this.$set(this.multipleSelection[this.diaPage-1][cusArr[j].serial],'value',cusArr[j].type=='checkbox'?[]:'')
+        //     }
+        //   }else{//没有自定义项，只有自定义反馈时间
+        //     this.$cdata.zxhc.handShow(this.$store.state.user.jb).then(data => {//编辑选项只插入时间
+        //       data.splice(15,0,{cm: '反馈总时长',type: 'inpUnit', dm: 'issue_time',unit:'hour',dis:true})
+        //       this.labelData = data;
+        //     });
+        //   }
+        //   if(!this.multipleSelection[this.diaPage-1].issue_time){this.multipleSelection[this.diaPage-1].issue_time='0'}//反馈时间回填  没有反馈时间默认0
+        //   this.dialogData = Object.assign({},this.multipleSelection[this.diaPage-1]);
+        // }else{
+        //   this.$cdata.zxhc.handShow(this.$store.state.user.jb).then(data => {//根据级别控制弹窗编辑项禁止与否
+        //     this.labelData = data;
+        //   });
+        //   this.dialogData = Object.assign({},this.multipleSelection[this.diaPage-1]);
+        // }
+        // this.dialogData = Object.assign({},this.multipleSelection[this.diaPage-1]);
+        // this.$store.dispatch("aGetBackstatus", this.multipleSelection[this.diaPage-1].datatype);
       });
     },
     
